@@ -1,0 +1,74 @@
+/* Outlines do not separate. Cards sit on the raised plane above the sunken example plane, and rows sit
+   one step darker on the base plane, so every edge is a lightness step. The outlined state adds a line to each, which is the noise. */
+
+.ex-outlines-do-not-separate {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--gap-within);
+}
+
+/* Cards in a row share its height. The body takes the spare room, so every card's facts sit on its bottom inset
+   and line up across the row. */
+.ex-outlines-do-not-separate-card {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--gap-within);
+  transition: box-shadow var(--dur-fade) linear;
+}
+
+.ex-outlines-do-not-separate-title {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-outlines-do-not-separate-body {
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+.ex-outlines-do-not-separate-facts {
+  display: grid;
+  gap: var(--gap-tight);
+  margin: 0;
+}
+
+.ex-outlines-do-not-separate-fact {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap-within);
+  transition: box-shadow var(--dur-fade) linear;
+}
+
+/* A fact is a row, so both of its items trim both lines. This overrides the surface's first and last child
+   trims, which would leave the term and the value with different leading and pull their baselines apart. */
+.ex-outlines-do-not-separate .ex-outlines-do-not-separate-fact[data-padded] > * {
+  text-box: trim-both cap alphabetic;
+}
+
+.ex-outlines-do-not-separate-fact dt {
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+.ex-outlines-do-not-separate-fact dd {
+  margin: 0;
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The outlined state. Every card and row gains the same 1px line. */
+.ex-outlines-do-not-separate[data-outlined='true'] .ex-outlines-do-not-separate-card,
+.ex-outlines-do-not-separate[data-outlined='true'] .ex-outlines-do-not-separate-fact {
+  box-shadow: inset 0 0 0 var(--stroke) var(--line);
+}
+
+/* The last line of the controls column, so its baseline is the frame's bottom inset. */
+.ex-outlines-do-not-separate-count {
+  text-box: trim-end cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}

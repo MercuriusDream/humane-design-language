@@ -1,0 +1,20 @@
+/* Layout only. Color, type, and spacing come from the system tokens. */
+
+.ex-words-are-for-intent-commands-and-errors-form {
+  display: grid;
+  gap: var(--gap-within);
+  min-width: 0;
+  margin: 0;
+}
+
+.ex-words-are-for-intent-commands-and-errors-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap-within);
+}
+
+/* The field's label is the body's first line, at the frame's padded edge, so it trims level with the hint. */
+.ex-words-are-for-intent-commands-and-errors-form > :first-child > :first-child {
+  text-box: trim-start cap alphabetic;
+}

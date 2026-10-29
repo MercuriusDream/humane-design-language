@@ -1,0 +1,114 @@
+/* Disclosure. Closed it is the base plane; open it is raised; under the pointer it takes the control plane, and while
+   its header is pressed the hover plane. The body's grid rows go from 0fr to 1fr, so the row grows in place.
+   The corner is 2px at depth 1 and depth 2. The header is a control of its tier: standard is --control-height with
+   body text and --inset-control; compact is --control-height-compact with small text and --inset-control-compact.
+   The content takes the same inset, so the row has one edge on each side. */
+
+.h-disclosure {
+  --pad: var(--inset-control);
+  --h-disclosure-height: var(--control-height);
+  --h-disclosure-font: var(--text-body);
+  --h-disclosure-chevron: 1.25rem;
+  background: var(--plane-base);
+  border-radius: var(--radius-1);
+  transition: background-color var(--dur-feedback) linear;
+}
+
+.h-disclosure[data-size='compact'] {
+  --pad: var(--inset-control-compact);
+  --h-disclosure-height: var(--control-height-compact);
+  --h-disclosure-font: var(--text-small);
+  --h-disclosure-chevron: 1rem;
+}
+
+.h-disclosure[data-depth='2'] {
+  border-radius: var(--radius-2);
+}
+
+.h-disclosure[data-open='true'] {
+  background: var(--plane-raised);
+}
+
+/* Declared after open, so the pointer always shows, open or closed. */
+.h-disclosure:hover {
+  background: var(--plane-control);
+}
+
+.h-disclosure:has(> .h-disclosure-header:active) {
+  background: var(--plane-control-hover);
+}
+
+.h-disclosure-header {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-within);
+  width: 100%;
+  min-height: var(--h-disclosure-height);
+  padding: 0 var(--pad);
+  border-radius: min(var(--radius-1), var(--radius-control-max));
+  background: none;
+  color: var(--ink-1);
+  font: var(--h-disclosure-font);
+  text-align: start;
+}
+
+.h-disclosure[data-depth='2'] .h-disclosure-header {
+  border-radius: min(var(--radius-2), var(--radius-control-max));
+}
+
+.h-disclosure-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 600; /* body or small role, title weight */
+  overflow-wrap: anywhere;
+}
+
+/* A count is a plain number in tertiary ink, never a saturated badge. */
+.h-disclosure-meta {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* The chevron is the same object in both states; it turns instead of being replaced. */
+.h-disclosure-chevron {
+  flex: none;
+  width: var(--h-disclosure-chevron);
+  height: var(--h-disclosure-chevron);
+  color: var(--ink-2);
+  transition: transform calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.h-disclosure[data-open='true'] .h-disclosure-chevron {
+  transform: rotate(180deg);
+}
+
+/* Body is the grid whose one row animates. The clip is the item that shrinks to zero. */
+.h-disclosure-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.h-disclosure[data-open='true'] .h-disclosure-body {
+  grid-template-rows: 1fr;
+}
+
+.h-disclosure-clip {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--dur-fade) linear;
+}
+
+.h-disclosure[data-open='true'] .h-disclosure-clip {
+  opacity: 1;
+}
+
+/* Padding sits inside the clip so the collapsing row never shows it at zero height.
+   The header already holds the inset below its title, so the content adds only the sides and the bottom. */
+.h-disclosure-content {
+  padding: 0 var(--pad) var(--pad);
+  text-box: trim-both cap alphabetic;
+}

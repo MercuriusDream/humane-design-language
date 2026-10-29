@@ -1,0 +1,11 @@
+/* Undoable list docs. Layout only; every color and size comes from tokens. */
+
+.doc-undoable-list-controls {
+  display: grid;
+  justify-items: start;
+}
+
+.doc-undoable-list-meta {
+  font: var(--text-small);
+  color: var(--ink-3);
+}

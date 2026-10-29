@@ -1,0 +1,89 @@
+/* Padding is small, text is large. Two cards that share the row equally. Both are depth 1 surfaces,
+   so they take --radius-1 and sit on --plane-raised inside the example's sunken frame. */
+
+.ex-padding-is-small-text-is-large-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  align-items: start;
+  gap: var(--gap-between);
+}
+
+.ex-padding-is-small-text-is-large-card {
+  min-width: 0;
+  display: grid;
+  gap: var(--gap-within);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+/* Both cards measure their padding to the ink, so the comparison is padding against padding, not leading.
+   The card is a grid, so the first and last lines trim themselves. */
+.ex-padding-is-small-text-is-large-card > :first-child {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-padding-is-small-text-is-large-card > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+/* Loose is the pattern this rule rejects: padding far beyond what grouping needs,
+   and small text inside it. It is built from a token so the example stays on tokens. */
+.ex-padding-is-small-text-is-large-card[data-variant='loose'] {
+  padding: calc(var(--pad-0) * 3);
+}
+
+/* Tight uses the system's depth 1 padding, and the freed room goes to the text. */
+.ex-padding-is-small-text-is-large-card[data-variant='tight'] {
+  padding: var(--pad-1);
+}
+
+.ex-padding-is-small-text-is-large-title {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-padding-is-small-text-is-large-meta {
+  font: var(--text-small);
+  color: var(--ink-3);
+}
+
+.ex-padding-is-small-text-is-large-body {
+  color: var(--ink-2);
+}
+
+.ex-padding-is-small-text-is-large-card[data-variant='loose'] .ex-padding-is-small-text-is-large-body {
+  font: var(--text-small);
+}
+
+.ex-padding-is-small-text-is-large-card[data-variant='tight'] .ex-padding-is-small-text-is-large-body {
+  font: var(--text-body);
+}
+
+/* Each label sits above its value, so the value gets the full width of the controls column.
+   A group is one gap-tight plus one gap-within (12 px), three times the 4 px inside a group. */
+.ex-padding-is-small-text-is-large-readout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--gap-tight);
+  font: var(--text-small);
+}
+
+.ex-padding-is-small-text-is-large-readout dt {
+  color: var(--ink-2);
+}
+
+.ex-padding-is-small-text-is-large-readout dt:not(:first-child) {
+  margin-top: var(--gap-within);
+}
+
+.ex-padding-is-small-text-is-large-readout dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* The last value is the controls column's last line, so it trims below its baseline. */
+.ex-padding-is-small-text-is-large-readout dd:last-child {
+  text-box: trim-end cap alphabetic;
+}

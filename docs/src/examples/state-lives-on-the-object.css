@@ -1,0 +1,19 @@
+/* The task's text sits beside a 44 px button, centered on it. Its first and last lines trim to their ink, so the
+   button's edge is the inset above and below, --pad-1 like the sides. The error line, when shown, ends the card. */
+
+.ex-state-lives-on-the-object-task .task-title {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-state-lives-on-the-object-task .task-meta {
+  text-box: trim-end cap alphabetic;
+}
+
+.ex-state-lives-on-the-object-task .task-error {
+  text-box: trim-end cap alphabetic;
+}
+
+/* The button keeps its width, so the title wraps beside it rather than breaking the button's label. */
+.ex-state-lives-on-the-object-task .task-main > .h-button {
+  flex: none;
+}

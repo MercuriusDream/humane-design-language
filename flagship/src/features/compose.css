@@ -1,0 +1,31 @@
+/* Composer. Wider than a plain dialog, so a letter has room. Each field (its label, hint, and box, 4px and 8px
+   apart) is a group, and the fields sit --gap-between apart, three times the gap inside one. */
+
+.h-dialog-panel:has(.compose-fields) {
+  max-width: min(720px, 100vw - 32px);
+}
+
+.compose-fields {
+  display: grid;
+  gap: var(--gap-between);
+}
+
+/* A long subject ends in an ellipsis instead of widening the action row, and never outgrows the panel. */
+.compose-send-label {
+  display: inline-block;
+  max-width: min(18rem, 100vw - 32px - 2 * var(--pad-0) - 2 * var(--space-4));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* Visually hidden, still in the accessibility tree. */
+.compose-announce {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,0 +1,88 @@
+/* The stage scales with the user's text size (inherited) times the slider. Type tokens are redefined
+   here in em, with the system's weights, sizes and line heights, so the hierarchy holds at every size and nothing
+   has a fixed height. A specimen of the user's text setting. */
+
+.ex-text-size-belongs-to-the-user-stage {
+  --text-body: 400 1.0625em / 1.6 var(--font);
+  --text-small: 400 0.875em / 1.5 var(--font);
+  --text-label: 600 0.875em / 1.4 var(--font);
+  /* The slider's factor; the component sets it. */
+  --scale: 1;
+  min-width: 0;
+}
+
+.ex-text-size-belongs-to-the-user-card {
+  display: grid;
+  gap: var(--gap-within);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--ink-1);
+}
+
+.ex-text-size-belongs-to-the-user-title {
+  margin: 0;
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-text-size-belongs-to-the-user-text {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* The rows are a depth 2 plane inside the card, so they separate by lightness, not by a line. */
+.ex-text-size-belongs-to-the-user-rows {
+  display: grid;
+  gap: var(--gap-tight);
+  margin: 0;
+  padding: var(--pad-2);
+  border-radius: var(--radius-2);
+  background: var(--plane-sunken);
+}
+
+.ex-text-size-belongs-to-the-user-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--gap-within) var(--gap-between);
+  font: var(--text-small);
+}
+
+/* The first and last rows trim at the plane's padded edges. Both items of a row trim, so they stay level. */
+.ex-text-size-belongs-to-the-user-row:first-child > * {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-text-size-belongs-to-the-user-row:last-child > * {
+  text-box: trim-end cap alphabetic;
+}
+
+.ex-text-size-belongs-to-the-user-row dt {
+  margin: 0;
+  color: var(--ink-2);
+}
+
+.ex-text-size-belongs-to-the-user-row dd {
+  margin: 0;
+  min-width: 0;
+  text-align: end;
+  color: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-text-size-belongs-to-the-user-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--gap-within);
+}
+
+/* The system's button sets its size in rem, so it would not follow the stage. The label token takes the stage's size,
+   and the height and inset grow by the slider's scale, so a larger label keeps the same room on every side. */
+.ex-text-size-belongs-to-the-user-stage .h-button {
+  min-height: calc(var(--control-height) * var(--scale));
+  padding-inline: calc(var(--inset-control) * var(--scale));
+  font: var(--text-label);
+}

@@ -1,0 +1,134 @@
+/* Everything here sits inside the example body, so the card is depth 1: --radius-1 and --pad-1.
+   Its photos sit inside it at depth 2. */
+
+.ex-continuity-saves-effort-stage {
+  display: grid;
+  gap: var(--gap-within);
+  align-content: start;
+  min-width: 0;
+}
+
+/* Swap puts its two slots side by side while each still holds a card at a readable width, so the destination
+   sits beside the source and the stage stays about as tall as Morph's one card. Narrower, they stack. Each slot
+   keeps its card's height whether the card shows or not, so the stage keeps one height across presses. */
+.ex-continuity-saves-effort-stage[data-mode='swap'] {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  align-items: start;
+  gap: var(--gap-between);
+}
+
+.ex-continuity-saves-effort-slot-a,
+.ex-continuity-saves-effort-slot-b {
+  display: grid;
+  min-width: 0;
+}
+
+/* Swap's slots are wells a step above the frame, so an empty slot still reads as a place a card can be.
+   The card fills its well exactly, so a filled well shows only the card. */
+.ex-continuity-saves-effort-stage[data-mode='swap'] > * {
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+.ex-continuity-saves-effort-card {
+  display: grid;
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+/* Swap's removed card. Hidden at once, with no transition: a swap has no continuity to show. */
+.ex-continuity-saves-effort-card[data-gone] {
+  visibility: hidden;
+}
+
+/* The picture: three frames as neutral planes, so they spend no saturation. The wide first frame leads.
+   Its height follows the card's width, so the card keeps one shape at every size. */
+.ex-continuity-saves-effort-cover {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--gap-tight);
+  aspect-ratio: 5 / 1;
+  margin-bottom: var(--pad-1);
+}
+
+.ex-continuity-saves-effort-photo {
+  border-radius: var(--radius-2);
+  background: linear-gradient(to bottom, var(--plane-control-active), var(--plane-base));
+}
+
+.ex-continuity-saves-effort-photo:nth-child(2) {
+  background: linear-gradient(to bottom, var(--plane-fill), var(--plane-sunken));
+}
+
+.ex-continuity-saves-effort-photo:nth-child(3) {
+  background: linear-gradient(to bottom, var(--plane-control-hover), var(--plane-control));
+}
+
+/* The head is a row, so each of its items trims both lines and the two still share a baseline.
+   It is the card's first line of text, and, while the card is collapsed, its last. */
+.ex-continuity-saves-effort-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--gap-within) var(--gap-between);
+}
+
+.ex-continuity-saves-effort-head > * {
+  text-box: trim-both cap alphabetic;
+}
+
+.ex-continuity-saves-effort-title {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-continuity-saves-effort-meta {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The text is the card's last line whenever it shows, so it trims below its baseline. */
+.ex-continuity-saves-effort-text {
+  text-box: trim-end cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-2);
+  max-width: 56ch;
+}
+
+/* The head no longer carries leading below it, so the text keeps the within gap from it in both modes. */
+.ex-continuity-saves-effort-card > .ex-continuity-saves-effort-text {
+  padding-top: var(--gap-within);
+}
+
+/* Morph. The reveal's rows grow from 0fr to 1fr, so the card changes size in place. */
+
+.ex-continuity-saves-effort-reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-continuity-saves-effort-card[data-expanded='true'] .ex-continuity-saves-effort-reveal {
+  grid-template-rows: 1fr;
+}
+
+/* The trimmed last line hangs its descenders below the box, so the clip reaches a little past it. */
+.ex-continuity-saves-effort-clip {
+  min-height: 0;
+  overflow: clip;
+  overflow-clip-margin: var(--gap-tight);
+}
+
+.ex-continuity-saves-effort-body {
+  padding-top: var(--gap-within);
+  opacity: 0;
+  transition: opacity var(--dur-fade) linear;
+}
+
+.ex-continuity-saves-effort-card[data-expanded='true'] .ex-continuity-saves-effort-body {
+  opacity: 1;
+}

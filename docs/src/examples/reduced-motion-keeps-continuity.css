@@ -1,0 +1,66 @@
+/* Stage is depth 1: radius-1 and pad-1. The card is depth 2: radius-2, pad-2. The lane names and the card's
+   lines trim to their ink at the padded edges, so each inset is its padding. */
+
+.ex-reduced-motion-keeps-continuity-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: var(--gap-within);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+/* Reduced motion on this example only. The system setting already sets --travel on the root. */
+.ex-reduced-motion-keeps-continuity-stage[data-reduced] {
+  --travel: 0;
+}
+
+.ex-reduced-motion-keeps-continuity-lane {
+  grid-row: 1;
+  text-box: trim-start cap alphabetic;
+  padding: 0 var(--pad-2);
+  font: var(--text-label);
+  color: var(--ink-3);
+}
+
+.ex-reduced-motion-keeps-continuity-lane[data-lane='todo'] {
+  grid-column: 1;
+}
+
+.ex-reduced-motion-keeps-continuity-lane[data-lane='done'] {
+  grid-column: 2;
+}
+
+.ex-reduced-motion-keeps-continuity-card {
+  grid-row: 2;
+  display: grid;
+  align-content: start;
+  gap: var(--gap-tight);
+  min-width: 0;
+  padding: var(--pad-2);
+  border-radius: var(--radius-2);
+  background: var(--plane-raised);
+}
+
+.ex-reduced-motion-keeps-continuity-card[data-lane='todo'] {
+  grid-column: 1;
+}
+
+.ex-reduced-motion-keeps-continuity-card[data-lane='done'] {
+  grid-column: 2;
+}
+
+.ex-reduced-motion-keeps-continuity-title {
+  text-box: trim-start cap alphabetic;
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+  overflow-wrap: anywhere;
+}
+
+.ex-reduced-motion-keeps-continuity-meta {
+  text-box: trim-end cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-2);
+}

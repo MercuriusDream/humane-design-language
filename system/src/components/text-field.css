@@ -1,0 +1,164 @@
+/* TextField. A control plane identified by its words (its label, placeholder, or glyph), like a button
+   by its label. No outline in either contrast. Radius and padding come from depth, never from size.
+   Field anatomy: label (.h-field-label), hint 4px under it, control 8px below that, error 8px under the control.
+   Sizes are tiers: standard is --control-height with body text and --inset-control; compact is
+   --control-height-compact with small text and --inset-control-compact. A single-line field is exactly its height. */
+
+.h-text-field {
+  --h-field-height: var(--control-height);
+  --h-field-inset: var(--inset-control);
+  --h-field-font: var(--text-body);
+  display: grid;
+  min-width: 0;
+}
+
+.h-text-field[data-size='compact'] {
+  --h-field-height: var(--control-height-compact);
+  --h-field-inset: var(--inset-control-compact);
+  --h-field-font: var(--text-small);
+}
+
+.h-text-field-hint {
+  margin-top: var(--gap-tight);
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+.h-text-field-control {
+  display: flex;
+  align-items: stretch;
+  min-height: var(--h-field-height);
+  margin-top: var(--gap-within);
+  padding-inline: var(--h-field-inset);
+  font: var(--h-field-font);
+  border-radius: min(var(--radius-1), var(--radius-control-max));
+  background: var(--plane-control);
+  transition: background-color var(--dur-feedback) linear;
+}
+
+.h-text-field-control:hover {
+  background: var(--plane-control-hover);
+}
+
+/* Typing in it: the field returns to its resting plane, so the ring alone marks it. */
+.h-text-field-control:focus-within {
+  background: var(--plane-control);
+}
+
+/* A glyph at the start, such as a search mark, names the field when its words are gone. Sized to the field's text. */
+.h-text-field-glyph {
+  flex: none;
+  align-self: center;
+  width: 1.0625em;
+  height: 1.0625em;
+  margin-inline-end: var(--gap-within);
+  color: var(--ink-2);
+}
+
+.h-text-field-control[data-depth='2'] {
+  border-radius: min(var(--radius-2), var(--radius-control-max));
+}
+
+/* An error is a state that needs the user, so the edge takes the signal color. */
+.h-text-field-control[data-invalid] {
+  box-shadow: inset 0 0 0 var(--stroke) var(--signal-danger);
+}
+
+/* The ring is drawn on the control, so it follows the control's radius instead of the bare input. */
+.h-text-field-control:has(> .h-text-field-input:focus-visible, > .h-text-field-textarea:focus-visible) {
+  outline: var(--focus-width) solid var(--signal-focus);
+  outline-offset: 2px;
+}
+
+.h-text-field-input,
+.h-text-field-textarea {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  /* Half of what the field's height leaves around one line, so a single line makes exactly the field's height
+     and a textarea's first line sits where a single-line field's would. */
+  padding: calc((var(--h-field-height) - 1lh) / 2) 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink-1);
+  font: inherit;
+  appearance: none;
+}
+
+.h-text-field-input:focus-visible,
+.h-text-field-textarea:focus-visible {
+  outline: none;
+}
+
+.h-text-field-textarea {
+  display: block;
+  resize: vertical;
+}
+
+/* type="search" makes the browser draw its own clear control. The field draws one, so hide the native one. */
+.h-text-field-input::-webkit-search-cancel-button,
+.h-text-field-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.h-text-field-input::placeholder,
+.h-text-field-textarea::placeholder {
+  color: var(--ink-3);
+  opacity: 1;
+}
+
+/* Clear is an inner piece, as a segmented option is: the field's height less 3px on each side, square, and 3px from
+   the field's end edge, so its mark sits near the field's inset. It takes the radius of the next depth. */
+.h-text-field-clear {
+  flex: none;
+  align-self: center;
+  display: inline-grid;
+  place-items: center;
+  width: calc(var(--h-field-height) - 6px);
+  height: calc(var(--h-field-height) - 6px);
+  margin: 0;
+  margin-inline-end: calc(3px - var(--h-field-inset));
+  padding: 0;
+  border: 0;
+  border-radius: min(var(--radius-2), var(--radius-control-max));
+  background: transparent;
+  color: var(--ink-2);
+  transition:
+    background-color var(--dur-feedback) linear,
+    color var(--dur-feedback) linear;
+  animation: h-text-field-clear-in var(--dur-fade) linear;
+}
+
+/* It sits on the field, which is on its hover plane while the pointer is over it, so it steps one further. */
+.h-text-field-clear:hover {
+  background: var(--plane-control-active);
+}
+
+@keyframes h-text-field-clear-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.h-text-field-error {
+  margin: 0;
+  font: var(--text-label);
+  color: var(--signal-danger);
+}
+
+.h-text-field-error:not(:empty) {
+  margin-top: var(--gap-within);
+}
+
+/* Without :has(), the field's own ring cannot follow the control. Keep a visible ring on the input instead
+   of leaving focus unstyled. */
+@supports not selector(:has(*)) {
+  .h-text-field-input:focus-visible,
+  .h-text-field-textarea:focus-visible {
+    outline: var(--focus-width) solid var(--signal-focus);
+    outline-offset: 2px;
+  }
+}

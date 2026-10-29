@@ -1,0 +1,70 @@
+/* Two dark versions of one card. Each stage stands for a whole screen in that mode, so it is a root (data-root):
+   depth 0 padding and a 2px corner. The card inside is depth 1, its buttons depth 2.
+   Inverted: the light scheme is forced, then the rendered result is flipped.
+   Built: the dark scheme is set, so every token resolves to its own dark step. */
+
+/* Captions are trimmed to their ink, so the gaps are measured from the letters: a caption sits a within gap
+   above its own stage, and a whole gap between groups below the stage before it. */
+.ex-every-mode-is-built-not-inverted-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: var(--gap-between) var(--gap-within);
+}
+
+.ex-every-mode-is-built-not-inverted-case {
+  display: grid;
+  gap: var(--gap-within);
+  margin: 0;
+  min-width: 0;
+}
+
+.ex-every-mode-is-built-not-inverted-caption {
+  text-box: trim-both cap alphabetic;
+  font: var(--text-label);
+  color: var(--ink-2);
+}
+
+.ex-every-mode-is-built-not-inverted-stage {
+  padding: var(--pad-0);
+  background: var(--plane-base);
+  color: var(--ink-1);
+  min-width: 0;
+}
+
+/* The light card, flipped. Hue rotation keeps the card's hue family after inversion. */
+.ex-every-mode-is-built-not-inverted-stage[data-mode='inverted'] {
+  color-scheme: light;
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* The dark card, built from the dark steps of the same tokens. */
+.ex-every-mode-is-built-not-inverted-stage[data-mode='built'] {
+  color-scheme: dark;
+}
+
+.ex-every-mode-is-built-not-inverted-card {
+  display: grid;
+  gap: var(--gap-tight);
+  background: var(--plane-raised);
+  color: var(--ink-1);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ex-every-mode-is-built-not-inverted-title {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-every-mode-is-built-not-inverted-body {
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+.ex-every-mode-is-built-not-inverted-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-within);
+  margin-top: var(--gap-tight);
+}

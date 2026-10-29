@@ -1,0 +1,21 @@
+/* Outgoing letters and the state of browser storage. Its buttons are compact, the tier of actions on an object,
+   on every letter and for storage alike. */
+.outbox-region {
+  block-size: 16rem;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  overscroll-behavior: contain;
+  padding: var(--pad-0);
+  margin-top: var(--space-7); /* a region of its own: twice the gap between the groups inside a letter */
+  background: var(--plane-sunken);
+  display: grid;
+  align-content: start;
+  gap: var(--gap-within);
+}
+/* The heading meets the region's top edge, so it trims to its cap height and the inset is measured to the ink. */
+.outbox-heading { font: var(--text-heading); text-box: trim-start cap alphabetic; }
+.outbox { display: grid; gap: var(--gap-within); list-style: none; margin: 0; padding: 0; min-width: 0; }
+.outbox-item { min-width: 0; }
+.outbox-to { font: var(--text-small); color: var(--ink-2); }
+.outbox-subject { font: var(--text-body); overflow-wrap: anywhere; }
+.outbox-actions { display: flex; flex-wrap: wrap; gap: var(--gap-within); margin-top: var(--gap-within); }

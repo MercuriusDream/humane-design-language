@@ -1,0 +1,200 @@
+/* Letters. A wide centered column: the header, then the list and the open letter side by side. */
+
+/* Docked, the page starts level with the sidebar's content, so the header lines up with its top edge. */
+.h-app[data-docked]:not([data-column='full']) .h-page {
+  padding-top: var(--space-5);
+}
+
+/* Header to content: --space-6. The mailbox is a container, so the header folds by the room it has in rem,
+   which follows the user's text size. */
+.mailbox {
+  container-type: inline-size;
+  display: grid;
+  gap: var(--space-6);
+}
+
+/* One row of the control height: title, the arrivals slot, then search and Write. The controls set the row: their
+   boxes start on the header's top edge, and the title sits on their labels' baseline, so the heading and the
+   buttons read as one line. The title trims to its cap height, so its larger line never pushes the controls down. */
+.mailbox-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: 'title arrivals tools';
+  align-items: baseline;
+  column-gap: var(--gap-between);
+  row-gap: var(--space-4); /* where the header folds, search sits under the title row, as in the list's section */
+  min-height: var(--control-height);
+}
+
+.mailbox-title {
+  grid-area: title;
+  font: var(--text-title);
+  letter-spacing: var(--tracking-title);
+  text-box: trim-both cap alphabetic;
+}
+
+/* The slot keeps its height when empty, so an arrival never moves the row. It is centered rather than on the
+   baseline: an empty slot has no baseline of its own, and its bottom edge would stand in for one and push the row
+   down. Centered in the row of the control height, the button's label meets the others' baseline anyway. */
+.mailbox-arrivals {
+  grid-area: arrivals;
+  align-self: center;
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: var(--control-height);
+}
+
+.mailbox-tools {
+  grid-area: tools;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--gap-within);
+  min-width: 0;
+}
+
+.mailbox-write {
+  flex: none;
+}
+
+/* Too little room for one row, as on a phone (a 390px screen has about 22rem) or with large text:
+   title, arrivals, and Write share the first row; search takes the second. */
+@container (max-width: 48rem) {
+  .mailbox-header {
+    grid-template-areas:
+      'title arrivals write'
+      'search search search';
+    column-gap: var(--gap-within);
+  }
+
+  .mailbox-tools {
+    display: contents;
+  }
+
+  .mailbox-tools > .search-field {
+    grid-area: search;
+    width: 100%;
+  }
+
+  .mailbox-write {
+    grid-area: write;
+  }
+}
+
+/* Very large text on a phone: the title takes a row of its own, and the arrivals share the next with Write.
+   The empty slot still holds its place, so an arrival moves nothing, but it never leaves a blank row. */
+@container (max-width: 20rem) {
+  .mailbox-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'title title'
+      'arrivals write'
+      'search search';
+  }
+
+  .mailbox-write {
+    justify-self: end;
+  }
+}
+
+/* Sections. Wide enough for both, the list and the letter fill the window beside the sidebar, each scrolling on
+   its own and set apart by plane alone: the sidebar sunken, the list on the page's plane, the letter raised.
+   The list's header stays at the top of its section; the letters scroll under it. */
+.mailbox[data-layout='sections'] {
+  height: 100%;
+  grid-template-columns: minmax(20rem, 26rem) minmax(0, 1fr);
+  gap: 0;
+}
+
+.mailbox-list-pane {
+  container-type: inline-size;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  background: var(--plane-base);
+}
+
+/* The header's text meets the same edge as the letters' text below it: the rows' planes sit --space-2 in from
+   the section's edge, and their text the control inset further. The first line clears the closed sidebar. */
+.mailbox-list-pane > .mailbox-header {
+  padding: max(var(--space-5), calc(var(--shell-clear) + var(--space-4))) calc(var(--space-2) + var(--inset-control))
+    0;
+}
+
+/* Header to letters: --space-6, as in the single column, so the header is one group and the letters another.
+   The letters' text then sits 48px under search, clearly more than the 34px between two letters. The bottom
+   leaves the last letter's text --space-5 above the window's edge, as the header's text is below its top. */
+.mailbox-list-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-6) var(--space-2) var(--space-2);
+}
+
+/* In a section the header is two rows: the title, the arrivals slot, and Write, then search under them.
+   The slot holds its width when empty, so an arrival moves nothing. */
+.mailbox[data-layout='sections'] .mailbox-header {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'title arrivals write'
+    'search search search';
+  column-gap: var(--gap-within);
+}
+
+.mailbox[data-layout='sections'] .mailbox-tools {
+  display: contents;
+}
+
+.mailbox[data-layout='sections'] .mailbox-tools > .search-field {
+  grid-area: search;
+  width: 100%;
+}
+
+.mailbox[data-layout='sections'] .mailbox-write {
+  grid-area: write;
+}
+
+
+.mailbox-reader-pane {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-width: 0;
+  min-height: 0;
+  background: var(--plane-raised);
+}
+
+.mailbox-reader-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Read by assistive technology only. */
+.mailbox-announce {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The last words in the sidebar meet its bottom edge, so they trim below the baseline. */
+.sidebar-account {
+  font: var(--text-small); /* the sidebar's content edge lines it up with the nav text */
+  color: var(--ink-3);
+  text-box: trim-end cap alphabetic;
+}
+
+/* The address breaks after its @ (a <wbr> in App.tsx), and inside a word only when one half still does not fit. */
+.sidebar-account-address {
+  display: block;
+  color: var(--ink-2);
+  overflow-wrap: break-word;
+}

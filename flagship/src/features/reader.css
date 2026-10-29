@@ -1,0 +1,214 @@
+/* Reader. A frame holds either the open letter or the empty plane. Both fill the same reserved height,
+   so choosing a letter does not move the layout. */
+
+.reader {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-block-size: 28rem;
+}
+
+.reader > .h-surface {
+  flex: 1 1 auto;
+}
+
+/* Empty: quiet words in tertiary ink, centered in the reserved frame. At its top-left they would sit in a
+   corner of a large empty space; centered, the frame reads as the place the letter will open. */
+.reader-empty {
+  display: grid;
+  place-items: center;
+  min-block-size: 28rem;
+  text-align: center;
+}
+
+.reader-empty-text {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--ink-3);
+}
+
+/* The open letter: its head, its body, and Reply. Each gap is measured to the ink, since every line at a group's edge
+   trims itself, and each level doubles the one inside it: about 12px between the sender's lines, --gap-between
+   (24px) between the parts of the head and between paragraphs, --space-7 (48px) between the head, the body, and
+   Reply. That is the list section's gap from its header to the letters, so both sections keep one rhythm. */
+.reader-letter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  overflow-wrap: anywhere;
+}
+
+/* On a narrow screen the way back comes first, above the subject, with the actions on this letter at the row's end.
+   Every button here is a standard control plane, so the row is one control height and the buttons' boxes meet the
+   letter's top and side edges, as the text meets its sides. */
+.reader-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+/* The way back (on a narrow screen), the subject, who sent it, and the notice. */
+.reader-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-between);
+}
+
+/* The subject, with the actions on this letter at its end. The buttons set the row: their boxes start on the
+   letter's top edge, and the subject sits on their labels' baseline, as the mailbox title sits on Write's, so the
+   two headings are level across the sections. The subject trims to its cap height, so its line never pushes the
+   buttons down. With little room, the actions wrap below it, still at the end. */
+.reader-subject-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+.reader-subject {
+  flex: 1 1 10rem;
+  min-width: 0;
+  margin: 0;
+  font: var(--text-heading);
+  letter-spacing: var(--tracking-heading);
+  color: var(--ink-1);
+  text-box: trim-both cap alphabetic;
+}
+
+.reader-tools {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--gap-within);
+  margin-inline-start: auto;
+}
+
+/* Who sent it and when, then where it came from and who it is for: one group, its lines at their own leading.
+   Its first and last lines trim, so the gaps around it are measured to the ink. */
+.reader-sender {
+  display: flex;
+  flex-direction: column;
+}
+
+.reader-sender > :first-child > * {
+  text-box: trim-start cap alphabetic;
+}
+
+.reader-sender > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+.reader-sender-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: var(--gap-within);
+  margin: 0;
+}
+
+.reader-name {
+  font: var(--text-body);
+  font-weight: 600; /* body role, sender weight */
+  color: var(--ink-1);
+}
+
+.reader-when {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.reader-address,
+.reader-verified,
+.reader-to {
+  margin: 0;
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+/* The warning gets a plane of its own. In the single column the letter is on the page's plane, so the notice keeps
+   its own raised plane, a step up. In a section the letter is raised, so the notice takes the base plane, a step down. */
+.mailbox-reader-pane .reader-head .h-notice {
+  background: var(--plane-base);
+}
+
+/* The body: the reading column, never wider than 64 characters. Paragraphs sit --space-2 apart at their own
+   leading, about 23px from a baseline to the next cap height: a step above the 15px between lines, and half the
+   gap to the head and to Reply. */
+.reader-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-inline-size: 64ch;
+}
+
+.reader-body > :first-child {
+  text-box: trim-start cap alphabetic;
+}
+
+.reader-body > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+.reader-body > :only-child {
+  text-box: trim-both cap alphabetic;
+}
+
+.reader-paragraph {
+  white-space: pre-wrap;
+  margin: 0;
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+/* Reply stands alone at the end of the letter and follows its last paragraph. */
+.reader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap-within);
+}
+
+/* The letter and the empty frame draw no plane or corner of their own. In the single column the letter is the
+   page, as the list was, so its text and buttons keep the page's edges, where the mailbox title and the letters'
+   text were. In a section, the section is the plane. */
+.reader > .h-surface[data-plane][data-padded] {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* In its own section, the letter is the section, which is already raised, and its text is a centered column
+   inside it. Its inset is the list section's, --space-5 to the ink on every side, so the subject row starts on
+   the same top edge as the list's header and the two headings are level. */
+.mailbox-reader-pane .reader {
+  min-block-size: 100%;
+}
+
+.mailbox-reader-pane .reader > .reader-letter.h-surface[data-plane][data-padded] {
+  width: 100%;
+  max-inline-size: 48rem;
+  margin-inline: auto;
+  padding: var(--space-5);
+}
+
+.mailbox-reader-pane .reader-empty {
+  min-block-size: 100%;
+}
+
+/* Outgoing letters, when there are any, take the foot of the section on the page's plane, flush with its edges.
+   Their ink keeps the letter's edges: --space-5 in, and inside the same centered column on a wide window. */
+.mailbox-reader-pane .outbox-region {
+  block-size: auto;
+  max-block-size: 16rem;
+  margin: 0;
+  padding: var(--space-5) max(var(--space-5), calc((100% - 48rem) / 2 + var(--space-5)));
+  border-radius: 0;
+  background: var(--plane-base);
+}

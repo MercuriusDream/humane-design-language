@@ -1,0 +1,86 @@
+/* Nothing moves idle. The only motion is the fill of a part the user asked for, and it stays a morph of the same surface. */
+
+.ex-nothing-moves-idle-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--gap-within);
+  align-items: stretch;
+}
+
+@media (max-width: 560px) {
+  .ex-nothing-moves-idle-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* The fill grows by a change sized to one part. Travel is removed under reduced motion; the change still shows. */
+.ex-nothing-moves-idle-box {
+  min-width: 0;
+}
+
+/* Both cards in the row share one height. The surface fills its column so its edge matches the order list. */
+.ex-nothing-moves-idle-box .h-progress-surface {
+  height: 100%;
+}
+
+.ex-nothing-moves-idle-box .h-progress-surface-fill {
+  transition: transform calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-nothing-moves-idle-card {
+  display: grid;
+  gap: var(--gap-within);
+  justify-items: start;
+}
+
+/* The card is a grid, so its first line trims itself at the surface's padded edge. */
+.ex-nothing-moves-idle-card > :first-child {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-nothing-moves-idle-title {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-nothing-moves-idle-count {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-nothing-moves-idle-order {
+  display: grid;
+  gap: var(--gap-tight);
+  align-content: space-between;
+  margin: 0;
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+  font: var(--text-small);
+}
+
+.ex-nothing-moves-idle-order > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+/* The first and last rows trim at the padded edges. Both items of a row trim, so they stay level. */
+.ex-nothing-moves-idle-order > div:first-child > * {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-nothing-moves-idle-order > div:last-child > * {
+  text-box: trim-end cap alphabetic;
+}
+
+.ex-nothing-moves-idle-order dt {
+  color: var(--ink-2);
+}
+
+.ex-nothing-moves-idle-order dd {
+  margin: 0;
+  color: var(--ink-1);
+}

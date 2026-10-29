@@ -1,0 +1,53 @@
+/* RadioGroup documentation. Classes use the doc-radio-group- prefix. */
+
+.doc-radio-group-specimens {
+  display: grid;
+  gap: var(--gap-between);
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  align-items: start;
+}
+
+/* The groups sit side by side once two 220px columns and the gap fit, and stack below that. Side by side, every
+   group meets the frame's top and bottom inset; stacked, only the first meets the top and the last the bottom, and
+   the sides that face each other keep their line boxes. */
+.doc-radio-group-specimens {
+  container-type: inline-size;
+}
+
+/* At an edge, the legend drops the leading above its line, the last row gives back its padding below, and its last
+   line drops its leading. */
+.doc-radio-group-specimens > :first-child .h-radio-group-legend {
+  text-box: trim-start cap alphabetic;
+}
+
+.doc-radio-group-specimens > :last-child .h-radio-row:last-child {
+  margin-block-end: calc(var(--h-choice-row-pad) * -1);
+}
+
+.doc-radio-group-specimens > :last-child .h-radio-row:last-child .h-radio-text > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+/* A row without a hint is its tier's height, with its mark centered on the first line. Its lowest ink is the mark,
+   so the row gives back everything below the mark. The mark and the height are the group's own. */
+.doc-radio-group-specimens > :last-child .h-radio-row:last-child:not(:has(.h-radio-hint)) {
+  margin-block-end: calc(var(--h-choice-mark-pad) * -1);
+}
+
+@container (min-width: 464px) {
+  .doc-radio-group-specimens .h-radio-group-legend {
+    text-box: trim-start cap alphabetic;
+  }
+
+  .doc-radio-group-specimens .h-radio-row:last-child {
+    margin-block-end: calc(var(--h-choice-row-pad) * -1);
+  }
+
+  .doc-radio-group-specimens .h-radio-row:last-child .h-radio-text > :last-child {
+    text-box: trim-end cap alphabetic;
+  }
+
+  .doc-radio-group-specimens .h-radio-row:last-child:not(:has(.h-radio-hint)) {
+    margin-block-end: calc(var(--h-choice-mark-pad) * -1);
+  }
+}

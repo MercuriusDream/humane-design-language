@@ -1,0 +1,23 @@
+/* The form is a depth 1 plane inside the example body: radius and padding come from depth 1. */
+
+.ex-explain-at-the-point-of-action-or-not-at-all-form {
+  display: grid;
+  gap: var(--gap-between);
+  width: 100%;
+  margin: 0;
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+.ex-explain-at-the-point-of-action-or-not-at-all-title {
+  margin: 0;
+  text-box: trim-start cap alphabetic; /* the form's first line, at its padded edge */
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-explain-at-the-point-of-action-or-not-at-all-submit {
+  justify-self: start;
+}

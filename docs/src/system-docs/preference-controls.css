@@ -1,0 +1,13 @@
+/* PreferenceControls docs. The props reference sits below the example, with the rows separated by lines. */
+
+/* The group lives in a sidebar, so the specimen keeps about a sidebar's width instead of stretching its tracks
+   across the frame. */
+.doc-preference-controls {
+  min-width: 0;
+  max-width: 360px;
+}
+
+.doc-preference-controls-props {
+  display: grid;
+  gap: var(--space-2);
+}

@@ -1,0 +1,65 @@
+/* Payment card. A depth 1 surface inside the example frame: --radius-1 and --pad-1. Buttons inside it are depth 2. */
+
+.ex-say-who-is-behind-it-card {
+  display: grid;
+  gap: var(--gap-between);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+/* Group one: what is being paid. */
+.ex-say-who-is-behind-it-summary {
+  display: grid;
+  gap: var(--gap-within);
+}
+
+/* Group two: who is asking, and the decision it qualifies. The gap within it is smaller than the gap between groups. */
+.ex-say-who-is-behind-it-decision {
+  display: grid;
+  gap: var(--gap-within);
+}
+
+.ex-say-who-is-behind-it-title {
+  margin: 0;
+  text-box: trim-start cap alphabetic; /* the card's first line, at its padded edge */
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-say-who-is-behind-it-rows {
+  display: grid;
+  gap: var(--gap-tight);
+  margin: 0;
+  font: var(--text-body);
+}
+
+.ex-say-who-is-behind-it-rows > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+.ex-say-who-is-behind-it-rows dt {
+  color: var(--ink-2);
+}
+
+.ex-say-who-is-behind-it-rows dd {
+  margin: 0;
+  color: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Equal weight: both buttons share one width and one variant. Each is at least as wide as its label, and when the
+   two no longer fit side by side, both take the full width on their own lines. */
+.ex-say-who-is-behind-it-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-within);
+}
+
+.ex-say-who-is-behind-it-actions > .h-button {
+  flex: 1 1 0;
+  min-width: max-content;
+}

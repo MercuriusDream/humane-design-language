@@ -1,0 +1,117 @@
+/* Switch. The one pill in the system: a track rounded at half its height, holding a circular thumb.
+   Its shape is its function, a thumb that slides between two ends, so it is the stated exception to "no pills".
+   Every other control takes its depth's radius.
+   Sizes: the track is the control, so it is exactly the control height of its size, like a button or a segmented
+   track (44 standard, 36 compact). Its width is five thirds of that; the thumb is the height less the 3px padding
+   on each side, the same as a segmented option; it travels two thirds of the height. The row is that height too.
+   The row is --control-height with body text; compact is --control-height-compact with small text. */
+
+.h-switch {
+  --h-switch-track: var(--control-height);
+  --h-switch-dur: 70ms; /* morphDuration(29), the standard travel */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-within);
+  width: 100%;
+  min-height: var(--control-height);
+  text-align: start;
+}
+
+.h-switch[data-size='compact'] {
+  --h-switch-track: var(--control-height-compact);
+  --h-switch-dur: 66ms; /* morphDuration(24), the compact travel */
+  min-height: var(--control-height-compact);
+}
+
+/* The ring fits the control it marks: the track, not the whole row. */
+.h-switch:focus-visible {
+  outline: none;
+}
+
+.h-switch:focus-visible .h-switch-track {
+  outline: var(--focus-width) solid var(--signal-focus);
+  outline-offset: 2px;
+}
+
+.h-switch-label {
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.h-switch[data-size='compact'] .h-switch-label {
+  font: var(--text-small);
+}
+
+.h-switch-track {
+  position: relative;
+  flex: none;
+  width: calc(var(--h-switch-track) * 5 / 3);
+  height: var(--h-switch-track);
+  padding: 3px;
+  border-radius: calc(var(--h-switch-track) / 2); /* the one pill: see the header */
+  background: var(--plane-control);
+  transition: background-color var(--dur-feedback) linear;
+}
+
+/* The thumb is a mark, so it is a circle. Off, it is the boundary ink at the start; on, the track takes full ink
+   and the thumb the inverse, at the end. */
+.h-switch-thumb {
+  display: block;
+  width: calc(var(--h-switch-track) - 6px);
+  height: calc(var(--h-switch-track) - 6px);
+  border-radius: 50%; /* a mark */
+  background: var(--ink-boundary);
+  transition:
+    transform calc(var(--h-switch-dur) * var(--travel)) var(--ease-morph),
+    background-color var(--dur-feedback) linear;
+}
+
+/* Hover and press step the track as they step a button: off, the hover then the active plane;
+   on, the ink fill lightens under the pointer and returns to full ink while pressed, as a strong button's does. */
+.h-switch:hover .h-switch-track {
+  background: var(--plane-control-hover);
+}
+
+.h-switch:active .h-switch-track {
+  background: var(--plane-control-active);
+}
+
+.h-switch[aria-checked='true'] .h-switch-track {
+  background: var(--ink-1);
+}
+
+.h-switch[aria-checked='true']:hover .h-switch-track {
+  background: var(--ink-2);
+}
+
+.h-switch[aria-checked='true']:active .h-switch-track {
+  background: var(--ink-1);
+}
+
+.h-switch[aria-checked='true'] .h-switch-thumb {
+  background: var(--ink-inverse);
+  transform: translateX(calc(var(--h-switch-track) * 2 / 3));
+}
+
+/* Forced colors: the track keeps a system border and the thumb stays a visible mark in both positions. */
+@media (forced-colors: active) {
+  .h-switch-track {
+    border: var(--stroke) solid CanvasText;
+    background: Canvas;
+    box-shadow: none;
+  }
+
+  .h-switch-thumb {
+    background: CanvasText;
+  }
+
+  .h-switch[aria-checked='true'] .h-switch-track {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  .h-switch[aria-checked='true'] .h-switch-thumb {
+    background: HighlightText;
+  }
+}

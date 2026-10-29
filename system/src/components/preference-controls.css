@@ -1,0 +1,19 @@
+/* Preference controls. Every control is compact, so option text is small and never louder than its group label.
+   --gap-between between groups; each group's label sits --gap-within above its control. The switches are one group
+   of settings, so they sit --gap-within apart, as items within a group do. */
+
+.h-preferences {
+  display: grid;
+  gap: var(--gap-between);
+}
+
+.h-preferences-switches {
+  display: grid;
+  gap: var(--gap-within);
+}
+
+/* The group opens on a label and ends on a compact switch row, whose track is the row's full height. The label drops
+   the leading above its line, so both ends meet the inset of whatever holds them. */
+.h-preferences > :first-child > .h-field-label:first-child {
+  text-box: trim-start cap alphabetic;
+}

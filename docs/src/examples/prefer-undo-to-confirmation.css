@@ -1,0 +1,17 @@
+/* A row's button keeps its width, so its label never breaks. When the name would fall below a readable measure
+   beside it, as at large text sizes, the button drops under the name instead. */
+.ex-prefer-undo-to-confirmation-list .undo-row {
+  flex-wrap: wrap;
+  row-gap: var(--gap-within);
+}
+
+.ex-prefer-undo-to-confirmation-list .undo-row > .h-button {
+  flex: none;
+}
+
+/* The name sits beside the button, so it trims both lines: when it wraps past the button's height, the row's inset
+   is still measured to its ink. */
+.ex-prefer-undo-to-confirmation-list .undo-name {
+  flex: 1 1 12ch;
+  text-box: trim-both cap alphabetic;
+}

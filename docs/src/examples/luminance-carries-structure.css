@@ -1,0 +1,92 @@
+/* The specimen's colors are raw on purpose: the hue row needs one lightness with four hues,
+   and the lightness row needs four lightness steps with a neutral hue. Each scheme keeps its
+   own values so every tile still meets the text floor against ink-1. */
+
+.ex-luminance-carries-structure-stage {
+  display: grid;
+  gap: var(--gap-between);
+  transition: filter var(--dur-fade) linear;
+}
+
+.ex-luminance-carries-structure-stage[data-gray='true'] {
+  filter: grayscale(1);
+}
+
+.ex-luminance-carries-structure-group {
+  min-width: 0;
+}
+
+.ex-luminance-carries-structure-label {
+  margin: 0 0 var(--gap-within);
+  font: var(--text-label);
+  color: var(--ink-2);
+}
+
+/* The first label is the specimen's first line, so it trims to its cap height and meets the hint's. */
+.ex-luminance-carries-structure-group:first-child .ex-luminance-carries-structure-label {
+  text-box: trim-start cap alphabetic;
+}
+
+/* Depth 1 strip. Tiles touch with no gap and no outline, so only their color separates them.
+   Four across where each tile has room for its words, two by two or one per line where it does not. The minimum
+   is in rem, so larger text folds the strip sooner instead of breaking the words. */
+.ex-luminance-carries-structure-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  border-radius: var(--radius-1);
+}
+
+/* The tiles are the strip's own planes, cut apart only by color, so they pad with the strip's depth 1 step.
+   The title sits at the top and the count at the bottom, so the swatch holds its text at one inset on every side. */
+.ex-luminance-carries-structure-tile {
+  min-width: 0;
+  display: grid;
+  align-content: space-between;
+  gap: var(--gap-within);
+  min-height: 96px;
+  padding: var(--pad-1);
+  color: var(--ink-1);
+}
+
+/* Hue row: one lightness per scheme, the hue set by --hue. */
+.ex-luminance-carries-structure-tile[data-kind='hue'] {
+  background: light-dark(oklch(0.84 0.09 var(--hue)), oklch(0.44 0.09 var(--hue)));
+}
+
+/* Lightness row: one hue (neutral), four lightness steps. */
+.ex-luminance-carries-structure-tile[data-kind='lightness'][data-step='0'] {
+  background: light-dark(oklch(0.98 0.004 250), oklch(0.26 0.006 250));
+}
+
+.ex-luminance-carries-structure-tile[data-kind='lightness'][data-step='1'] {
+  background: light-dark(oklch(0.9 0.004 250), oklch(0.34 0.006 250));
+}
+
+.ex-luminance-carries-structure-tile[data-kind='lightness'][data-step='2'] {
+  background: light-dark(oklch(0.82 0.004 250), oklch(0.42 0.006 250));
+}
+
+.ex-luminance-carries-structure-tile[data-kind='lightness'][data-step='3'] {
+  background: light-dark(oklch(0.74 0.004 250), oklch(0.5 0.006 250));
+}
+
+/* The tile is a grid, so its first and last lines trim themselves: the padding is the inset to the ink. */
+.ex-luminance-carries-structure-title {
+  text-box: trim-start cap alphabetic;
+  font: var(--text-label);
+}
+
+.ex-luminance-carries-structure-count {
+  text-box: trim-end cap alphabetic;
+  font: var(--text-small);
+}
+
+@media (max-width: 480px) {
+  .ex-luminance-carries-structure-tile {
+    min-height: 84px;
+  }
+}

@@ -1,0 +1,46 @@
+/* A section label is set with the same face, case, and spacing as its content.
+   Weight, lightness, and the gap below it separate it, not capitals or tracking. */
+
+.ex-labels-are-set-like-text-group {
+  display: grid;
+  gap: var(--gap-tight);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+.ex-labels-are-set-like-text-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+/* The head is the group's first line; both of its items trim, so they stay level on their baseline. */
+.ex-labels-are-set-like-text-head > * {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-labels-are-set-like-text-label {
+  margin: 0;
+  font: var(--text-label);
+  color: var(--ink-1);
+}
+
+.ex-labels-are-set-like-text-count {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The last row is a 44 px checkbox row with its 20 px box centered on its line, leaving half the difference below
+   the box. The list gives that space back, so the inset below the last box is the group's padding, as at the sides.
+   The row keeps its full height as a press target. */
+.ex-labels-are-set-like-text-list {
+  display: grid;
+  gap: var(--gap-tight);
+  margin: 0 0 calc((var(--choice-mark) - var(--control-height)) / 2);
+  font: var(--text-body);
+  padding: 0;
+  list-style: none;
+}

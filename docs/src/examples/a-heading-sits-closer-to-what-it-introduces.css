@@ -1,0 +1,51 @@
+/* Heading gaps. Both modes spend the same total space. Closer sets --space-2 below each heading and a subsection's
+   --space-8 above the second; Equal spreads that same total evenly over the three gaps. So the frame keeps one
+   height and only the headings move: each moves onto its text, and the last line stays where it is. */
+
+.ex-a-heading-sits-closer-to-what-it-introduces-page {
+  --ex-heading-gap-even: calc((var(--space-8) + 2 * var(--space-2)) / 3);
+  display: grid;
+  justify-items: start;
+}
+
+.ex-a-heading-sits-closer-to-what-it-introduces-section {
+  margin: 0;
+}
+
+.ex-a-heading-sits-closer-to-what-it-introduces-section + .ex-a-heading-sits-closer-to-what-it-introduces-section {
+  margin-top: var(--space-8);
+  transition: margin-top calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-a-heading-sits-closer-to-what-it-introduces-heading {
+  margin: 0;
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+  margin-bottom: var(--space-2);
+  transition: margin-bottom calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-a-heading-sits-closer-to-what-it-introduces-page[data-mode='equal'] .ex-a-heading-sits-closer-to-what-it-introduces-heading {
+  margin-bottom: var(--ex-heading-gap-even);
+}
+
+.ex-a-heading-sits-closer-to-what-it-introduces-page[data-mode='equal'] .ex-a-heading-sits-closer-to-what-it-introduces-section + .ex-a-heading-sits-closer-to-what-it-introduces-section {
+  margin-top: var(--ex-heading-gap-even);
+}
+
+.ex-a-heading-sits-closer-to-what-it-introduces-body {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* The page's first and last lines meet the frame's padding, so they trim their outer side. The gaps between
+   heading and text are not trimmed, so the two modes compare the same leading. */
+.ex-a-heading-sits-closer-to-what-it-introduces-section:first-child .ex-a-heading-sits-closer-to-what-it-introduces-heading {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-a-heading-sits-closer-to-what-it-introduces-section:last-child .ex-a-heading-sits-closer-to-what-it-introduces-body {
+  text-box: trim-end cap alphabetic;
+}

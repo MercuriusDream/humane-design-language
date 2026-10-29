@@ -1,0 +1,93 @@
+/* Duration grows with scale. Each box grows by its own number of pixels, and its transition
+   uses the duration that morphDuration gives that change. Travel is removed under reduced motion,
+   and the change stays visible as a crossfade of the box's plane. */
+
+.ex-duration-grows-with-scale-and-the-difference-shows-stack {
+  display: grid;
+  justify-items: start;
+  gap: var(--gap-between);
+}
+
+/* In rem, so the chart grows with the user's text size as one picture, labels included. Its cap is the controls
+   column's widest, 15rem, so beside the specimen it ends on the column's edge like the hint above it. */
+.ex-duration-grows-with-scale-and-the-difference-shows-curve {
+  width: 100%;
+  max-width: 15rem;
+  height: auto;
+  overflow: visible;
+}
+
+.ex-duration-grows-with-scale-and-the-difference-shows-curve-area {
+  fill: var(--plane-control);
+  stroke: none;
+}
+
+.ex-duration-grows-with-scale-and-the-difference-shows-curve-dot {
+  fill: var(--ink-1);
+}
+
+/* Sized in the chart's own units: the chart scales with the text size, so the labels already do. */
+.ex-duration-grows-with-scale-and-the-difference-shows-curve-label {
+  font-family: var(--font);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  fill: var(--ink-3);
+}
+
+.ex-duration-grows-with-scale-and-the-difference-shows-rows {
+  display: grid;
+  gap: var(--gap-between);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ex-duration-grows-with-scale-and-the-difference-shows-readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap-tight) var(--gap-between);
+  margin: 0 0 var(--gap-tight);
+  font: var(--text-small);
+}
+
+/* The first readout is the body's first line, at the frame's padded edge, so both its items trim level with the hint. */
+.ex-duration-grows-with-scale-and-the-difference-shows-row:first-child .ex-duration-grows-with-scale-and-the-difference-shows-readout > * {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-duration-grows-with-scale-and-the-difference-shows-name {
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.ex-duration-grows-with-scale-and-the-difference-shows-value {
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The track is a clip, so a change never widens the page. The largest change is sized to fit inside it. */
+.ex-duration-grows-with-scale-and-the-difference-shows-track {
+  overflow: hidden;
+}
+
+.ex-duration-grows-with-scale-and-the-difference-shows-box {
+  width: var(--base);
+  height: var(--base);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+  transition:
+    width calc(var(--dur) * var(--travel)) var(--ease-morph),
+    background-color var(--dur-fade) linear;
+}
+
+.ex-duration-grows-with-scale-and-the-difference-shows-box[data-grown='true'] {
+  width: calc(var(--base) + var(--grow));
+  background: var(--plane-control-active);
+}
+
+/* Reduced motion: the size changes in place, and the plane carries the change as a crossfade. */
+.ex-duration-grows-with-scale-and-the-difference-shows-track[data-reduced] .ex-duration-grows-with-scale-and-the-difference-shows-box {
+  transition: background-color var(--dur-fade) linear;
+}

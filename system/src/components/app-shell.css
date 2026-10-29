@@ -1,0 +1,65 @@
+/* App shell. Docked, the sidebar is a section of the window beside the page; closed or narrow, it floats.
+   The page keeps --space-5 from the sidebar's edge and from the screen's edge, so the column is centered
+   in the space between them.
+   --shell-clear is the room the floating closed sidebar takes at the top of the window. Content that fills the
+   window (column="full") keeps its first line below it; docked, nothing floats, so it is zero. */
+
+.h-app {
+  --shell-clear: calc(var(--sidebar-inset) + var(--sidebar-closed-height));
+}
+
+.h-app[data-docked] {
+  --shell-clear: 0px;
+}
+
+.h-page {
+  padding: var(--space-9) var(--space-5) calc(var(--space-9) + var(--space-8));
+  transition:
+    padding-left calc(var(--dur) * var(--travel)) var(--ease-morph),
+    padding-right calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.h-app[data-docked][data-side='left'] .h-page {
+  padding-left: calc(var(--sidebar-width) + var(--space-5));
+}
+
+.h-app[data-docked][data-side='right'] .h-page {
+  padding-right: calc(var(--sidebar-width) + var(--space-5));
+}
+
+.h-column {
+  max-width: var(--column-width);
+  margin-inline: auto;
+}
+
+.h-column[data-column='wide'] {
+  max-width: var(--column-width-wide);
+}
+
+/* Full: the content is itself a set of sections that fill the window beside the sidebar, edge to edge.
+   They scroll on their own, so the page does not. */
+.h-app[data-column='full'] .h-page {
+  height: 100dvh;
+  padding: 0;
+}
+
+.h-app[data-column='full'][data-docked][data-side='left'] .h-page {
+  padding-left: var(--sidebar-width);
+}
+
+.h-app[data-column='full'][data-docked][data-side='right'] .h-page {
+  padding-right: var(--sidebar-width);
+}
+
+.h-column[data-column='full'] {
+  max-width: none;
+  height: 100%;
+}
+
+/* Narrow: the content clears the closed sidebar by --space-5, however large the text. */
+@media (max-width: 62.4375em) {
+  .h-page {
+    padding: calc(var(--sidebar-inset) + var(--sidebar-closed-height) + var(--space-5)) var(--space-4)
+      calc(var(--space-9) + var(--space-5));
+  }
+}

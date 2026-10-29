@@ -1,0 +1,23 @@
+/* Saturation belongs to state. The form is a depth 1 plane. Fields keep their neutral inset boundary until they are invalid. */
+
+.ex-saturation-belongs-to-state-form {
+  display: grid;
+  gap: var(--gap-between);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+/* The first field's label is the form's first line, so it trims to its cap height. */
+.ex-saturation-belongs-to-state-form > :first-child .h-field-label {
+  text-box: trim-start cap alphabetic;
+}
+
+/* The one signal in the form. The boundary changes color, the field does not change plane or size. */
+.ex-saturation-belongs-to-state-field .h-text-field-control {
+  transition: box-shadow var(--dur-feedback) linear;
+}
+
+.ex-saturation-belongs-to-state-field[data-invalid] .h-text-field-control {
+  box-shadow: inset 0 0 0 var(--stroke) var(--signal-danger);
+}

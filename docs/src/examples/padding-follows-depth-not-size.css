@@ -1,0 +1,46 @@
+/* Padding follows depth, not size. Two depth 1 siblings of different widths. Surface gives each
+   its depth 1 padding step, so the width of a card never changes its inset. */
+
+/* Each card keeps its own height, so the small card ends below its text instead of stretching to the large one. */
+.ex-padding-follows-depth-not-size-stage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--gap-between);
+}
+
+/* Three parts to two on one row. When they wrap, the smaller card keeps a smaller width, so the sizes still differ. */
+.ex-padding-follows-depth-not-size-card:first-child {
+  flex: 3 1 16rem;
+}
+
+.ex-padding-follows-depth-not-size-card:last-child {
+  flex: 2 1 10rem;
+  max-width: 70%;
+}
+
+/* Padding changes morph in place, over a duration set in the TSX; --travel removes it under reduced motion. */
+.ex-padding-follows-depth-not-size-card {
+  box-sizing: border-box;
+  display: grid;
+  align-content: start;
+  gap: var(--gap-within);
+  transition: padding calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph);
+}
+
+.ex-padding-follows-depth-not-size-title {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-padding-follows-depth-not-size-meta {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-padding-follows-depth-not-size-body {
+  font: var(--text-small);
+  color: var(--ink-2);
+}

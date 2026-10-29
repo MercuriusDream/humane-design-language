@@ -1,0 +1,78 @@
+/* The specimen sits on the base plane. The checkbox edge is measured against that plane and against its own fill;
+   its probe carries --ink-boundary, the token the edge is drawn with. The field's words probe carries --ink-3,
+   the placeholder's ink. */
+
+.ex-interactive-boundaries-meet-a-contrast-floor-stage {
+  display: grid;
+  gap: var(--gap-between);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+.ex-interactive-boundaries-meet-a-contrast-floor-cell {
+  position: relative;
+}
+
+/* The stage is a grid, so its first and last lines trim themselves: the field label at the top,
+   the last reading's values at the bottom. Both values trim alike, so they stay on one baseline. */
+.ex-interactive-boundaries-meet-a-contrast-floor-cell:first-child .h-field-label {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-interactive-boundaries-meet-a-contrast-floor-reading:last-child .ex-interactive-boundaries-meet-a-contrast-floor-values > * {
+  text-box: trim-end cap alphabetic;
+}
+
+.ex-interactive-boundaries-meet-a-contrast-floor-probe[data-role='words'] {
+  background: var(--ink-3);
+}
+
+.ex-interactive-boundaries-meet-a-contrast-floor-probe {
+  position: absolute;
+  inset: 0;
+  width: 1px;
+  height: 1px;
+  background: var(--ink-boundary);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ex-interactive-boundaries-meet-a-contrast-floor-readings {
+  display: grid;
+  gap: var(--gap-between);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: var(--text-small);
+}
+
+.ex-interactive-boundaries-meet-a-contrast-floor-reading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--gap-tight) var(--gap-within);
+  align-items: baseline;
+}
+
+.ex-interactive-boundaries-meet-a-contrast-floor-name {
+  font: var(--text-label);
+  color: var(--ink-1);
+}
+
+.ex-interactive-boundaries-meet-a-contrast-floor-verdict {
+  color: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-interactive-boundaries-meet-a-contrast-floor-reading[data-meets='false'] .ex-interactive-boundaries-meet-a-contrast-floor-verdict {
+  color: var(--signal-danger);
+}
+
+.ex-interactive-boundaries-meet-a-contrast-floor-values {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-tight) var(--gap-between);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}

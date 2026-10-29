@@ -1,0 +1,90 @@
+/*
+  Hierarchy comes from lightness, then hue, then saturation.
+  A short feed of depth 1 cards on the example's sunken plane. Their levels are set by lightness alone:
+  each title is the lightest ink, the body and timestamp step down, and the one warning sits on a darker plane.
+  Hue and saturation switch on in cumulative steps and never carry the structure.
+  The warning is an error with a next step, so it is the one place danger hue is spent.
+*/
+
+/* The cards sit a within gap apart, so they read as one list. */
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-feed {
+  display: grid;
+  gap: var(--gap-within);
+  align-content: start;
+}
+
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-card {
+  display: grid;
+  gap: var(--gap-within);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+/* The head is the card's first line and a row, so both of its items trim both lines and keep one baseline. */
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-head > * {
+  text-box: trim-both cap alphabetic;
+}
+
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-title {
+  margin: 0;
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-time {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-body {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* In a card with no warning the body is the last line, so it trims below its baseline. */
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-body:last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+/* Essential. A darker plane than the card, so it reads as its own level without a line or a badge. */
+/* A depth 2 plane of text, so it pads with the depth 2 step and trims its own first and last line:
+   the padding is the inset to the ink. */
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-warning {
+  margin: 0;
+  padding: var(--pad-2);
+  text-box: trim-both cap alphabetic;
+  border-radius: var(--radius-2);
+  background: var(--plane-fill);
+  font: var(--text-body);
+  color: var(--ink-1);
+  transition: background-color var(--dur-feedback) linear;
+}
+
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-warning-lead {
+  font-weight: 600; /* body role, lead weight */
+  transition: color var(--dur-feedback) linear;
+}
+
+/* Plus hue: the warning's lead takes the danger hue. The lightness hierarchy already holds without it, so hue only adds to it. */
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-feed[data-step='hue'] .ex-hierarchy-comes-from-lightness-then-hue-then-saturation-warning-lead,
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-feed[data-step='saturation'] .ex-hierarchy-comes-from-lightness-then-hue-then-saturation-warning-lead {
+  color: var(--signal-danger);
+}
+
+/* Plus saturation: the warning plane itself takes a tint of the same hue. Mixed in oklab, so the near-neutral plane
+   adds no hue of its own: in oklch the hue would travel from the plane's blue towards red and land on violet. */
+.ex-hierarchy-comes-from-lightness-then-hue-then-saturation-feed[data-step='saturation'] .ex-hierarchy-comes-from-lightness-then-hue-then-saturation-warning {
+  background: color-mix(in oklab, var(--signal-danger) 16%, var(--plane-raised));
+}

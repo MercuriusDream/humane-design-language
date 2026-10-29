@@ -1,0 +1,5 @@
+/* Equal weight. The dialog takes the frame's width, so the frame reads as a surface, not a 440px card in a well. */
+
+.consent.ex-equal-consequence-equal-weight-consent {
+  max-width: none;
+}

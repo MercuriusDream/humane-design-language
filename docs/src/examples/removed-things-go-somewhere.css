@@ -1,0 +1,98 @@
+/* Removed things go somewhere. A row collapses through its grid rows, so the rows below it move
+   up as the same transition runs. Opacity fades stay on under reduced motion; travel is removed. */
+
+.ex-removed-things-go-somewhere-controls {
+  display: grid;
+  justify-items: start;
+  gap: var(--gap-within);
+}
+
+.ex-removed-things-go-somewhere-count {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Each item keeps --gap-tight below it so the gap collapses with the row. The list gives the last one back,
+   so the frame's padding is the inset below the last row. */
+.ex-removed-things-go-somewhere-list {
+  display: grid;
+  margin: 0 0 calc(-1 * var(--gap-tight));
+  padding: 0;
+  list-style: none;
+}
+
+.ex-removed-things-go-somewhere-item {
+  display: grid;
+  grid-template-rows: 1fr;
+  padding-bottom: var(--gap-tight);
+  transition:
+    grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph),
+    padding-bottom calc(var(--dur) * var(--travel)) var(--ease-morph),
+    opacity var(--dur-fade) linear;
+}
+
+.ex-removed-things-go-somewhere-item[data-status='leaving'] {
+  grid-template-rows: 0fr;
+  padding-bottom: 0;
+  opacity: 0;
+}
+
+/* Reduced motion keeps the footprint for the whole fade, then releases it. */
+.ex-removed-things-go-somewhere-list[data-reduced] .ex-removed-things-go-somewhere-item[data-status='leaving'] {
+  grid-template-rows: 1fr;
+  padding-bottom: var(--gap-tight);
+}
+
+/* Archived rows keep their place at zero height and are hidden from keyboard and assistive tech. */
+.ex-removed-things-go-somewhere-item[data-status='archived'] {
+  grid-template-rows: 0fr;
+  padding-bottom: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Clips the collapsing row, with a small margin so descenders of its trimmed text survive at large text sizes. */
+.ex-removed-things-go-somewhere-clip {
+  min-height: 0;
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
+}
+
+.ex-removed-things-go-somewhere-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-within) var(--gap-between);
+  flex-wrap: wrap;
+  min-height: calc(var(--control-height) + 2 * var(--pad-1)); /* the button plus --pad-1 above and below it */
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+.ex-removed-things-go-somewhere-text {
+  display: grid;
+  gap: var(--gap-tight);
+  min-width: 0;
+}
+
+/* The text is centered in the row, so it trims to its ink at both ends and centers as it is seen. */
+.ex-removed-things-go-somewhere-title {
+  text-box: trim-start cap alphabetic;
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-removed-things-go-somewhere-meta {
+  text-box: trim-end cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The button keeps its width, so a long title wraps beside it rather than breaking the button's label. */
+.ex-removed-things-go-somewhere-row > .h-button {
+  flex: none;
+}

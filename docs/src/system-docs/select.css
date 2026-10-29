@@ -1,0 +1,36 @@
+/* Select doc. The live specimen sits on the example's sunken plane; depth 2 sits on a raised plane with the same 2px corner. */
+
+.doc-select-stage {
+  max-width: 420px;
+}
+
+/* Depth 1 is bare; depth 2 adds the plane. The same element morphs between them, so the select is never remounted. */
+.doc-select-plane {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  transition:
+    padding calc(var(--dur-feedback) * var(--travel)) var(--ease-morph),
+    border-radius var(--dur-fade) linear,
+    background-color var(--dur-fade) linear;
+}
+
+.doc-select-plane[data-depth='2'] {
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+/* The label opens the specimen and the error, when shown, ends it, so both meet the inset of the frame or the plane. */
+.doc-select-plane .h-field-label {
+  text-box: trim-start cap alphabetic;
+}
+
+.doc-select-plane .h-select-error {
+  text-box: trim-end cap alphabetic;
+}
+
+/* The switch label sits in a narrow example column. Balance its lines so a short last line is not left alone. */
+.doc-select-controls .h-switch-label {
+  text-wrap: balance;
+}

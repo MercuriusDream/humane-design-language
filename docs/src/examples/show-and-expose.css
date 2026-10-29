@@ -1,0 +1,77 @@
+/* Show, and expose. The list collapses in place, and inert keeps it out of the accessibility tree while collapsed. */
+
+/* A depth 1 surface: --pad-1 on every side. The switch row is its track's height, so the track sits --pad-1 from the
+   top, the end, and the bottom, and the label starts --pad-1 in. */
+.ex-show-and-expose-body {
+  display: grid;
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+.ex-show-and-expose-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph),
+    opacity var(--dur-fade) linear;
+}
+
+.ex-show-and-expose-collapse[data-open='true'] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.ex-show-and-expose-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ex-show-and-expose-list {
+  display: grid;
+  gap: var(--gap-within);
+  margin: 0;
+  padding: var(--gap-within) 0 0; /* collapsed, the list takes no room, so the gap goes with it */
+  list-style: none;
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+/* Each notice is a depth 2 plane: radius-2 and pad-2, its text trimmed to the ink. */
+.ex-show-and-expose-list li {
+  padding: var(--pad-2);
+  border-radius: var(--radius-2);
+  background: var(--plane-raised);
+  text-box: trim-both cap alphabetic;
+}
+
+/* Readout. */
+
+.ex-show-and-expose-readout {
+  display: grid;
+  gap: var(--gap-tight);
+  margin: 0;
+  font: var(--text-small);
+}
+
+.ex-show-and-expose-readout > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+/* The readout ends the controls column, so its last row trims at the frame's padded edge. */
+.ex-show-and-expose-readout > div:last-child > * {
+  text-box: trim-end cap alphabetic;
+}
+
+.ex-show-and-expose-readout dt {
+  color: var(--ink-2);
+}
+
+.ex-show-and-expose-readout dd {
+  margin: 0;
+  color: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+}

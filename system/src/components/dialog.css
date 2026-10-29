@@ -1,0 +1,99 @@
+/* Dialog. The element is the scrim, full viewport; the panel is the root surface, centered in it. */
+
+.h-dialog {
+  inset: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink-1);
+}
+
+/* Only an open dialog is laid out. The UA hides a closed dialog, so this must not override it. */
+.h-dialog[open] {
+  display: grid;
+  place-items: center;
+}
+
+.h-dialog::backdrop {
+  background: oklch(0 0 0 / 0.35);
+}
+
+.h-dialog[open]::backdrop {
+  animation: h-dialog-scrim var(--dur-fade) linear;
+}
+
+@keyframes h-dialog-scrim {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Root (data-root): 2px corner, padding by depth 0. Lightness alone separates it from the scrim. */
+.h-dialog-panel {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: min(560px, calc(100vw - var(--space-6)));
+  max-height: calc(100dvh - var(--space-6));
+  overflow-y: auto;
+  padding: var(--pad-0);
+  background: var(--plane-raised);
+  font: var(--text-body);
+  text-box: trim-both cap alphabetic;
+  color: var(--ink-1);
+}
+
+.h-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+.h-dialog-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  text-box: trim-both cap alphabetic;
+  font: var(--text-heading);
+  letter-spacing: var(--tracking-heading);
+  color: var(--ink-1);
+  overflow-wrap: anywhere;
+}
+
+/* The header row is as tall as the title's cap height, so the title sits pad-0 from the top, as on the other sides.
+   The close control keeps its full 44px target but steps out of the row by its own inset: its 20px icon is
+   centered on the title and meets the panel's inset at the end side, where the fields below end. */
+.h-button.h-dialog-close {
+  --h-dialog-close-step: calc((var(--control-height) - 20px) / -2);
+  flex: none;
+  inline-size: var(--control-height);
+  margin-block: var(--h-dialog-close-step);
+  margin-inline-end: var(--h-dialog-close-step);
+  padding: 0;
+}
+
+.h-dialog-close-icon {
+  display: block;
+}
+
+/* The title sits pad-0 (16px) below the top edge, so the gap below it must be smaller: the title belongs to its content. */
+.h-dialog-body {
+  margin-top: var(--gap-within);
+}
+
+.h-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--gap-within);
+  margin-top: var(--gap-between);
+}

@@ -1,0 +1,104 @@
+/* Undoable list. A removed row keeps its place as a sunken plane; a leaving row collapses its track to 0fr. */
+
+.h-undoable-list-field {
+  display: grid;
+  gap: var(--gap-within);
+}
+
+.h-undoable-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  /* Gives back the last item's gap, so nothing sits under the last row. */
+  margin-block-end: calc(var(--gap-tight) * -1);
+  padding: 0;
+  list-style: none;
+}
+
+.h-undoable-list-item {
+  display: grid;
+  grid-template-rows: 1fr;
+  padding-bottom: var(--gap-tight);
+  transition:
+    grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph),
+    padding-bottom calc(var(--dur) * var(--travel)) var(--ease-morph),
+    opacity var(--dur-fade) linear;
+}
+
+.h-undoable-list-item[data-status='leaving'] {
+  grid-template-rows: 0fr;
+  padding-bottom: 0;
+  opacity: 0;
+}
+
+/* Reduced motion preserves the footprint until the hook removes the faded row. */
+.h-undoable-list[data-reduced-motion] .h-undoable-list-item[data-status='leaving'] {
+  grid-template-rows: 1fr;
+  padding-bottom: var(--gap-tight);
+}
+
+.h-undoable-list-action { flex: none; }
+.h-undoable-list-action-label { display: grid; }
+.h-undoable-list-action-label > span { grid-area: 1 / 1; }
+.h-undoable-list-action-label > [data-hidden='true'] { visibility: hidden; }
+
+.h-undoable-list-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.h-undoable-list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-within);
+  /* Depth 1 padding on every side: the depth 2 button inside shares the row's 2px corner, and the label's ink
+     sits as far from the left edge as the button's edge sits from the others. The label and the button share
+     one tier (size on the list), so a row never pairs body text with a compact action. */
+  min-height: calc(var(--control-height) + 2 * var(--pad-1));
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+  transition: background-color var(--dur-fade) linear;
+}
+
+.h-undoable-list-item:not([data-status='present']) .h-undoable-list-row {
+  background: var(--plane-sunken);
+}
+
+.h-undoable-list-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-box: trim-both cap alphabetic;
+  font: var(--text-body);
+  color: var(--ink-1);
+  transition: color var(--dur-fade) linear;
+}
+
+.h-undoable-list[data-size='compact'] .h-undoable-list-row {
+  min-height: calc(var(--control-height-compact) + 2 * var(--pad-1));
+}
+
+.h-undoable-list[data-size='compact'] .h-undoable-list-label {
+  font: var(--text-small);
+}
+
+.h-undoable-list-item:not([data-status='present']) .h-undoable-list-label {
+  color: var(--ink-3);
+}
+
+.h-undoable-list-empty {
+  padding: var(--pad-1);
+  font: var(--text-small);
+  color: var(--ink-3);
+}
+
+/* Visually hidden, but read by screen readers. Local so every class carries the component prefix. */
+.h-undoable-list-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

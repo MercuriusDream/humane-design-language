@@ -1,0 +1,42 @@
+/* Arrivals. A reserved slot, as tall as a control of its tier (--control-height, compact --control-height-compact),
+   above the list. Arrivals fill it and never push content down. */
+
+.h-arrivals {
+  position: relative;
+  display: grid;
+  min-width: 0;
+}
+
+.h-arrivals-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-height);
+}
+
+.h-arrivals[data-size='compact'] .h-arrivals-slot {
+  min-height: var(--control-height-compact);
+}
+
+/* Fades in place: nothing flies in, and the opacity fade stays under reduced motion. Its height is the button's own. */
+.h-arrivals-button {
+  width: 100%;
+  overflow-wrap: anywhere;
+  animation: h-arrivals-in var(--dur-fade) linear;
+}
+
+@keyframes h-arrivals-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Screen reader only. Kept in the tree so that changes to it are announced. */
+.h-arrivals-announce {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

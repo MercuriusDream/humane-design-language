@@ -1,0 +1,78 @@
+/* Menu. A trigger opens a root surface of actions that grows out of it. Items are depth 1.
+   The menu takes the tier of its trigger: standard items are --control-height with body text and --inset-control,
+   compact items --control-height-compact with small text and --inset-control-compact. */
+
+.h-menu-field {
+  position: relative;
+  display: inline-block;
+}
+
+.h-menu {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+  overflow: auto;
+  gap: var(--gap-tight);
+  width: max-content;
+  min-width: min(12rem, calc(100vw - var(--space-4)));
+  max-width: calc(100vw - var(--space-6));
+  padding: var(--pad-0);
+  background: var(--plane-raised);
+}
+
+.h-menu:popover-open {
+  display: grid;
+}
+
+.h-menu-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  min-height: var(--control-height);
+  padding: 0 var(--inset-control);
+  border-radius: min(var(--radius-1), var(--radius-control-max));
+  background: transparent;
+  color: var(--ink-1);
+  font: var(--text-body);
+  text-align: start;
+  overflow-wrap: anywhere;
+  transition:
+    background-color var(--dur-feedback) linear,
+    color var(--dur-feedback) linear;
+}
+
+.h-menu[data-size='compact'] .h-menu-item {
+  min-height: var(--control-height-compact);
+  padding: 0 var(--inset-control-compact);
+  font: var(--text-small);
+}
+
+/* Items are stacked close, so the ring sits inside the item. */
+.h-menu-item:focus-visible {
+  outline-offset: calc(var(--focus-width) * -1);
+}
+
+/* An item has no plane of its own, so it steps up from the menu's plane as a list row does:
+   the control plane under the pointer, the hover plane while pressed. */
+.h-menu-item:hover:not(:disabled) {
+  background: var(--plane-control);
+}
+
+/* Declared after hover with the same specificity, so the press wins while the pointer is over the item. */
+.h-menu-item:active:not(:disabled) {
+  background: var(--plane-control-hover);
+}
+
+/* Danger: a destructive action is a state that needs the user, so its text may be saturated. */
+.h-menu-item[data-danger] {
+  color: var(--signal-danger);
+}
+
+/* Declared after danger so a disabled danger item is not saturated. */
+.h-menu-item:disabled {
+  color: var(--ink-3);
+}

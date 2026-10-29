@@ -1,0 +1,26 @@
+/* Placeholder doc. Only layout lives here. Every color and type size is a token. */
+
+/* Two separate controls, a group gap apart, as in every frame's controls column. The track spans the column like
+   every segmented control beside a specimen; the button keeps its own width. */
+.doc-placeholder-controls {
+  display: grid;
+  gap: var(--gap-between);
+}
+
+.doc-placeholder-controls > .h-button {
+  justify-self: start;
+}
+
+.doc-placeholder-specimen {
+  width: min(100%, 28rem);
+  min-width: 0;
+}
+
+/* The note is the whole specimen once it loads, so it drops the leading above its first line and below its last,
+   and meets the frame's inset like the reserved bars before it. */
+.doc-placeholder-note {
+  margin: 0;
+  text-box: trim-both cap alphabetic;
+  font: var(--text-body);
+  color: var(--ink-1);
+}

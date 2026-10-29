@@ -1,0 +1,25 @@
+/* Menu docs. The example stage is a depth 1 surface, and its triggers sit on it. */
+
+/* Depth 1 plane inside the example root: the same 2px corner, and padding is pad-1. It is taller than its
+   content so an open menu has room; the space below is held for it. */
+.doc-menu-stage {
+  display: grid;
+  gap: var(--gap-within);
+  min-height: 296px;
+  align-content: start;
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+.doc-menu-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap-within);
+}
+
+.doc-menu-result {
+  font: var(--text-small);
+  color: var(--ink-2);
+}

@@ -1,0 +1,86 @@
+/* Button. A plane, identified by its label. The corner is the 2px control corner, never larger.
+   Standard is --control-height with body text; compact is --control-height-compact with small text.
+   The side inset equals the space above and below the label: --inset-control, --inset-control-compact. */
+
+.h-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-within);
+  min-height: var(--control-height);
+  padding: 0 var(--inset-control);
+  border-radius: min(var(--radius-1), var(--radius-control-max));
+  background: var(--plane-control);
+  color: var(--ink-1);
+  font: var(--text-body);
+  font-weight: 600; /* body role, action weight */
+  text-align: center;
+  transition:
+    background-color var(--dur-feedback) linear,
+    color var(--dur-feedback) linear;
+}
+
+.h-button[data-size='compact'] {
+  min-height: var(--control-height-compact);
+  padding: 0 var(--inset-control-compact);
+  font: var(--text-small);
+  font-weight: 600; /* small role, action weight */
+}
+
+.h-button:hover:not(:disabled) {
+  background: var(--plane-control-hover);
+}
+
+.h-button:active:not(:disabled) {
+  background: var(--plane-control-active);
+}
+
+.h-button[data-depth='2'] {
+  border-radius: min(var(--radius-2), var(--radius-control-max));
+}
+
+/* Strong: set in ink. The main action stands out by lightness, not by saturation. */
+.h-button[data-variant='strong'] {
+  background: var(--ink-1);
+  color: var(--ink-inverse);
+}
+
+.h-button[data-variant='strong']:hover:not(:disabled) {
+  background: var(--ink-2);
+}
+
+/* Pressed returns to full ink, so the press reads as a change from hover. */
+.h-button[data-variant='strong']:active:not(:disabled) {
+  background: var(--ink-1);
+}
+
+/* Quiet: no plane until the pointer arrives. */
+.h-button[data-variant='quiet'] {
+  background: transparent;
+}
+
+/* A control with no plane of its own steps up from the plane under it, as a list row or a nav item does:
+   the control plane under the pointer, the hover plane while pressed. */
+.h-button[data-variant='quiet']:hover:not(:disabled) {
+  background: var(--plane-control);
+}
+
+.h-button[data-variant='quiet']:active:not(:disabled) {
+  background: var(--plane-control-hover);
+}
+
+/* Danger: a destructive action is a state that needs the user, so it may be saturated. */
+.h-button[data-variant='danger'] {
+  color: var(--signal-danger);
+}
+
+/* Disabled state wins over every variant and never responds to hover or press: tertiary ink on the resting plane.
+   A strong button gives up its ink fill for the control plane; a quiet one keeps no plane. */
+.h-button:disabled {
+  background: var(--plane-control);
+  color: var(--ink-3);
+}
+
+.h-button[data-variant='quiet']:disabled {
+  background: transparent;
+}

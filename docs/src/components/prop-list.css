@@ -1,0 +1,61 @@
+/* Reference definitions. Props and conformance rows are term/definition pairs, not table rows:
+   the prop and its type share the first line, the meaning takes the full width below.
+   The DOM is a real dl, so assistive technology gets the term and both definitions. */
+
+.doc-definitions {
+  display: grid;
+  margin: 0;
+}
+
+.doc-definition {
+  display: grid;
+  grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+  padding-block: var(--space-3);
+  padding-inline: var(--pad-1);
+  font: var(--text-small);
+  text-box: trim-start cap alphabetic;
+}
+
+.doc-definition-term {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  margin: 0;
+  color: var(--ink-1);
+}
+
+.doc-definition-term-label {
+  font: var(--text-label);
+}
+
+.doc-definition-type {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  margin: 0;
+  color: var(--ink-2);
+}
+
+.doc-definition-meaning {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin: 0;
+  color: var(--ink-1);
+  text-box: trim-end cap alphabetic;
+}
+
+/* On a narrow column or at large text, the definition stacks: term, type, meaning. */
+@container entry (max-width: 40rem) {
+  .doc-definition {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .doc-definition-term,
+  .doc-definition-type,
+  .doc-definition-meaning {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}

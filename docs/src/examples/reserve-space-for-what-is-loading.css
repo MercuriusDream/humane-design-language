@@ -1,0 +1,45 @@
+/* Reserve space for what is loading. The stage holds the placeholder and the line below it.
+   Hidden content reserves its responsive geometry before it crossfades into view. */
+
+.ex-reserve-space-for-what-is-loading-stage {
+  position: relative;
+  display: grid;
+  gap: var(--gap-between);
+  min-width: 0;
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+/* Lines may wrap. Their real geometry is reserved in both loading and ready states. */
+.ex-reserve-space-for-what-is-loading-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-tight);
+}
+
+.ex-reserve-space-for-what-is-loading-line {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.ex-reserve-space-for-what-is-loading-below {
+  display: grid;
+  gap: var(--gap-tight);
+}
+
+.ex-reserve-space-for-what-is-loading-anchor {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+/* The readout ends the stage, so it trims at the padded edge. */
+.ex-reserve-space-for-what-is-loading-readout {
+  text-box: trim-end cap alphabetic;
+  margin: 0;
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,111 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+:root[data-motion='full'] {
+  scroll-behavior: smooth;
+}
+
+/* On the root, not body: a filtered body would become the containing block of the fixed sidebar. */
+:root[data-grayscale] {
+  filter: grayscale(1);
+}
+
+/* Long words break rather than push the page sideways when the user enlarges text.
+   "anywhere" also lowers min-content width, so grid and flex tracks can shrink to fit.
+   No automatic hyphenation: it breaks ordinary words in running text. */
+body {
+  overflow-wrap: anywhere;
+  margin: 0;
+  background: var(--plane-base);
+  color: var(--ink-1);
+  font: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+/* Controls keep the arrow. Hover is shown by the control's own plane, never by changing the pointer. */
+button {
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--ink-boundary);
+  text-underline-offset: 3px;
+}
+
+/* Inline code takes the code face at 0.875 of the surrounding text, so it sits in any role without its own size. */
+code {
+  font-family: var(--font-code);
+  font-size: 0.875em;
+}
+
+/* A root's corner is capped at 2px, set in px by rootRadius.ts. The depths inside clamp to the same
+   2px floor, so nesting never adds rounding. */
+[data-root] {
+  --radius-1: max(var(--radius-floor), calc(var(--radius-root) - var(--pad-0)));
+  --radius-2: max(var(--radius-floor), calc(var(--radius-1) - var(--pad-1)));
+  border-radius: max(var(--radius-floor), var(--radius-root));
+}
+
+/* Insets are measured to the ink. Text that meets a padded edge drops the leading outside its first and
+   last line, so the space from the edge to the letters is the padding on every side. A padded box trims its
+   own first and last line; text inside a grid or flex item trims itself (text-box: trim-start, trim-end). */
+.h-trim {
+  text-box: trim-both cap alphabetic;
+}
+
+/* Focus is a signal: an outline, saturated, always visible. */
+:focus-visible {
+  outline: var(--focus-width) solid var(--signal-focus);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Small bold text naming a field or a group of controls. A heading, so it takes essential ink. */
+.h-field-label {
+  font: var(--text-label);
+  color: var(--ink-1);
+}

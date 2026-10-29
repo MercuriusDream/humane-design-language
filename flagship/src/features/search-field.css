@@ -1,0 +1,33 @@
+/* SearchField. A field of fixed width beside the mailbox title: 17.5rem wide, full width on narrow screens.
+   Its label is hidden from sight; the placeholder and the search landmark say what it is. */
+
+.search-field {
+  position: relative;
+  width: 17.5rem;
+  max-width: 100%;
+}
+
+@media (max-width: 40em) {
+  .search-field {
+    width: 100%;
+  }
+}
+
+/* The label stays in the tree, so the field keeps its accessible name, and is hidden from sight. */
+.search-field-visually-hidden,
+.search-field .h-field-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* With the label out of sight, the box itself is the top of the field, so it shares the header row. */
+.search-field .h-text-field-control {
+  margin-top: 0;
+}

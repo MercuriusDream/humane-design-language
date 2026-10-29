@@ -1,0 +1,64 @@
+/* Miniature of the page frame. The real AppShell and Sidebar run inside the stage. These rules only
+   keep their fixed positioning and full-viewport height inside the stage. */
+
+.doc-app-shell-stage {
+  --sidebar-width: 200px;
+  /* The stage is narrower than the page, so the column is a miniature: reading shows centering, wide fills the space. */
+  --column-width: 280px;
+  --column-width-wide: 100%;
+  position: relative;
+  isolation: isolate;
+  height: 300px;
+  overflow: hidden;
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+.doc-app-shell-stage .h-app {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.doc-app-shell-stage .h-sidebar {
+  position: absolute;
+}
+
+.doc-app-shell-stage .h-sidebar[data-open='true'] {
+  height: calc(100% - 2 * var(--sidebar-inset));
+}
+
+/* Docked, the sidebar is a section of the stage: flush with its top, bottom, and side, full height. */
+.doc-app-shell-stage .h-app[data-docked] .h-sidebar[data-open='true'] {
+  height: 100%;
+}
+
+.doc-app-shell-stage .h-page {
+  box-sizing: border-box;
+  height: 100%;
+  padding-top: calc(var(--sidebar-inset) + var(--sidebar-closed-height) + var(--space-4));
+  padding-bottom: var(--space-4);
+  overflow-y: auto;
+}
+
+/* Docked, the sidebar sits beside the column, so the column does not need to clear the closed sidebar. */
+.doc-app-shell-stage .h-app[data-docked] .h-page {
+  padding-top: var(--space-5);
+}
+
+.doc-app-shell-page {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+}
+
+.doc-app-shell-heading {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.doc-app-shell-text {
+  font: var(--text-body);
+  color: var(--ink-2);
+}

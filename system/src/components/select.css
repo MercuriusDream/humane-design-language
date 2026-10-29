@@ -1,0 +1,84 @@
+/* Select. A control plane like TextField: no outline, no edge in either contrast. Radius comes from depth.
+   Field anatomy: label (.h-field-label), hint 4px under it, control 8px below that, error 8px under the control.
+   Sizes are tiers, as on TextField: standard is --control-height with body text and --inset-control; compact is
+   --control-height-compact with small text and --inset-control-compact. */
+
+.h-select-field {
+  --h-select-height: var(--control-height);
+  --h-select-inset: var(--inset-control);
+  --h-select-font: var(--text-body);
+  display: grid;
+  min-width: 0;
+}
+
+.h-select-field[data-size='compact'] {
+  --h-select-height: var(--control-height-compact);
+  --h-select-inset: var(--inset-control-compact);
+  --h-select-font: var(--text-small);
+}
+
+.h-select-hint {
+  margin-top: var(--gap-tight);
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+.h-select-control {
+  position: relative;
+  margin-top: var(--gap-within);
+}
+
+.h-select {
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  width: 100%;
+  height: var(--h-select-height);
+  margin: 0;
+  /* A control's inset is set by its height, so it is the same on every side of the value. The end side also
+     holds the 12px chevron, which ends on that inset, and a gap of the same inset before it. */
+  padding-block: 0;
+  padding-inline: var(--h-select-inset) calc(2 * var(--h-select-inset) + 12px);
+  border: 0;
+  border-radius: min(var(--radius-1), var(--radius-control-max));
+  background: var(--plane-control);
+  color: var(--ink-1);
+  font: var(--h-select-font);
+  transition:
+    background-color var(--dur-feedback) linear,
+    box-shadow var(--dur-feedback) linear;
+}
+
+.h-select:hover:not(:disabled) {
+  background: var(--plane-control-hover);
+}
+
+.h-select-control[data-depth='2'] .h-select {
+  border-radius: min(var(--radius-2), var(--radius-control-max));
+}
+
+/* An error is a state that needs the user, so its edge takes the signal color. */
+.h-select[data-invalid='true'] {
+  box-shadow: inset 0 0 0 var(--stroke) var(--signal-danger);
+}
+
+.h-select-chevron {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: var(--h-select-inset);
+  width: 12px;
+  height: 12px;
+  margin: auto 0;
+  color: var(--ink-2);
+  pointer-events: none;
+}
+
+.h-select-error {
+  margin: 0;
+  font: var(--text-label);
+  color: var(--signal-danger);
+}
+
+.h-select-error:not(:empty) {
+  margin-top: var(--gap-within);
+}

@@ -1,0 +1,68 @@
+/* Article specimen. It sits at depth 1 inside the example frame: radius-1 and pad-1.
+   Type changes morph the same element. The size, weight and line-height longhands transition over
+   --dur, which the component sets with morphDuration of the size change. --travel scales it, so reduced
+   motion makes the change instant in place. */
+
+.ex-type-hierarchy-comes-from-size-and-weight-first-article {
+  display: grid;
+  gap: var(--gap-tight);
+  margin: 0;
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+/* The article is a grid, so its first and last lines trim themselves at the padded edges. */
+.ex-type-hierarchy-comes-from-size-and-weight-first-title {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-type-hierarchy-comes-from-size-and-weight-first-body {
+  text-box: trim-end cap alphabetic;
+}
+
+.ex-type-hierarchy-comes-from-size-and-weight-first-title,
+.ex-type-hierarchy-comes-from-size-and-weight-first-byline,
+.ex-type-hierarchy-comes-from-size-and-weight-first-body {
+  margin: 0;
+  transition:
+    font-size calc(var(--dur) * var(--travel)) var(--ease-morph),
+    font-weight calc(var(--dur) * var(--travel)) var(--ease-morph),
+    line-height calc(var(--dur) * var(--travel)) var(--ease-morph),
+    letter-spacing calc(var(--dur) * var(--travel)) var(--ease-morph),
+    color var(--dur-feedback) linear;
+}
+
+/* Color only: every line is body size and regular weight. Hierarchy rests on lightness alone. */
+.ex-type-hierarchy-comes-from-size-and-weight-first-article[data-mode='color'] .ex-type-hierarchy-comes-from-size-and-weight-first-title {
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.ex-type-hierarchy-comes-from-size-and-weight-first-article[data-mode='color'] .ex-type-hierarchy-comes-from-size-and-weight-first-byline {
+  font: var(--text-body);
+  color: var(--ink-3);
+}
+
+.ex-type-hierarchy-comes-from-size-and-weight-first-article[data-mode='color'] .ex-type-hierarchy-comes-from-size-and-weight-first-body {
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* Size and weight: the same ink for every line. Hierarchy comes from the type tokens.
+   The title takes the heading role: this specimen shows the size tool, so it needs a size step above body. */
+.ex-type-hierarchy-comes-from-size-and-weight-first-article[data-mode='size'] .ex-type-hierarchy-comes-from-size-and-weight-first-title {
+  font: var(--text-heading);
+  letter-spacing: var(--tracking-heading);
+  color: var(--ink-1);
+}
+
+.ex-type-hierarchy-comes-from-size-and-weight-first-article[data-mode='size'] .ex-type-hierarchy-comes-from-size-and-weight-first-byline {
+  font: var(--text-small);
+  color: var(--ink-1);
+}
+
+.ex-type-hierarchy-comes-from-size-and-weight-first-article[data-mode='size'] .ex-type-hierarchy-comes-from-size-and-weight-first-body {
+  font: var(--text-body);
+  color: var(--ink-1);
+}

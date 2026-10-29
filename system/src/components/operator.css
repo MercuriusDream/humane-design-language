@@ -1,0 +1,25 @@
+/* Operator. One quiet line: small text, supporting ink, the name leads by weight. No plane, pill, or signal color. */
+
+.h-operator {
+  margin: 0;
+  font: var(--text-small);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+.h-operator-name {
+  font-weight: 600; /* small role, name weight */
+}
+
+/* The link is underlined so it reads as a link without a signal color. The box is --control-height tall to meet
+   the target rule; the line stays one line of text. */
+.h-operator-link {
+  display: inline-block;
+  /* A 44px target around one line of text that keeps the line its own height: the padding makes the target,
+     and the matching negative margin keeps it from pushing the lines around it apart. */
+  padding-block: calc((var(--control-height) - 1lh) / 2);
+  margin-block: calc((1lh - var(--control-height)) / 2);
+  color: var(--ink-1);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}

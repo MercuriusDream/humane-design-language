@@ -1,0 +1,14 @@
+/* The scale sits on the example frame's plane, so the frame's padding is its only inset. The first and last
+   levels trim to their ink at the frame's edges; both items of a level trim, so they stay on one baseline. */
+
+.ex-levels-are-far-apart-scale {
+  padding: 0;
+}
+
+.ex-levels-are-far-apart-scale > :first-child > * {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-levels-are-far-apart-scale > :last-child > * {
+  text-box: trim-end cap alphabetic;
+}

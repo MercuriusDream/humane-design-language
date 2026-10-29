@@ -1,0 +1,85 @@
+/* One change, one morph. One highlight plane travels to any row in a single transform,
+   timed by morphDuration of the whole distance. Under reduced motion --travel is 0, so the
+   plane lands in place and the row labels still fade. */
+
+.ex-one-change-one-morph-controls {
+  display: grid;
+  justify-items: start;
+  gap: var(--gap-within);
+}
+
+.ex-one-change-one-morph-body {
+  display: grid;
+  gap: var(--gap-within);
+  min-width: 0;
+}
+
+/* The first line of the body trims at the frame's padded edge, level with the hint beside it. */
+.ex-one-change-one-morph-readout {
+  text-box: trim-start cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Track: a depth 1 surface with depth 1 padding. Its rows and the highlight are depth 2, so they take --radius-2,
+   and each row is a compact control whose label sits --inset-control-compact from its edge. */
+.ex-one-change-one-morph-track {
+  position: relative;
+  overflow: hidden;
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+/* The highlight is one element. Its transform is the only thing that moves. */
+.ex-one-change-one-morph-plane {
+  position: absolute;
+  top: var(--pad-1);
+  left: var(--pad-1);
+  right: var(--pad-1);
+  height: var(--height, var(--row));
+  border-radius: var(--radius-2);
+  background: var(--plane-raised);
+  transform: translateY(var(--y, 0px));
+  transition: transform calc(var(--dur) * var(--travel)) var(--ease-morph), height calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-one-change-one-morph-list {
+  position: relative;
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ex-one-change-one-morph-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-within);
+  width: 100%;
+  min-height: var(--row);
+  padding: var(--space-1) var(--inset-control-compact);
+  flex-wrap: wrap;
+  border: 0;
+  border-radius: var(--radius-2);
+  background: transparent;
+  color: var(--ink-2);
+  font: var(--text-small);
+  text-align: start;
+  transition: color var(--dur-fade) linear;
+}
+
+.ex-one-change-one-morph-row:focus-visible {
+  outline-offset: -2px;
+}
+
+.ex-one-change-one-morph-row[aria-current='true'] {
+  color: var(--ink-1);
+}
+
+.ex-one-change-one-morph-count {
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}

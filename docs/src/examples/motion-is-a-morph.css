@@ -1,0 +1,148 @@
+/* The card is a depth 1 surface. Its height follows the detail block, so its height change is the
+   detail's height, and --dur is set from that in the TSX. The thumbnail grows inside a fixed slot,
+   so the text beside it never moves. Every transition uses --dur, and --travel removes it under
+   reduced motion.
+   The card's bottom padding lives inside the parts that end it: below the head, and inside the clipped detail.
+   So the last line can trim to its baseline while its descenders stay inside the clip, and the inset is
+   --pad-1 on every side in both states. */
+
+.ex-motion-is-a-morph-card {
+  container-type: inline-size;
+  padding: var(--pad-1) var(--pad-1) 0;
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+.ex-motion-is-a-morph-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--gap-within) var(--gap-between);
+  margin-bottom: var(--pad-1);
+}
+
+/* Too narrow for the title between the cover and the button: the button moves to its own line below them,
+   so the title keeps room to read. */
+@container (max-width: 26rem) {
+  .ex-motion-is-a-morph-head {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: var(--gap-between);
+  }
+
+  .ex-motion-is-a-morph-head > .h-button {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
+/* The cover sits at the slot's center and grows from it to fill the slot. */
+.ex-motion-is-a-morph-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-2);
+  background: var(--plane-sunken); /* the reserved space reads as the frame the cover grows into */
+}
+
+.ex-motion-is-a-morph-cover {
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  border-radius: var(--radius-2);
+  background: var(--plane-control-active);
+  color: var(--ink-2);
+  transition:
+    width calc(var(--dur) * var(--travel)) var(--ease-morph),
+    height calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-motion-is-a-morph-cover svg {
+  display: block;
+}
+
+.ex-motion-is-a-morph-card[data-open='true'] .ex-motion-is-a-morph-cover {
+  width: 96px;
+  height: 96px;
+}
+
+.ex-motion-is-a-morph-text {
+  display: grid;
+  flex: 1;
+  gap: var(--gap-tight);
+  min-width: 0;
+}
+
+.ex-motion-is-a-morph-title {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-motion-is-a-morph-meta {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-motion-is-a-morph-detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-motion-is-a-morph-card[data-open='true'] .ex-motion-is-a-morph-detail {
+  grid-template-rows: 1fr;
+}
+
+.ex-motion-is-a-morph-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ex-motion-is-a-morph-inner {
+  display: grid;
+  gap: var(--gap-between);
+  padding: calc(var(--gap-between) - var(--pad-1)) 0 var(--pad-1);
+  opacity: 0;
+  transition: opacity var(--dur-fade) linear;
+}
+
+.ex-motion-is-a-morph-card[data-open='true'] .ex-motion-is-a-morph-inner {
+  opacity: 1;
+}
+
+.ex-motion-is-a-morph-note {
+  max-width: 56ch;
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+.ex-motion-is-a-morph-facts {
+  display: grid;
+  gap: var(--gap-tight);
+  margin: 0;
+  font: var(--text-small);
+}
+
+.ex-motion-is-a-morph-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-between);
+}
+
+.ex-motion-is-a-morph-facts dt {
+  color: var(--ink-3);
+}
+
+.ex-motion-is-a-morph-facts dd {
+  margin: 0;
+  color: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-motion-is-a-morph-facts > div:last-child > * {
+  text-box: trim-end cap alphabetic;
+}

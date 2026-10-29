@@ -1,0 +1,159 @@
+/* Single tracks that never grow past the column, whatever their content's intrinsic width. */
+.page-column,
+.section,
+.rules,
+.rule,
+.component-docs,
+.component-doc {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* The docs reading column. The system's reading column is a text measure; this page holds wide examples beside
+   its text, so it takes a wider column and sets the measure on the text itself (.lead, .rule-text, and the lists). */
+.h-column:has(> .page-column) {
+  max-width: 55rem;
+}
+
+/* Rhythm. Every heading has less space below it than above it.
+   Page: title, --space-3 to the lead, --space-9 to the first section.
+   Section: --space-9 above, --space-3 to its lead, --space-6 to its first subsection.
+   Subsection: --space-8 above, --space-2 to its text, --space-2 from the text to its "Follows from" line,
+   --space-4 to its example frame, and --space-5 from the frame to what follows it. */
+
+.page-column {
+  display: grid;
+  gap: var(--space-9);
+}
+
+.page-header {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.page-title {
+  font: var(--text-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.lead {
+  max-width: 38rem; /* about 70 characters; examples use the full column */
+  font: var(--text-lead);
+  color: var(--ink-2);
+}
+
+/* Sections. The gap after the title is smaller when a lead follows it, so the lead belongs to the title. */
+
+.section {
+  display: grid;
+}
+
+/* A jumped-to section, rule, or component clears the closed sidebar by --space-5, matching the narrow page's top padding. */
+.section,
+.rule,
+.component-doc {
+  scroll-margin-top: calc(var(--sidebar-inset) + var(--sidebar-closed-height) + var(--space-5));
+}
+
+.section > * + * {
+  margin-top: var(--space-6);
+}
+
+.section > .section-title + .lead {
+  margin-top: var(--space-3);
+}
+
+.section-title {
+  font: var(--text-title);
+  letter-spacing: var(--tracking-title);
+}
+
+/* Each rule and its example form one group; rules sit apart from each other. */
+.rules,
+.component-docs {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.rule,
+.component-doc {
+  display: grid;
+}
+
+/* Example frames and props tables respond to the width of their rule or component, not the viewport, so they also
+   stack at large text. */
+.rule,
+.component-doc {
+  container: entry / inline-size;
+}
+
+/* An attribute or class name in prose, such as aria-invalid, never breaks at its hyphen. */
+.doc-name {
+  white-space: nowrap;
+}
+
+.rule > * + *,
+.component-doc > * + * {
+  margin-top: var(--space-2);
+}
+
+.rule > .rule-from,
+.component-doc > .rule-from {
+  margin-top: var(--space-2);
+}
+
+.rule > .example,
+.component-doc > .example {
+  margin-top: var(--space-4);
+}
+
+/* What follows an example frame, such as a props table, is a new group. */
+.rule > .example + *,
+.component-doc > .example + * {
+  margin-top: var(--space-5);
+}
+
+.rule-name {
+  font: var(--text-heading);
+  letter-spacing: var(--tracking-heading);
+  color: var(--ink-1);
+}
+
+.rule-text {
+  max-width: 38rem;
+  color: var(--ink-1);
+}
+
+.rule-from {
+  max-width: 38rem;
+  font: var(--text-small);
+  color: var(--ink-3);
+}
+
+.rule-from a {
+  color: var(--ink-3);
+}
+
+/* A heading one level below a component name, such as "Props". */
+.doc-heading {
+  font: var(--text-body);
+  font-weight: 600; /* body role, a heading one level below --text-heading */
+  color: var(--ink-1);
+}
+
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* Rule bullets and intent points. */
+
+.rule-points,
+.intent-points {
+  display: grid;
+  gap: var(--space-1);
+  max-width: 38rem;
+  padding-left: 1.25em; /* list indent, in em so the marker scales with the text */
+  list-style: disc;
+  color: var(--ink-1);
+}

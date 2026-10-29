@@ -1,0 +1,29 @@
+/* The stage is a depth 1 surface: radius-1 and pad-1. Its fields and button sit at depth 2 and take --radius-2.
+   data-contrast on the stage redefines the stroke and focus tokens for everything inside it. */
+
+.ex-structure-strengthens-with-contrast-stage {
+  display: grid;
+  gap: var(--gap-between);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+/* Each field is its own group, a label over its control, so fields sit a group gap apart. */
+.ex-structure-strengthens-with-contrast-fields {
+  display: grid;
+  gap: var(--gap-between);
+}
+
+/* The first field's label is the stage's first line, so it trims to its cap height. */
+.ex-structure-strengthens-with-contrast-fields > :first-child .h-field-label {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-structure-strengthens-with-contrast-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}

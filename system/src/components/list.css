@@ -1,0 +1,163 @@
+/* List. Rows sit on the plane under the list, set apart by their inset, and take a plane only under the pointer
+   (--plane-control) or when selected (--plane-selected, as the sidebar's current item). The 2px gap keeps two such planes from merging.
+   Dense lists touch and use a line. */
+
+.h-list {
+  --h-list-height: var(--control-height);
+  --h-list-inset: var(--inset-control);
+  --h-list-font: var(--text-body);
+  --h-list-inner-pad: var(--space-3);
+  display: grid;
+  gap: 2px; /* a plane gap between rows: the one gap below the spacing scale */
+  min-width: 0;
+}
+
+/* Rows are controls of the list's tier: standard is --control-height with body text and --inset-control; compact is
+   --control-height-compact with small text and --inset-control-compact. */
+.h-list[data-size='compact'] {
+  --h-list-height: var(--control-height-compact);
+  --h-list-inset: var(--inset-control-compact);
+  --h-list-font: var(--text-small);
+  --h-list-inner-pad: var(--space-2);
+}
+
+.h-list[data-dense] {
+  gap: 0;
+}
+
+/* Row. The corner is 2px at depth 1 and depth 2.
+   The inset is the tier's control inset on every side, measured to the ink: one line of text makes a row exactly
+   the tier's height. */
+.h-list-row {
+  --row-radius: var(--radius-1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap-within);
+  width: 100%;
+  min-height: var(--h-list-height);
+  padding: 0;
+  border: 0;
+  border-radius: min(var(--row-radius), var(--radius-control-max));
+  background: transparent;
+  color: var(--ink-1);
+  font: inherit;
+  text-align: start;
+  transition: background-color var(--dur-feedback) linear;
+}
+
+.h-list-row[data-depth='2'] {
+  --row-radius: var(--radius-2);
+}
+
+.h-list-primary {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-within);
+  flex: 1 1 12rem;
+  min-width: 0;
+  max-width: 100%;
+  min-height: var(--h-list-height);
+  padding: var(--h-list-inset);
+  border-radius: min(var(--row-radius), var(--radius-control-max));
+  font: inherit;
+  color: inherit;
+  text-align: start;
+}
+
+/* Only a row that is an action responds to the pointer: it has no plane of its own, so it takes the control plane
+   under the pointer and the hover plane while pressed. A row of plain content does not change, and a selected row
+   keeps its fill under the pointer. */
+.h-list-row:not([data-selected='true']):has(> button.h-list-primary):hover {
+  background: var(--plane-control);
+}
+
+.h-list-row:not([data-selected='true']):has(> button.h-list-primary:active) {
+  background: var(--plane-control-hover);
+}
+
+.h-list-row[data-selected='true'] {
+  background: var(--plane-selected);
+}
+
+/* Rows touch their neighbours, so the focused row rises above them and draws its ring inside its own edge. */
+.h-list-primary:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline-offset: calc(var(--focus-width) * -1);
+}
+
+/* Dense: rows touch, so they take no corners and separate with a line. */
+.h-list[data-dense] .h-list-row {
+  border-radius: 0;
+}
+
+.h-list[data-dense] .h-list-row + .h-list-row {
+  border-top: var(--stroke) solid var(--line);
+}
+
+/* Main: title over description, truncated so one row is always one line of each. */
+.h-list-main {
+  display: grid;
+  flex: 1;
+  gap: var(--gap-within);
+  min-width: 0;
+}
+
+.h-list-main > :first-child {
+  text-box: trim-start cap alphabetic;
+}
+
+.h-list-main > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+.h-list-main > :only-child,
+.h-list-meta {
+  text-box: trim-both cap alphabetic;
+}
+
+/* Titles and descriptions wrap instead of truncating, so larger text never cuts them off. */
+.h-list-title {
+  font: var(--h-list-font);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+.h-list-row[data-unread='true'] .h-list-title {
+  color: var(--ink-1);
+  font-weight: 600; /* body or small role, unread weight */
+}
+
+.h-list-description {
+  font: var(--text-small);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+/* Meta: a plain value in tertiary ink, aligned by digit. */
+.h-list-meta {
+  flex: none;
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Trailing actions are inner pieces of the row, as options are of a segmented track: 3px from the row's edges, the
+   row's height less 6px, and one step of the scale below the tier's inset at their sides, so a single-line row stays
+   its tier's height and an action's label ends within a pixel of the row's inset. Give them the list's size. */
+.h-list-end {
+  display: flex;
+  flex: none;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 100%;
+  padding: 3px;
+  gap: var(--gap-tight);
+}
+
+.h-list-end > .h-button {
+  min-height: calc(var(--h-list-height) - 6px);
+  padding-inline: var(--h-list-inner-pad);
+}

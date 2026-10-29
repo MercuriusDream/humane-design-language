@@ -1,0 +1,37 @@
+/* Button docs. Layout only; every color and size comes from tokens. */
+
+.doc-button-controls {
+  display: grid;
+  gap: var(--gap-between);
+}
+
+.doc-button-specimen {
+  display: grid;
+  gap: var(--gap-within);
+  min-width: 0;
+}
+
+.doc-button-stack {
+  display: grid;
+  gap: var(--gap-between);
+  min-width: 0;
+}
+
+.doc-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap-within);
+}
+
+.doc-button-panel {
+  display: grid;
+  min-width: 0;
+}
+
+/* The status line ends the specimen, so it drops the leading below its line. */
+.doc-button-status {
+  text-box: trim-end cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-3);
+}

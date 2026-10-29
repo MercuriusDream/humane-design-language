@@ -1,0 +1,290 @@
+/* The sidebar is a compact panel: every control in it, the title row, the nav items, and whatever sits under the
+   nav, is the compact size (--control-height-compact, --text-small, --inset-control-compact), so one height runs
+   through the whole panel. The title alone keeps body text, as the panel's name.
+   The sidebar is a root surface with depth 0 padding. The nav indicator sits at depth 1.
+   Docked, it is a section of the window: flush with the window's edges, full height, square where it meets them,
+   and set apart from the content by its plane alone. Over the content, and closed, it floats: inset from the edges
+   and squared to the same 2px corner. Closed, it is a short root as tall as the toggle. */
+
+.h-sidebar {
+  /* Closed toggle chrome. Fixed horizontal geometry, not a vertical rhythm step: 18px on the label side,
+     10px between label and icon, 14px on the icon side. Sidebar.tsx sets the same three as inline properties,
+     so the measured closed width and the rendered chrome cannot drift. */
+  --h-sidebar-closed-start: 18px;
+  --h-sidebar-closed-end: 14px;
+  --h-sidebar-icon-gap: 10px;
+  position: fixed;
+  z-index: 10;
+  top: var(--sidebar-inset);
+  left: var(--sidebar-inset);
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width);
+  height: calc(100dvh - 2 * var(--sidebar-inset));
+  overflow: hidden;
+  background: var(--plane-sunken);
+  /* No radius transition: the corner is the constant 2px cap. */
+  transition:
+    width calc(var(--dur) * var(--travel)) var(--ease-morph),
+    height calc(var(--dur) * var(--travel)) var(--ease-morph),
+    top calc(var(--dur) * var(--travel)) var(--ease-morph),
+    left calc(var(--dur) * var(--travel)) var(--ease-morph),
+    right calc(var(--dur) * var(--travel)) var(--ease-morph),
+    box-shadow var(--dur-fade) linear;
+}
+
+/* Docked: a section. It meets the window's edges, so it has no inset and no corner there. */
+.h-sidebar[data-open='true']:not([data-overlay]) {
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  border-radius: 0;
+}
+
+.h-sidebar[data-side='right'] {
+  left: auto;
+  right: var(--sidebar-inset);
+}
+
+.h-sidebar[data-side='right'][data-open='true']:not([data-overlay]) {
+  left: auto;
+  right: 0;
+}
+
+.h-sidebar[data-open='false'] {
+  width: var(--closed-width);
+  height: var(--sidebar-closed-height);
+}
+
+/* Over the content, elevation separates it from the page it covers. */
+.h-sidebar[data-overlay][data-open='true'] {
+  box-shadow: 0 12px 40px oklch(0 0 0 / 0.22);
+}
+
+/* Toggle. The same row in both forms: the site title when open, the current section when closed, with the icon
+   at the row's end in both, so the words keep their place and the icon rides the surface's edge as it morphs.
+   Closed, its --h-sidebar-closed-start and --h-sidebar-closed-end insets and --h-sidebar-icon-gap are the
+   closed form's horizontal chrome, mirrored in Sidebar.tsx.
+   Open, it is a control like the nav items: pad-0 from the panel's top and sides, the control inset inside,
+   and the radius of depth 1, so the title starts on the nav text's edge and every line of text in the panel
+   shares that edge. Height and inset morph with the surface; the title may wrap while open. */
+
+/* The toggle always fills the surface's width, so the whole visible surface takes the press
+   and its focus ring is drawn inside the clip. */
+.h-sidebar-toggle {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--h-sidebar-icon-gap);
+  width: 100%;
+  min-height: var(--sidebar-closed-height);
+  padding: 0 var(--h-sidebar-closed-end) 0 var(--h-sidebar-closed-start);
+  overflow: hidden;
+  border-radius: inherit;
+  color: var(--ink-1);
+  text-align: start;
+  transition:
+    width calc(var(--dur) * var(--travel)) var(--ease-morph),
+    margin calc(var(--dur) * var(--travel)) var(--ease-morph),
+    padding calc(var(--dur) * var(--travel)) var(--ease-morph),
+    border-radius calc(var(--dur) * var(--travel)) var(--ease-morph),
+    background-color var(--dur-feedback) linear;
+}
+
+/* The toggle has no plane of its own, so it steps as a nav item does: the control plane under the pointer,
+   the hover plane while pressed. Closed, it fills the surface, so the whole small surface takes the plane. */
+.h-sidebar-toggle:hover {
+  background: var(--plane-control);
+}
+
+.h-sidebar-toggle:active {
+  background: var(--plane-control-hover);
+}
+
+.h-sidebar[data-open='true'] .h-sidebar-toggle {
+  width: calc(100% - 2 * var(--pad-0));
+  margin: var(--pad-0) var(--pad-0) 0;
+  padding-inline: var(--inset-control-compact);
+  border-radius: min(var(--radius-1), var(--radius-control-max));
+}
+
+.h-sidebar-toggle:focus-visible {
+  outline-offset: calc(-1 * var(--focus-width) - 1px);
+}
+
+.h-sidebar[data-side='right'][data-open='false'] .h-sidebar-toggle {
+  padding: 0 var(--h-sidebar-closed-start) 0 var(--h-sidebar-closed-end);
+}
+
+.h-sidebar[data-side='right'] .h-sidebar-toggle {
+  flex-direction: row-reverse;
+}
+
+.h-sidebar-icon {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--ink-3);
+}
+
+.h-sidebar[data-side='right'] .h-sidebar-icon {
+  transform: scaleX(-1);
+}
+
+.h-sidebar-toggle-text {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+}
+
+.h-sidebar-toggle-text > span {
+  grid-area: 1 / 1;
+  align-self: center;
+  justify-self: start;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: opacity var(--dur-fade) linear;
+}
+
+/* Open, the text takes its final width at once, like the body, so the title wraps once
+   and is clipped by the growing surface instead of rewrapping in the narrow closed form. */
+.h-sidebar[data-open='true'] .h-sidebar-toggle-text {
+  flex: none;
+  width: calc(var(--sidebar-width) - 2 * (var(--pad-0) + var(--inset-control-compact)) - 1.25rem - var(--h-sidebar-icon-gap));
+}
+
+.h-sidebar[data-open='true'] .h-sidebar-title {
+  white-space: normal;
+}
+
+/* Closed on the right, the label sits against the icon on its end side. */
+.h-sidebar[data-side='right'][data-open='false'] .h-sidebar-toggle-text > span {
+  justify-self: end;
+}
+
+.h-sidebar-title {
+  font: var(--text-body);
+  font-weight: 600; /* body role, app name weight */
+}
+
+.h-sidebar-current {
+  font: var(--text-label);
+}
+
+.h-sidebar[data-open='true'] .h-sidebar-current,
+.h-sidebar[data-open='false'] .h-sidebar-title {
+  opacity: 0;
+}
+
+/* Body. Fixed width, so it is clipped by the shrinking surface instead of reflowing.
+   Rhythm: --gap-within from the title row to the nav, at least --space-6 from the nav to what follows it,
+   which is pinned to the bottom of the panel. */
+
+.h-sidebar-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: var(--sidebar-width);
+  min-height: 0;
+  /* The gap to the title row sits outside the scroller, so scrolled text is clipped 8px below the title, never against it. */
+  margin-top: var(--gap-within);
+  overflow-y: auto;
+  padding: 0 var(--pad-0) var(--pad-0);
+  transition: opacity var(--dur-fade) linear;
+}
+
+.h-sidebar[data-side='right'] .h-sidebar-body {
+  align-self: flex-end;
+}
+
+.h-sidebar[data-open='false'] .h-sidebar-body {
+  opacity: 0;
+}
+
+.h-nav {
+  position: relative;
+}
+
+.h-nav-list {
+  display: grid;
+}
+
+.h-nav-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: min(var(--radius-1), var(--radius-control-max));
+  background: var(--plane-selected);
+  transition:
+    transform calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph),
+    height calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph);
+}
+
+.h-nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-within);
+  width: 100%;
+  min-height: var(--control-height-compact);
+  text-align: start;
+  padding: 0 var(--inset-control-compact);
+  border-radius: min(var(--radius-1), var(--radius-control-max));
+  font: var(--text-small);
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: color var(--dur-feedback) linear;
+}
+
+/* Hover changes the plane only; the current item takes essential ink, as a selected option does. */
+.h-nav-link[aria-current] {
+  color: var(--ink-1);
+}
+
+/* Under the pointer an item takes the control plane. The current item's indicator is the selected plane, as a
+   segmented control's chosen option: lighter than the panel in both schemes, where hover is a darker step in light,
+   so hovering never reads as being there. */
+.h-nav-link:not([aria-current]) {
+  transition:
+    color var(--dur-feedback) linear,
+    background-color var(--dur-feedback) linear;
+}
+
+.h-nav-link:not([aria-current]):hover {
+  background: var(--plane-control);
+}
+
+.h-nav-link:not([aria-current]):active {
+  background: var(--plane-control-hover);
+}
+
+/* Items touch, so the ring sits inside the item and never covers a neighbour. */
+.h-nav-link:focus-visible {
+  outline-offset: calc(var(--focus-width) * -1);
+}
+
+/* A count is a plain number in tertiary ink, never a saturated badge. */
+.h-nav-count {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.h-nav-link[aria-current] .h-nav-count {
+  color: var(--ink-2);
+}
+
+/* Content under the navigation sits at the bottom of the panel, on the panel's content edges: --pad-0 plus the
+   control inset on both sides. Its labels, its tracks, and its plain text start where the nav text starts and end
+   where the nav counts and the title row's icon end. Only the nav planes, which hold text inside them, reach out
+   to --pad-0. */
+.h-sidebar-extra {
+  margin-top: auto;
+  padding-inline: var(--inset-control-compact);
+}

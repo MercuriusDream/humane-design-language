@@ -1,0 +1,41 @@
+/* The list scrolls inside its own region once it grows. The negative margin keeps focus rings from being clipped. */
+
+.ex-never-move-what-the-user-is-about-to-touch-stage {
+  min-width: 0;
+}
+
+.ex-never-move-what-the-user-is-about-to-touch-scroll {
+  max-height: 280px;
+  overflow-y: auto;
+  margin: calc(var(--gap-tight) * -1);
+  padding: var(--gap-tight);
+}
+
+/* With nothing waiting, the reserved slot says so, so the space above the list reads as a place, not a gap. */
+.ex-never-move-what-the-user-is-about-to-touch-stage .h-arrivals-slot:empty::before {
+  content: 'Nothing new';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex: 1;
+  border-radius: var(--radius-1);
+  /* One plane above the sunken frame, so the empty slot reads as a band. */
+  background: var(--plane-base);
+  font: var(--text-small);
+  color: var(--ink-3);
+}
+
+/* Once something waits, the slot is a control on the same band: it keeps a plane, one step up from the empty band,
+   so the thing to press never reads weaker than the placeholder it replaced. */
+.ex-never-move-what-the-user-is-about-to-touch-stage .h-arrivals-button.h-button {
+  background: var(--plane-control);
+}
+
+.ex-never-move-what-the-user-is-about-to-touch-stage .h-arrivals-button.h-button:hover {
+  background: var(--plane-control-hover);
+}
+
+.ex-never-move-what-the-user-is-about-to-touch-stage .h-arrivals-button.h-button:active {
+  background: var(--plane-control-active);
+}

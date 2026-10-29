@@ -1,0 +1,75 @@
+/* Insets are measured to the ink. One depth 1 card with the same padding on all four sides in both modes.
+   Line box leaves the leading above the first line and below the last; Ink trims it, so the letters sit at the padding. */
+
+/* The card and the readout that measures it. */
+.ex-insets-are-measured-to-the-ink-stage {
+  display: grid;
+  gap: var(--gap-between);
+}
+
+.ex-insets-are-measured-to-the-ink-card {
+  position: relative;
+  isolation: isolate; /* the ink box paints under the text but over the card's plane */
+  display: grid;
+  gap: var(--gap-within);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+/* Measured in JS from the laid out text, so it shows exactly where the letters start and end. */
+.ex-insets-are-measured-to-the-ink-ink {
+  position: absolute;
+  z-index: -1;
+  background: var(--plane-fill);
+}
+
+.ex-insets-are-measured-to-the-ink-title {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-insets-are-measured-to-the-ink-body {
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* The card is a grid, so its own trim does not reach the text: the first and last items trim their outer side. */
+.ex-insets-are-measured-to-the-ink-card[data-mode='ink'] .ex-insets-are-measured-to-the-ink-title {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-insets-are-measured-to-the-ink-card[data-mode='ink'] .ex-insets-are-measured-to-the-ink-body {
+  text-box: trim-end cap alphabetic;
+}
+
+/* Each label sits beside its value, in a short column so the pairs stay close. Only the last row trims,
+   at the bottom of the frame. */
+.ex-insets-are-measured-to-the-ink-readout {
+  display: grid;
+  max-width: 12rem;
+  gap: var(--gap-tight);
+  margin: 0;
+  font: var(--text-small);
+}
+
+.ex-insets-are-measured-to-the-ink-readout > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+.ex-insets-are-measured-to-the-ink-readout > div:last-child > * {
+  text-box: trim-end cap alphabetic;
+}
+
+.ex-insets-are-measured-to-the-ink-readout dt {
+  color: var(--ink-2);
+}
+
+.ex-insets-are-measured-to-the-ink-readout dd {
+  margin: 0;
+  color: var(--ink-1);
+  font-variant-numeric: tabular-nums;
+}

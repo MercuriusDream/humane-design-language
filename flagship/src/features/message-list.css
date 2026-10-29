@@ -1,0 +1,300 @@
+/* Message list. The letters sit on the plane of their section, set apart by space, not by tiles or lines:
+   each row's inset is twice the gap between its own lines. A row takes a plane only under the pointer
+   (the control plane) and when it is the open letter (the selected plane, as the sidebar's current item). Rows are one line each of who, what, and how it begins, so every row has the same height. */
+
+/* The list is a root (data-root) for its radius only: it draws no plane of its own. Its rows take the control
+   radius of depth 1, the same corner as the sidebar's indicator. */
+.message-list-body {
+  --message-list-gap: 2px; /* keeps two neighbouring planes, hovered and open, from merging */
+  position: relative;
+  display: grid;
+  min-width: 0;
+}
+
+/* On its own on the page, the list steps out by the row inset, so the letters' text meets the title's edge. */
+.mailbox:not([data-layout='sections']) .message-list-body {
+  margin-inline: calc(var(--inset-control) * -1);
+}
+
+/* Each item carries its own gap as bottom padding, so a collapsing row takes its gap with it. */
+.message-list-body .h-list {
+  gap: 0;
+}
+
+/* Collapse is a grid-template-rows morph timed by the row height (--dur set on the body). */
+.message-list-item {
+  display: grid;
+  grid-template-rows: 1fr;
+  padding-bottom: var(--message-list-gap);
+  transition:
+    grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph),
+    padding-bottom calc(var(--dur) * var(--travel)) var(--ease-morph),
+    opacity var(--dur-fade) linear;
+}
+
+.message-list-item:last-child {
+  padding-bottom: 0;
+}
+
+.message-list-item[data-status='leaving'] {
+  grid-template-rows: 0fr;
+  padding-bottom: 0;
+  opacity: 0;
+}
+
+.message-list-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The row's plane. Its action is placed over the time, at the inline end of the first line. */
+.message-list-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: min(var(--radius-1), var(--radius-control-max));
+}
+
+.message-list-item[data-status='present'] .message-list-row {
+  transition: background-color var(--dur-feedback) linear;
+}
+
+.message-list-item[data-status='present'] .message-list-row:hover {
+  background: var(--plane-control);
+}
+
+/* Declared after hover, so the open letter keeps its plane under the pointer. It is the selected plane, as the
+   sidebar's current item: the same plane as the letter beside it in light, a step above hover in dark. */
+.message-list-item[data-selected] .message-list-row {
+  background: var(--plane-selected);
+}
+
+/* On a hovered or open row, the action's own plane is the hover step, so it still shows under the pointer. */
+.message-list-row .message-list-action:hover:not(:disabled) {
+  background: var(--plane-control-hover);
+}
+
+.message-list-item[data-selected] .message-list-row .message-list-action:hover:not(:disabled) {
+  background: var(--plane-control);
+}
+
+/* The letter: who and when, then the subject, then one line of the letter itself. A list row: the control
+   inset on every side, measured to the ink, as the outgoing letters above, so their text lines up. */
+.message-row {
+  display: grid;
+  flex: 1;
+  gap: 0;
+  min-width: 0;
+  padding: var(--inset-control);
+  border-radius: min(var(--radius-1), var(--radius-control-max));
+  text-align: start;
+}
+
+/* The row is a grid, so its first and last lines trim themselves. The first line is a row of its own,
+   so each of its items trims its top. */
+.message-row > :first-child > * {
+  text-box: trim-start cap alphabetic;
+}
+
+.message-row > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+/* The row is clipped for its collapse, so its ring is drawn inside its own edge. */
+.message-row:focus-visible {
+  outline-offset: calc(var(--focus-width) * -1);
+}
+
+.message-row-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap-within);
+  min-width: 0;
+}
+
+/* One line, clipped across only, so the trimmed line keeps what rises above the cap height. */
+.message-row-name {
+  min-width: 0;
+  overflow-x: clip;
+  font: var(--text-body);
+  color: var(--ink-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message-row[data-unread] .message-row-name {
+  font-weight: 600; /* body role, unread weight */
+}
+
+/* The time reserves the width of the action that replaces it, less the inset they share at the row's end, so the
+   name never runs under that action. */
+.message-row-time {
+  flex: none;
+  min-inline-size: calc(var(--message-list-action-width) - var(--inset-control));
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+  transition: opacity var(--dur-fade) linear;
+}
+
+/* One line, like the preview, so a long subject never makes its row taller than its neighbours. The whole subject
+   is the open letter's heading. */
+.message-row-subject {
+  min-width: 0;
+  overflow-x: clip;
+  font: var(--text-body);
+  color: var(--ink-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message-row[data-unread] .message-row-subject {
+  color: var(--ink-1);
+}
+
+/* Unread is also a mark: a dot before the time, so it does not rest on weight alone. A mark holds no content,
+   so it is a circle, centered on the time's cap height. It leaves with the time when Archive takes its place. */
+.message-row[data-unread] .message-row-time::before {
+  --message-row-dot: 8px;
+  content: '';
+  display: inline-block;
+  width: var(--message-row-dot);
+  height: var(--message-row-dot);
+  margin-inline-end: var(--gap-within);
+  border-radius: 50%; /* a mark */
+  background: var(--ink-1);
+  vertical-align: calc(0.35em - var(--message-row-dot) / 2);
+}
+
+/* Clipped across only, so the trimmed line keeps its descenders below the baseline. A clip is not a scroll
+   container, so the line would widen the row; min-width keeps it to the row. */
+.message-row-preview {
+  min-width: 0;
+  overflow-x: clip;
+  font: var(--text-small);
+  color: var(--ink-3);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Archive waits out of sight. It appears where the time was, on the open letter's row and on a row keyboard focus
+   is in. Hover never reveals it: the pointer changes a row's plane and nothing else. Out of sight, it takes no press,
+   so a click on that corner of a row opens the letter.
+   It is a standard button, the list's tier, set in the row's top end corner: its label is then the control inset
+   from the row's top and end, on the same lines as the name's cap height and the time's end. Its plane, on hover
+   and as Undo, takes the row's own corner and has the same inset on every side of its label. Archive, Restore, and
+   Undo all end on that corner, so the label's end never moves as the row changes state. */
+.message-list-item {
+  --message-list-action-width: calc(4rem + 2 * var(--inset-control)); /* the longest label, Restore, is under 4rem */
+}
+
+.message-list-item .message-list-action {
+  position: absolute;
+  top: 0;
+  inset-inline-end: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-fade) linear,
+    background-color var(--dur-feedback) linear;
+}
+
+.message-list-item[data-status='present'] .message-list-row:focus-within .message-list-action,
+.message-list-item[data-selected] .message-list-action {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.message-list-item[data-status='present'] .message-list-row:focus-within .message-row-time,
+.message-list-item[data-selected] .message-row-time {
+  opacity: 0;
+}
+
+/* Without hover, a hidden action could be pressed unseen. Archive from the open letter instead. */
+@media (hover: none) {
+  .message-list-item[data-status='present'] .message-list-action {
+    display: none;
+  }
+
+  .message-list-item[data-status='present'] .message-list-row:focus-within .message-row-time,
+  .message-list-item[data-selected] .message-row-time {
+    opacity: 1;
+  }
+}
+
+/* Ghost: no plane of its own, so the place reads as the list's plane, not a gap. Undo is the one solid object in it.
+   The row keeps its words, dimmed, on the letter's text edges, and Undo takes Archive's box in the row's corner,
+   so the press lands on Undo and its label stays where Archive's was. */
+.message-list-item[data-status='removed'] .message-list-row,
+.message-list-item[data-status='leaving'] .message-list-row {
+  background: transparent;
+}
+
+.message-list-item:not([data-status='present']) .message-list-action { opacity: 1; pointer-events: auto; }
+.message-list-item:not([data-status='present']) .message-row-time { opacity: 0; }
+.message-row:disabled { color: var(--ink-3); cursor: default; }
+.message-row:disabled :is(.message-row-name, .message-row-subject, .message-row-preview) { color: var(--ink-3); }
+
+/* The action sits in the row's corner and the row is clipped for its collapse, so its ring is drawn inside its edge. */
+.message-list-action:focus-visible {
+  outline-offset: calc(var(--focus-width) * -1);
+}
+
+/* Keep the full footprint during the reduced-motion fade. */
+.message-list-item[data-reduced][data-status='leaving'] {
+  grid-template-rows: 1fr;
+  padding-bottom: var(--message-list-gap);
+  transition: opacity 120ms linear;
+}
+.message-list-item[data-reduced][data-status='leaving']:last-child { padding-bottom: 0; }
+
+.message-list-item[data-status='removed'] .message-list-action,
+.message-list-item[data-status='leaving'] .message-list-action {
+  flex: none;
+}
+
+/* No results: words in supporting ink, and the way back. The list's own padding is the inset, so the words
+   trim at its edges. */
+.message-list-empty {
+  display: grid;
+  justify-items: start;
+  gap: var(--gap-within);
+}
+
+.message-list-empty > :first-child {
+  text-box: trim-start cap alphabetic;
+}
+
+.message-list-empty > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+.message-list-empty > :only-child {
+  text-box: trim-both cap alphabetic;
+}
+
+/* Under letters still on their way, the words keep the gap the list's edge would give them. */
+.outbox ~ .message-list-empty {
+  padding-top: var(--space-3);
+}
+
+.message-list-empty-text {
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* Visually hidden, still read by assistive technology. */
+.message-list-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

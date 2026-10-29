@@ -1,0 +1,36 @@
+/* Surface docs. Each level is a grid so its label and the nested plane sit one within-group gap apart. */
+
+.doc-surface-level {
+  display: grid;
+  gap: var(--gap-within);
+  min-width: 0;
+  /* A plane or padding change morphs the same level in place. Travel scales with --travel. */
+  transition:
+    background-color var(--dur-feedback) linear,
+    padding calc(var(--dur-fade) * var(--travel)) var(--ease-morph);
+}
+
+/* The level's name and the values the system gives it share one line, and wrap as a pair when the line is short.
+   Each item trims its own line, since the label is a flex row. */
+.doc-surface-label {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--gap-tight) var(--gap-within);
+  margin: 0;
+  font: var(--text-small);
+}
+
+.doc-surface-name,
+.doc-surface-values {
+  text-box: trim-both cap alphabetic;
+}
+
+.doc-surface-name {
+  color: var(--ink-1);
+}
+
+.doc-surface-values {
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}

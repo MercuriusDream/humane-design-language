@@ -1,0 +1,44 @@
+/* ProgressSurface docs. Layout only; every color and size comes from tokens. */
+
+.doc-progress-surface-controls {
+  display: grid;
+  gap: var(--gap-between);
+  justify-items: stretch;
+}
+
+.doc-progress-surface-stack {
+  display: grid;
+  gap: var(--gap-within);
+  min-width: 0;
+}
+
+/* A row inside a padded surface: each item trims its own line, and the two share a baseline. */
+.doc-progress-surface-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+.doc-progress-surface-title,
+.doc-progress-surface-count {
+  text-box: trim-both cap alphabetic;
+}
+
+.doc-progress-surface-title {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.doc-progress-surface-count {
+  margin: 0;
+  font: var(--text-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.doc-progress-surface-panel {
+  min-width: 0;
+}

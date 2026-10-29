@@ -1,0 +1,50 @@
+/* Scheme and contrast are separate. Each cell stands for a whole screen in one combination, so it is a root
+   (depth 0) that sets its own color-scheme (inline) and data-contrast, and its tokens resolve in that combination
+   alone. The card is depth 1, its button depth 2. */
+
+.ex-scheme-and-contrast-are-separate-choices-grid {
+  display: grid;
+  /* Two by two where each cell has room for its card, one column where it does not. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: var(--gap-within); /* the same as perception varies, the other grid of four conditions */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ex-scheme-and-contrast-are-separate-choices-cell {
+  display: grid;
+  align-content: start;
+  gap: var(--gap-within);
+  color: var(--ink-1);
+}
+
+.ex-scheme-and-contrast-are-separate-choices-label {
+  margin: 0;
+  font: var(--text-label);
+  color: var(--ink-2);
+}
+
+.ex-scheme-and-contrast-are-separate-choices-card {
+  display: grid;
+  justify-items: start;
+  gap: var(--gap-tight);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+  color: var(--ink-1);
+}
+
+/* The card is a grid, so its first line trims itself. Its last item is the button, measured by its edge. */
+.ex-scheme-and-contrast-are-separate-choices-title {
+  text-box: trim-start cap alphabetic;
+  margin: 0;
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.ex-scheme-and-contrast-are-separate-choices-meta {
+  margin: 0;
+  font: var(--text-small);
+  color: var(--ink-2);
+}

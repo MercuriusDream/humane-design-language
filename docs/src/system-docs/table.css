@@ -1,0 +1,17 @@
+/* Table documentation. The frame holds the live specimen; the table itself comes from the system. */
+
+/* The frame is the same object in both widths, so its change is a morph, not a swap.
+   The table has no plane of its own, and its cells keep their padding inside the scrolling wrapper, so no letter is
+   clipped. The frame pulls the outer rows' padding out over the example's edges instead, so the header's first line
+   meets the frame's top inset, level with the hint, and the last row its bottom inset when the table ends the frame. The lines between rows keep to the specimen's column. */
+.doc-table-frame {
+  width: 100%;
+  max-width: 100%;
+  margin-block: calc(var(--pad-0) * -1);
+  transition: max-width calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+/* Narrow frame: the table keeps its natural width and scrolls inside the frame. */
+.doc-table-frame[data-narrow] {
+  max-width: 300px;
+}

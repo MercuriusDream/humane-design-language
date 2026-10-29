@@ -1,0 +1,112 @@
+/* Slider. The track alone identifies the control, so it meets 3:1. The input is its tier's height
+   (--control-height, compact --control-height-compact), so the whole row takes the press, and the focus ring is
+   drawn on the thumb. The label and the value keep their roles in both tiers. */
+
+.h-slider {
+  /* The track and thumb are geometry, not gaps. They are published so a consumer that cancels the row's
+     bottom padding at a frame edge can use the same sizes instead of restating them. The thumb is a chosen
+     mark size; the row pad is the space below it. */
+  --h-slider-height: var(--control-height);
+  --h-slider-track: calc(3px + var(--stroke)); /* 4px standard, 5px high contrast */
+  --h-slider-thumb: 18px;
+  --h-slider-row-pad: calc((var(--h-slider-height) - var(--h-slider-thumb)) / 2);
+  display: grid;
+  gap: var(--gap-within);
+}
+
+.h-slider[data-size='compact'] {
+  --h-slider-height: var(--control-height-compact);
+}
+
+.h-slider-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+.h-slider-value {
+  white-space: nowrap; /* a value never parts from its unit */
+  font: var(--text-small);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.h-slider input {
+  appearance: none;
+  width: 100%;
+  height: var(--h-slider-height);
+  margin: 0;
+  background: none;
+}
+
+.h-slider input::-webkit-slider-runnable-track {
+  height: var(--h-slider-track);
+  border-radius: 0; /* a line has no corner */
+  background: var(--ink-boundary);
+}
+
+.h-slider input::-moz-range-track {
+  height: var(--h-slider-track);
+  border-radius: 0; /* a line has no corner */
+  background: var(--ink-boundary);
+}
+
+.h-slider input::-webkit-slider-thumb {
+  appearance: none;
+  width: var(--h-slider-thumb);
+  height: var(--h-slider-thumb);
+  margin-top: calc((var(--h-slider-track) - var(--h-slider-thumb)) / 2); /* centers the thumb on the track */
+  border: 0;
+  border-radius: 50%; /* the thumb is a mark */
+  background: var(--ink-1);
+}
+
+.h-slider input::-moz-range-thumb {
+  width: var(--h-slider-thumb);
+  height: var(--h-slider-thumb);
+  border: 0;
+  border-radius: 50%; /* the thumb is a mark */
+  background: var(--ink-1);
+}
+
+.h-slider input:focus-visible {
+  outline: none;
+}
+
+/* Separate rules: a selector list with an unknown vendor pseudo-element is dropped whole. */
+.h-slider input:focus-visible::-webkit-slider-thumb {
+  outline: var(--focus-width) solid var(--signal-focus);
+  outline-offset: 2px;
+}
+
+.h-slider input:focus-visible::-moz-range-thumb {
+  outline: var(--focus-width) solid var(--signal-focus);
+  outline-offset: 2px;
+}
+
+/* Forced colors: the track is CanvasText and the thumb is Highlight, so the control keeps its shape and its mark. */
+@media (forced-colors: active) {
+  .h-slider input::-webkit-slider-runnable-track {
+    background: CanvasText;
+  }
+
+  .h-slider input::-moz-range-track {
+    background: CanvasText;
+  }
+
+  .h-slider input::-webkit-slider-thumb {
+    background: Highlight;
+  }
+
+  .h-slider input::-moz-range-thumb {
+    background: Highlight;
+  }
+
+  .h-slider input:focus-visible::-webkit-slider-thumb {
+    outline-color: Highlight;
+  }
+
+  .h-slider input:focus-visible::-moz-range-thumb {
+    outline-color: Highlight;
+  }
+}

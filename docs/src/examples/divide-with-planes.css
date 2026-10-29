@@ -1,0 +1,45 @@
+/* Divide with planes. The groups sit straight on the frame's sunken plane, at depth 1. They are raised planes
+   in planes mode, and transparent sections divided by a 1px rule in lines mode. The gap between groups is the
+   same in both modes, so only the division changes. */
+
+.ex-divide-with-planes-panel {
+  display: grid;
+  gap: var(--gap-between);
+  width: 100%;
+}
+
+.ex-divide-with-planes-section {
+  position: relative;
+  display: grid;
+  gap: var(--gap-within);
+  transition: background-color var(--dur-fade) linear;
+}
+
+/* The rule sits at the middle of the gap between two groups. It fades in with the lines mode. */
+.ex-divide-with-planes-section + .ex-divide-with-planes-section::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--gap-between) / -2);
+  left: 0;
+  right: 0;
+  height: var(--stroke);
+  background: var(--line);
+  opacity: 0;
+  transition: opacity var(--dur-fade) linear;
+}
+
+.ex-divide-with-planes-panel[data-divide='lines'] .ex-divide-with-planes-section + .ex-divide-with-planes-section::before {
+  opacity: 1;
+}
+
+.ex-divide-with-planes-heading {
+  font: var(--text-label);
+  color: var(--ink-2);
+}
+
+/* Switch rows are their track's height, so the group's padding reaches the track on every side. The switches are
+   one group of settings, --gap-within apart, as in PreferenceControls. */
+.ex-divide-with-planes-rows {
+  display: grid;
+  gap: var(--gap-within);
+}

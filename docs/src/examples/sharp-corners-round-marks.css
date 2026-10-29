@@ -1,0 +1,100 @@
+/* An outbox as three levels. Every surface takes the same 2px corner; the root and the panel set neither.
+   The letters are depth 2, and the mark on each letter is a circle: it holds no content, so it takes no
+   corner from a surface. The switch track is the one pill. */
+
+/* Container for the query below, so the layout follows the width of the example, not the window. */
+.ex-sharp-corners-round-marks-stage {
+  container-type: inline-size;
+}
+
+.ex-sharp-corners-round-marks-root {
+  display: grid;
+  gap: var(--gap-between);
+}
+
+@container (min-width: 36rem) {
+  .ex-sharp-corners-round-marks-root {
+    grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+  }
+}
+
+.ex-sharp-corners-round-marks-intro {
+  display: grid;
+  align-content: start;
+  gap: var(--gap-between);
+}
+
+.ex-sharp-corners-round-marks-text {
+  display: grid;
+  gap: var(--gap-within);
+}
+
+/* The root's first line, at its padded edge. */
+.ex-sharp-corners-round-marks-title {
+  text-box: trim-start cap alphabetic;
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-sharp-corners-round-marks-lede {
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+.ex-sharp-corners-round-marks-letters {
+  display: grid;
+  align-content: start;
+  gap: var(--gap-tight);
+}
+
+/* Set like a compact List row: the compact control inset on every side, measured to the ink.
+   Siblings at depth 2 share one radius. */
+.ex-sharp-corners-round-marks-letter {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--gap-within) var(--space-3);
+  padding: var(--inset-control-compact);
+  border-radius: var(--radius-2);
+  background: var(--plane-raised);
+  font: var(--text-small);
+}
+
+/* A mark: a circle centered on the cap height of the first line. */
+.ex-sharp-corners-round-marks-mark {
+  width: var(--space-2);
+  height: var(--space-2);
+  margin-top: calc((1cap - var(--space-2)) / 2);
+  border-radius: 50%;
+  background: var(--ink-1);
+  font: var(--text-label);
+  transition: background-color var(--dur-fade) linear;
+}
+
+.ex-sharp-corners-round-marks-letter[data-held] .ex-sharp-corners-round-marks-mark {
+  background: var(--ink-boundary);
+}
+
+.ex-sharp-corners-round-marks-main {
+  display: grid;
+  gap: var(--gap-tight);
+}
+
+/* Stacked lines trim only at the row's edges; the time sits beside them, so it trims both. */
+.ex-sharp-corners-round-marks-to {
+  text-box: trim-start cap alphabetic;
+  font: var(--text-label);
+  color: var(--ink-1);
+}
+
+.ex-sharp-corners-round-marks-subject {
+  text-box: trim-end cap alphabetic;
+  color: var(--ink-2);
+}
+
+.ex-sharp-corners-round-marks-time {
+  text-box: trim-both cap alphabetic;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}

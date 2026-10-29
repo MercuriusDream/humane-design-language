@@ -1,0 +1,66 @@
+/* Four conditions of one message card. Each stage stands for a whole screen under its condition, so it is a root
+   (data-root): depth 0 padding and a 2px corner. The card inside is depth 1.
+   Larger text redefines the type tokens on its stage, so the card reflows with the same hierarchy. */
+
+/* Captions are trimmed to their ink, so the gaps are measured from the letters: a caption sits a within gap
+   above its own stage, and a whole gap between groups below the stage before it. */
+.ex-perception-varies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  align-items: start;
+  gap: var(--gap-between) var(--gap-within);
+}
+
+/* Each stage fits its own card, so its inset is the same on all four sides. A stage stretched to its neighbor's
+   height would leave empty space under a shorter card. */
+.ex-perception-varies-case {
+  display: grid;
+  gap: var(--gap-within);
+  margin: 0;
+  min-width: 0;
+}
+
+.ex-perception-varies-caption {
+  text-box: trim-both cap alphabetic;
+  font: var(--text-label);
+  color: var(--ink-2);
+}
+
+.ex-perception-varies-stage {
+  padding: var(--pad-0);
+  background: var(--plane-base);
+  color: var(--ink-1);
+}
+
+/* Larger text: the body token is redefined at 1.25 times the system's size, with the system's weight and line height,
+   so the card's heading and text (both body size) scale together. A specimen of the user's text setting. */
+.ex-perception-varies-stage[data-look='larger'] {
+  --text-body: 400 calc(1.0625rem * 1.25) / 1.6 var(--font);
+}
+
+/* Grayscale: hierarchy must come from lightness, so it survives with hue removed. */
+.ex-perception-varies-stage[data-look='grayscale'] {
+  filter: grayscale(1);
+}
+
+/* High contrast is set by the data-contrast attribute on the stage; the system's tokens do the rest. */
+
+/* Surface sets the padding, radius, and plane for depth 1. This class adds only layout and ink. */
+.ex-perception-varies-card {
+  display: grid;
+  gap: var(--gap-tight);
+  color: var(--ink-1);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ex-perception-varies-sender {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-perception-varies-text {
+  font: var(--text-body);
+  color: var(--ink-2);
+}

@@ -1,0 +1,173 @@
+/* Checkbox. A 20 square box on a raised plane, edged by an inset boundary (3:1 floor).
+   The box takes the 2px control corner. The check draws in over morphDuration(20) ms.
+   Shares its row geometry with the radio row: --h-choice-height, --h-choice-mark, and --h-choice-gap come from
+   the tier tokens, and --h-choice-row-pad and --h-choice-mark-pad publish the geometry a consumer must cancel
+   at a frame edge.
+   Standard: --control-height, body text, a 20px mark, a 12px gap. Compact: --control-height-compact, small text,
+   a 16px mark, an 8px gap. The mark is centered on the first line. */
+
+.h-checkbox {
+  --h-choice-height: var(--control-height);
+  --h-choice-mark: var(--choice-mark);
+  --h-choice-gap: var(--choice-gap);
+  --h-choice-row-pad: calc((var(--h-choice-height) - 1lh) / 2);
+  --h-choice-mark-pad: calc((var(--h-choice-height) - var(--h-choice-mark)) / 2);
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--h-choice-gap);
+  width: 100%;
+  min-height: var(--h-choice-height);
+  padding-block: var(--h-choice-row-pad);
+  font: var(--text-body);
+  text-align: start;
+}
+
+.h-checkbox[data-size='compact'] {
+  --h-choice-height: var(--control-height-compact);
+  --h-choice-mark: var(--choice-mark-compact);
+  --h-choice-gap: var(--choice-gap-compact);
+  font: var(--text-small);
+}
+
+/* Visually replaced, still focusable and announced by the native input. */
+.h-checkbox-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+  clip-path: inset(50%);
+}
+
+.h-checkbox-box {
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--h-choice-mark);
+  height: var(--h-choice-mark);
+  margin-top: calc((1lh - var(--h-choice-mark)) / 2); /* centers the box on the first line of the label */
+  border-radius: min(var(--radius-1), var(--radius-control-max));
+  background: var(--plane-raised);
+  box-shadow: inset 0 0 0 var(--stroke) var(--ink-boundary);
+  transition: background-color var(--dur-feedback) linear;
+}
+
+.h-checkbox[data-depth='2'] .h-checkbox-box {
+  border-radius: min(var(--radius-2), var(--radius-control-max));
+}
+
+/* The box steps as a switch's track does: empty, the control plane under the pointer and the hover plane while
+   pressed; checked, the ink fill lightens under the pointer and returns to full ink while pressed. */
+.h-checkbox:hover .h-checkbox-input:not(:disabled):not(:checked) + .h-checkbox-box {
+  background: var(--plane-control);
+}
+
+.h-checkbox:active .h-checkbox-input:not(:disabled):not(:checked) + .h-checkbox-box {
+  background: var(--plane-control-hover);
+}
+
+.h-checkbox-input:checked + .h-checkbox-box {
+  background: var(--ink-1);
+}
+
+.h-checkbox:hover .h-checkbox-input:not(:disabled):checked + .h-checkbox-box {
+  background: var(--ink-2);
+}
+
+.h-checkbox:active .h-checkbox-input:not(:disabled):checked + .h-checkbox-box {
+  background: var(--ink-1);
+}
+
+/* Focus is a signal: an outline on the box, outside the edge, always visible. */
+.h-checkbox-input:focus-visible + .h-checkbox-box {
+  outline: var(--focus-width) solid var(--signal-focus);
+  outline-offset: 2px;
+}
+
+.h-checkbox-mark {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--ink-inverse);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Path length normalized to 1. Hidden at offset 1, drawn in at offset 0. */
+.h-checkbox-mark path {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.h-checkbox-input:checked + .h-checkbox-box .h-checkbox-mark path {
+  stroke-dashoffset: 0;
+}
+
+.h-checkbox-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-tight);
+  min-width: 0;
+}
+
+.h-checkbox-label {
+  color: var(--ink-1);
+}
+
+.h-checkbox-hint {
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+.h-checkbox[data-disabled] .h-checkbox-label,
+.h-checkbox[data-disabled] .h-checkbox-hint {
+  color: var(--ink-3);
+}
+
+.h-checkbox[data-disabled] .h-checkbox-box {
+  box-shadow: inset 0 0 0 var(--stroke) var(--ink-3);
+}
+
+/* Declared after the disabled edge: a disabled checked box is a flat tertiary fill. */
+.h-checkbox[data-disabled] .h-checkbox-input:checked + .h-checkbox-box {
+  background: var(--ink-3);
+  box-shadow: none;
+}
+
+/* Forced colors removes the inset box shadow and author fills. Draw the choice with system colors instead:
+   a real border for the box, Highlight for the checked fill, and HighlightText for the check. */
+@media (forced-colors: active) {
+  .h-checkbox-box {
+    border: var(--stroke) solid CanvasText;
+    background: Canvas;
+    box-shadow: none;
+  }
+
+  .h-checkbox-input:checked + .h-checkbox-box {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  .h-checkbox-mark {
+    stroke: HighlightText;
+  }
+
+  .h-checkbox[data-disabled] .h-checkbox-box {
+    border-color: GrayText;
+    background: Canvas;
+  }
+
+  .h-checkbox[data-disabled] .h-checkbox-input:checked + .h-checkbox-box {
+    border-color: GrayText;
+    background: GrayText;
+  }
+
+  .h-checkbox[data-disabled] .h-checkbox-mark {
+    stroke: Canvas;
+  }
+}

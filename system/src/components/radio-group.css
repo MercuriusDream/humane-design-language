@@ -1,0 +1,139 @@
+/* Radio group. The mark is a circle with a circle half its size inside: a mark, so it is round in any root.
+   Rows share the checkbox geometry: --h-choice-height, --h-choice-mark, and --h-choice-gap come from the tier
+   tokens, and --h-choice-row-pad and --h-choice-mark-pad publish the geometry a consumer must cancel at a
+   frame edge. Options sit
+   --gap-within apart, as checkbox rows do in a stack, so two rows and their focus rings never touch.
+   Standard: --control-height, body text, a 20px mark, a 12px gap. Compact: --control-height-compact, small text,
+   a 16px mark, an 8px gap. */
+
+.h-radio-group {
+  --h-choice-height: var(--control-height);
+  --h-choice-mark: var(--choice-mark);
+  --h-choice-gap: var(--choice-gap);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.h-radio-group[data-size='compact'] {
+  --h-choice-height: var(--control-height-compact);
+  --h-choice-mark: var(--choice-mark-compact);
+  --h-choice-gap: var(--choice-gap-compact);
+}
+
+.h-radio-group-legend {
+  display: block;
+  padding: 0;
+  margin-block-end: var(--gap-within);
+}
+
+.h-radio-group-options {
+  display: grid;
+  gap: var(--gap-within);
+}
+
+.h-radio-row {
+  --h-choice-row-pad: calc((var(--h-choice-height) - 1lh) / 2);
+  --h-choice-mark-pad: calc((var(--h-choice-height) - var(--h-choice-mark)) / 2);
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--h-choice-gap);
+  min-height: var(--h-choice-height);
+  padding-block: var(--h-choice-row-pad);
+  font: var(--text-body);
+  text-align: start;
+}
+
+.h-radio-group[data-size='compact'] .h-radio-row {
+  font: var(--text-small);
+}
+
+/* Visually hidden, but still focusable and operated by the arrow keys. */
+.h-radio-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.h-radio-dot {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--h-choice-mark);
+  height: var(--h-choice-mark);
+  margin-top: calc((1lh - var(--h-choice-mark)) / 2); /* centers the dot on the first line of the label */
+  border-radius: 50%; /* a mark */
+  background: var(--plane-raised);
+  box-shadow: inset 0 0 0 var(--stroke) var(--ink-boundary);
+  transition: background-color var(--dur-feedback) linear;
+}
+
+/* The ring steps as an empty checkbox does: the control plane under the pointer, the hover plane while pressed. */
+.h-radio-row:hover .h-radio-dot {
+  background: var(--plane-control);
+}
+
+.h-radio-row:active .h-radio-dot {
+  background: var(--plane-control-hover);
+}
+
+.h-radio-input:focus-visible + .h-radio-dot {
+  outline: var(--focus-width) solid var(--signal-focus);
+  outline-offset: 2px;
+}
+
+/* Grows from scale 0 to 1 in place. Opacity crossfades on the same object, so reduced motion still shows the change. */
+.h-radio-dot-inner {
+  width: 50%;
+  height: 50%;
+  border-radius: 50%; /* a mark */
+  background: var(--ink-1);
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    transform calc(var(--dur) * var(--travel)) var(--ease-morph),
+    opacity var(--dur-fade) linear;
+}
+
+.h-radio-input:checked + .h-radio-dot > .h-radio-dot-inner {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.h-radio-text {
+  display: grid;
+  gap: var(--gap-tight);
+  min-width: 0;
+}
+
+.h-radio-option-label {
+  color: var(--ink-1);
+}
+
+.h-radio-hint {
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+/* Forced colors: the ring is a system border and the selected inner dot is the Highlight color. */
+@media (forced-colors: active) {
+  .h-radio-dot {
+    border: var(--stroke) solid CanvasText;
+    background: Canvas;
+    box-shadow: none;
+  }
+
+  .h-radio-input:checked + .h-radio-dot {
+    border-color: Highlight;
+  }
+
+  .h-radio-dot-inner {
+    background: Highlight;
+  }
+}

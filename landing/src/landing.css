@@ -1,0 +1,126 @@
+/* Landing. One centered column: the name and the intent, the three parts as root surfaces, then the premises.
+   No navigation bar: the parts are content, and each part keeps its own sidebar. */
+
+.landing {
+  display: grid;
+  gap: var(--space-8);
+  max-width: 68rem;
+  margin-inline: auto;
+  padding: var(--space-9) var(--space-5) var(--space-9);
+}
+
+@media (max-width: 40em) {
+  .landing {
+    gap: var(--space-7);
+    padding: var(--space-8) var(--space-4) var(--space-8);
+  }
+}
+
+/* A heading sits closer to what it introduces: title to lead --space-4, the head to the parts --space-8. */
+.landing-head {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.landing-title {
+  font: var(--text-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.landing-lead {
+  max-width: 38rem;
+  font: var(--text-lead);
+  color: var(--ink-2);
+}
+
+/* Parts. Equal choices, so equal weight: one width, one plane, one type.
+   The parts and the premises share one grid, the same tracks and the same --space-5 between columns, so each
+   premise column starts on the edge of the part above it. */
+.landing-parts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--space-5);
+}
+
+.landing-part-item {
+  display: grid;
+  min-width: 0;
+}
+
+/* A root surface that is one link. The pointer changes its plane and nothing else. */
+.landing-part {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  color: var(--ink-1);
+  text-decoration: none;
+  transition: background-color var(--dur-feedback) linear;
+}
+
+.landing-part.h-surface[data-padded] {
+  padding: var(--space-5);
+}
+
+.landing-part:hover {
+  background: var(--plane-control-hover);
+}
+
+.landing-part:active {
+  background: var(--plane-control-active);
+}
+
+/* A block, not a flex row, so the surface trims its first line and the top inset matches the sides. */
+.landing-part-name {
+  display: block;
+  font: var(--text-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+/* The arrow is where the part leads, not decoration: it follows the name on its line and never moves. */
+.landing-part-mark {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-inline-start: var(--gap-within);
+  vertical-align: -0.0625rem;
+  color: var(--ink-2);
+}
+
+.landing-part-text {
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* Premises. A heading, then the six in a grid. Between premises is three times the gap inside one. */
+.landing-premises {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.landing-heading {
+  font: var(--text-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+.landing-premise-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--space-6) var(--space-5);
+}
+
+.landing-premise {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+}
+
+.landing-premise-name {
+  font: var(--text-body);
+  font-weight: 600; /* body role, name weight */
+}
+
+.landing-premise-text {
+  font: var(--text-small);
+  color: var(--ink-2);
+}

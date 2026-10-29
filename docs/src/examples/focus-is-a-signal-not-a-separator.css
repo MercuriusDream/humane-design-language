@@ -1,0 +1,10 @@
+/* Four controls in a plane. No outline is set here: the global :focus-visible ring is the only one. */
+
+.ex-focus-is-a-signal-not-a-separator-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-within);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}

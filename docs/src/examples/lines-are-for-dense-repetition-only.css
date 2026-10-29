@@ -1,0 +1,95 @@
+/* Lines are for dense repetition only. The table repeats densely enough for lines between rows.
+   The group is three items separated by space and set on a plane. */
+
+/* Container for the container query below, so the layout follows the width of the example body. */
+.ex-lines-are-for-dense-repetition-only {
+  container-type: inline-size;
+}
+
+/* The gap between the table and the group is the gap between groups, so it is larger than the gap within the group. */
+.ex-lines-are-for-dense-repetition-only-layout {
+  display: grid;
+  gap: var(--gap-between);
+  align-items: start;
+}
+
+@container (min-width: 440px) {
+  .ex-lines-are-for-dense-repetition-only-layout {
+    grid-template-columns: minmax(0, 1fr) 200px;
+  }
+}
+
+/* Dense rows: the depth 1 step on every side of a cell, measured to the ink, so twelve rows stay compact
+   and each line keeps clear of the digits. The cells are the table's inset, so the plane adds no padding. */
+.ex-lines-are-for-dense-repetition-only-table .h-table th,
+.ex-lines-are-for-dense-repetition-only-table .h-table td {
+  padding: var(--pad-1);
+}
+
+/* Narrow, or with large text, the three columns meet at the gap within a group instead of two full insets, so the
+   table fits its plane instead of scrolling sideways. The outer cells keep the full inset to the plane's edge,
+   and the table still fills its width, so spare room goes back between the columns. */
+@container (max-width: 30rem) {
+  .ex-lines-are-for-dense-repetition-only-table .h-table th:not(:first-child),
+  .ex-lines-are-for-dense-repetition-only-table .h-table td:not(:first-child) {
+    padding-inline-start: calc(var(--gap-within) / 2);
+  }
+
+  .ex-lines-are-for-dense-repetition-only-table .h-table th:not(:last-child),
+  .ex-lines-are-for-dense-repetition-only-table .h-table td:not(:last-child) {
+    padding-inline-end: calc(var(--gap-within) / 2);
+  }
+}
+
+.ex-lines-are-for-dense-repetition-only-table .h-table tbody tr + tr {
+  transition: border-top-color var(--dur-fade) linear;
+}
+
+/* Lines off paints each row line in the table's own plane, so the layout does not shift. */
+.ex-lines-are-for-dense-repetition-only-layout[data-lines='off'] .h-table tbody tr + tr {
+  border-top-color: var(--plane-base);
+}
+
+/* Every line in the group is trimmed to its ink, so each gap is measured between letters: the within gap inside
+   a step, the between gap from one step to the next, and the heading in between, closer to its list than the
+   steps are to each other. The first and last lines meet the padding directly. */
+.ex-lines-are-for-dense-repetition-only-group {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.ex-lines-are-for-dense-repetition-only-heading {
+  text-box: trim-both cap alphabetic;
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-lines-are-for-dense-repetition-only-steps {
+  display: grid;
+  gap: var(--gap-between);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ex-lines-are-for-dense-repetition-only-step {
+  display: grid;
+  gap: var(--gap-within);
+}
+
+.ex-lines-are-for-dense-repetition-only-step > * {
+  text-box: trim-both cap alphabetic;
+}
+
+.ex-lines-are-for-dense-repetition-only-step-title {
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.ex-lines-are-for-dense-repetition-only-step-meta {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}

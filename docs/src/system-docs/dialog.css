@@ -1,0 +1,21 @@
+/* Dialog example stage. The triggers are depth 1 controls inside the example, so gaps follow the within-group token. */
+.doc-dialog-stage {
+  display: grid;
+  gap: var(--gap-within);
+  max-width: 100%;
+}
+
+.doc-dialog-triggers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-within);
+}
+
+/* The result line always holds a sentence, so it never collapses, and it ends the specimen, so it drops the
+   leading below its line. */
+.doc-dialog-result {
+  margin: 0;
+  text-box: trim-end cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-3);
+}

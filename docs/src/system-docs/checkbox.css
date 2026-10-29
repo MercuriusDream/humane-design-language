@@ -1,0 +1,24 @@
+/* Checkbox documentation. The stack holds the live specimens; the checkboxes themselves come from the system. */
+
+.doc-checkbox-stack {
+  display: grid;
+  gap: var(--gap-within);
+  max-width: 360px;
+}
+
+/* The count opens the specimen, so its first line meets the frame's top inset. */
+.doc-checkbox-count {
+  text-box: trim-start cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-3);
+}
+
+/* The last row ends on its hint. The row gives back its padding below and the hint its leading, so the frame's
+   inset is measured to the hint's baseline. */
+.doc-checkbox-stack > .h-checkbox:last-child {
+  margin-block-end: calc(var(--h-choice-row-pad) * -1);
+}
+
+.doc-checkbox-stack > .h-checkbox:last-child .h-checkbox-text > :last-child {
+  text-box: trim-end cap alphabetic;
+}

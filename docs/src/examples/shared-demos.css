@@ -1,0 +1,472 @@
+/* Everything here sits inside a stage, so depth 1 surfaces use the 2px corner and --pad-1,
+   and depth 2 surfaces use the same 2px corner. */
+
+/* Readout. */
+
+.readout {
+  display: grid;
+  gap: var(--gap-tight);
+  font: var(--text-small);
+}
+
+/* With little room or large text, a value moves under its name rather than breaking the name. */
+.readout > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  column-gap: var(--gap-within);
+}
+
+/* The last row is the controls column's last line, so it trims below its baseline. */
+.readout > div:last-child > * {
+  text-box: trim-end cap alphabetic;
+}
+
+/* Names and values break only between words, so neither is split inside a word. */
+.readout dt,
+.readout dd {
+  overflow-wrap: normal;
+}
+
+.readout dt {
+  color: var(--ink-2);
+}
+
+.readout dd {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Morph list. */
+
+.morph-list {
+  display: grid;
+  gap: var(--gap-tight);
+}
+
+.morph-row {
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+  transition: background-color var(--dur-fade) linear;
+}
+
+.morph-row:hover,
+.morph-row[data-open='true'] {
+  background: var(--plane-raised);
+}
+
+/* Pressable, so it is set like a List row: the control inset on every side, measured to the ink,
+   which makes one line of body text a 44px target. Title and meta share a row, so both trim both lines. */
+.morph-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap-between);
+  width: 100%;
+  padding: var(--inset-control);
+  border-radius: var(--radius-1);
+  text-align: start;
+}
+
+.morph-head > * {
+  text-box: trim-both cap alphabetic;
+}
+
+.morph-title {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+}
+
+.morph-meta {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.morph-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.morph-row[data-open='true'] .morph-body {
+  grid-template-rows: 1fr;
+}
+
+.morph-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The same inset as the head on the sides and below. The last line trims, and its descenders hang into the padding. */
+.morph-content {
+  display: grid;
+  gap: var(--gap-within);
+  padding: 0 var(--inset-control) var(--inset-control);
+  opacity: 0;
+  transition: opacity var(--dur-fade) linear;
+}
+
+.morph-row[data-open='true'] .morph-content {
+  opacity: 1;
+}
+
+.morph-content p {
+  max-width: 56ch;
+  color: var(--ink-2);
+}
+
+.morph-content > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+.morph-content .morph-timing {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Undo list. A removed row dissolves into the stage plane and keeps its place. */
+
+/* Each item carries its gap below it, so it can collapse with the row. The list gives the last one back,
+   so the frame's bottom inset is measured to the last row. */
+.undo-list {
+  margin-bottom: calc(var(--gap-tight) * -1);
+}
+
+.undo-item {
+  display: grid;
+  grid-template-rows: 1fr;
+  padding-bottom: var(--gap-tight);
+  transition:
+    grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph),
+    padding-bottom calc(var(--dur) * var(--travel)) var(--ease-morph),
+    opacity var(--dur-fade) linear;
+}
+
+.undo-item[data-status='leaving'] {
+  grid-template-rows: 0fr;
+  padding-bottom: 0;
+  opacity: 0;
+}
+
+.undo-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.undo-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-between);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+  transition: background-color var(--dur-fade) linear;
+}
+
+.undo-item:not([data-status='present']) .undo-row {
+  background: var(--plane-sunken);
+}
+
+/* The button keeps its width, so its label never breaks. */
+.undo-row > .h-button {
+  flex: none;
+}
+
+/* The name sits beside the button, so it trims both lines: the row's inset is measured to its ink. */
+.undo-name {
+  min-width: 0;
+  text-box: trim-both cap alphabetic;
+  transition: color var(--dur-fade) linear;
+}
+
+.undo-item:not([data-status='present']) .undo-name {
+  color: var(--ink-3);
+}
+
+.empty {
+  padding: var(--pad-1);
+  text-box: trim-both cap alphabetic;
+  color: var(--ink-3);
+}
+
+/* Export task. The card's own plane fills as the work progresses. The check grows over 24 px: morphDuration(24). */
+
+.task {
+  position: relative;
+  display: grid;
+  gap: var(--gap-within);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+/* The track clips the fill to the task's corners; the task itself does not clip, so descenders reach its padding. */
+.task-track {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.task-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--plane-fill);
+  transform-origin: left;
+  transition: transform calc(var(--dur-fade) * var(--travel)) linear;
+}
+
+.task[data-phase='idle'] .task-fill {
+  transition-duration: calc(240ms * var(--travel));
+  transition-timing-function: var(--ease-morph);
+}
+
+.task-main {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-between);
+}
+
+.task-text {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.task-title {
+  display: flex;
+  align-items: center;
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+}
+
+.task-check {
+  width: 0;
+  margin-right: 0;
+  opacity: 0;
+  transform: scale(0.4);
+  transition:
+    width calc(93ms * var(--travel)) var(--ease-morph),
+    margin-right calc(93ms * var(--travel)) var(--ease-morph),
+    transform calc(93ms * var(--travel)) var(--ease-morph),
+    opacity var(--dur-fade) linear;
+}
+
+.task[data-phase='done'] .task-check {
+  width: 16px;
+  margin-right: var(--space-2);
+  opacity: 1;
+  transform: none;
+}
+
+.task-meta {
+  font: var(--text-small);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.task-error {
+  position: relative;
+  font: var(--text-label);
+  color: var(--signal-danger);
+}
+
+/* Lightness steps. */
+
+/* No padding of its own: it has no plane, so the frame's padding is its inset. */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--gap-between);
+}
+
+.step-group {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+}
+
+/* Each group's label is a first line at the frame's padding, so it trims to its cap height. */
+.step-group > .h-field-label {
+  text-box: trim-start cap alphabetic;
+}
+
+.step-list {
+  display: grid;
+  gap: var(--gap-within);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  font: var(--text-small);
+}
+
+/* Name and value share a line while they fit. When they do not, as with larger text, the value moves below the
+   name instead of breaking the name's words. */
+.step-text {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 var(--gap-within);
+  min-width: 0;
+}
+
+/* A plane every step contrasts with, so a swatch never vanishes into the stage behind it. It sits at depth 2,
+   and the swatch inside is square, so the well's 2px corner frames it. */
+.step-well {
+  display: block;
+  padding: var(--space-1);
+  border-radius: var(--radius-2);
+  background: var(--plane-control-active);
+}
+
+.step-swatch {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 0; /* content, not a control; the well's 2px corner frames it */
+}
+
+.step-value {
+  white-space: nowrap;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Inbox. */
+
+.inbox {
+  display: grid;
+  gap: 2px; /* a plane gap between rows, as in List */
+}
+
+/* Set like List rows with small text: the compact control inset on every side, measured to the ink. */
+.inbox-row {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  padding: var(--inset-control-compact);
+  background: var(--plane-base);
+  font: var(--text-small);
+  color: var(--ink-3);
+}
+
+.inbox-row:first-child {
+  border-radius: var(--radius-1) var(--radius-1) 0 0;
+}
+
+.inbox-row:last-child {
+  border-radius: 0 0 var(--radius-1) var(--radius-1);
+}
+
+.inbox-row[data-unread='true'] {
+  color: var(--ink-1);
+  font-weight: 600; /* small role, unread weight */
+}
+
+.inbox-row[data-error='true'] {
+  background: var(--plane-raised);
+}
+
+.inbox-row[data-error='true'] .inbox-subject {
+  color: var(--signal-danger);
+}
+
+/* A row lays its items side by side, so each trims both lines and they keep one baseline. */
+.inbox-row > * {
+  text-box: trim-both cap alphabetic;
+}
+
+.inbox-subject {
+  min-width: 0;
+}
+
+.inbox-time {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Consent. */
+
+.consent {
+  display: grid;
+  gap: var(--gap-between);
+  max-width: 440px;
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+.consent-text {
+  display: grid;
+  gap: var(--gap-tight);
+}
+
+/* The dialog's first line, so it trims to its cap height. Its last item is the buttons, measured by their edge. */
+.consent-title {
+  text-box: trim-start cap alphabetic;
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+}
+
+.consent-body {
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+/* Type scale. */
+
+/* No padding of its own: it has no plane, so the frame's padding is its inset. */
+.type-scale {
+  display: grid;
+  gap: var(--gap-between);
+}
+
+/* The first and last levels meet the frame's padding. Spec and sample share a baseline, so both trim alike. */
+.type-level:first-child .type-spec > :first-child,
+.type-level:first-child .type-sample {
+  text-box: trim-start cap alphabetic;
+}
+
+.type-level:last-child .type-spec > :last-child,
+.type-level:last-child .type-sample {
+  text-box: trim-end cap alphabetic;
+}
+
+.type-level {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--gap-between);
+}
+
+.type-spec {
+  display: grid;
+  font: var(--text-small);
+  color: var(--ink-3);
+}
+
+.type-spec code {
+  color: var(--ink-2);
+}
+
+@media (max-width: 560px) {
+  .type-level {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--gap-tight);
+  }
+
+  .inbox-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .inbox-subject {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}

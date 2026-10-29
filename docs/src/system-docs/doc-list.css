@@ -1,0 +1,25 @@
+/* List documentation. Layout only; the rows and their colors come from the system. */
+
+/* The list sits on a depth 1 surface, as it does in an app, so its rows are depth 2. The surface's edge is the
+   specimen's edge at the frame's inset; the row planes reach its padding, and the row text sits the row's inset in. */
+.doc-list-stack {
+  display: grid;
+  gap: var(--gap-within);
+  min-width: 0;
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+/* Two prop tables. Between the groups is the large gap; each heading sits closer to its own table. */
+.doc-list-props {
+  display: grid;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+.doc-list-props-group {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}

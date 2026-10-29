@@ -1,0 +1,105 @@
+/* Settings. A narrow page at the start of the wide column, where every mailbox title sits, so the title does not
+   jump between views. Groups are separated by space, not lines.
+   Rhythm: --space-6 from the title row to the first group, --space-7 between groups, --space-3 from a group heading
+   to its controls.
+   One edge per side: every control fills the column, so the segmented tracks, the switches, the field, and the
+   disclosure all end on one line, as their labels all start on one. */
+
+.settings-view {
+  --settings-view-width: 28rem;
+  display: grid;
+  max-width: var(--settings-view-width);
+  min-width: 0;
+}
+
+.settings-view > * + * {
+  margin-top: var(--space-7);
+}
+
+.settings-view > .settings-view-header + * {
+  margin-top: var(--space-6);
+}
+
+/* A row of the control height, its title on the baseline a button's label would have: the same line the mailbox
+   title takes beside Write. The title trims to its cap height, so the row is the control height and no taller. */
+.settings-view-header {
+  display: flex;
+  align-items: baseline;
+  min-height: var(--control-height);
+}
+
+.settings-view-header::after {
+  content: '\200b' / '';
+  display: flex;
+  align-items: center;
+  min-height: var(--control-height);
+  font: var(--text-body);
+  font-weight: 600; /* body role, action weight: a button's label */
+}
+
+.settings-view-title {
+  margin: 0;
+  font: var(--text-title);
+  letter-spacing: var(--tracking-title);
+  text-box: trim-both cap alphabetic;
+}
+
+/* Outgoing letters, below the settings, take the column's width (--settings-view-width), so they end on its edge. */
+.settings-view ~ .outbox-region {
+  max-width: 28rem;
+}
+
+.settings-view-group {
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.settings-view-heading {
+  margin: 0;
+  font: var(--text-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+.settings-view-list {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: var(--text-small); /* the compact disclosure's text size */
+}
+
+/* Closed, a disclosure is the base plane, the same as the page, so its title would float an inset in from every
+   other text edge in the column. Here it is always raised, so the inset belongs to a visible plane.
+   Hovered while closed, it takes the control plane, so the press still answers the pointer. */
+.settings-view .h-disclosure {
+  background: var(--plane-raised);
+}
+
+.settings-view .h-disclosure:not([data-open='true']):hover {
+  background: var(--plane-control);
+}
+
+/* The disclosure's content trims its first and last line, but not through a grid, so the items do. */
+.settings-view-list > :first-child {
+  text-box: trim-start cap alphabetic;
+}
+
+.settings-view-list > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+/* Visually hidden, read by assistive technology only. */
+.settings-view-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

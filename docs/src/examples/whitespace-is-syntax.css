@@ -1,0 +1,36 @@
+/* Between-group gap is the within gap times --ratio, so the ratio is the only thing the slider sets.
+   At 1 both gaps are equal and the groups merge. At 3 the between gap equals --gap-between. */
+
+.ex-whitespace-is-syntax-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--gap-within) * var(--ratio, 3));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: gap calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph);
+}
+
+.ex-whitespace-is-syntax-group {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+
+.ex-whitespace-is-syntax-items {
+  display: grid;
+  gap: var(--gap-within);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each item stands for a form field, so it is set like one: the control inset on every side, measured to the ink,
+   which makes one line of body text a 44px row. */
+.ex-whitespace-is-syntax-item {
+  padding: var(--inset-control);
+  text-box: trim-both cap alphabetic;
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+  font: var(--text-body);
+  color: var(--ink-1);
+}

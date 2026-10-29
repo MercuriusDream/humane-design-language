@@ -1,0 +1,65 @@
+/* Known content stays in flow while the skeleton crossfades over its reserved footprint. */
+.h-placeholder {
+  position: relative;
+  min-width: 0;
+}
+
+.h-placeholder-content {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--dur-fade) linear,
+    visibility var(--dur-fade) linear;
+}
+
+.h-placeholder-content[data-ready='true'] {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* An explicit height is authoritative, not a loading-only estimate. Overflow remains accessible. */
+.h-placeholder[data-fixed] .h-placeholder-content {
+  height: 100%;
+  overflow: auto;
+}
+
+.h-placeholder-shape {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity var(--dur-fade) linear;
+  font: var(--text-body);
+}
+
+.h-placeholder-shape[data-ready='true'] {
+  opacity: 0;
+}
+
+.h-placeholder-lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-tight);
+}
+
+.h-placeholder-line {
+  width: 100%;
+  height: 1lh;
+  flex: none;
+  border-radius: var(--radius-1);
+  background: var(--plane-control);
+}
+
+.h-placeholder-line:last-child {
+  width: 60%;
+}
+
+.h-placeholder-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,0 +1,85 @@
+/* Rarity creates signal. Depth 1 list on a plane, depth 2 rows on the radius of their depth. Separation comes from planes, not lines. */
+
+.ex-rarity-creates-signal-list {
+  display: grid;
+  gap: var(--gap-tight);
+  margin: 0;
+  padding: var(--pad-1);
+  list-style: none;
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+/* Rows are set like List rows: the control inset on every side, measured to the ink, so one line makes a 44px row. */
+.ex-rarity-creates-signal-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  /* Title and time share the first line's baseline, so a second line never pulls them apart. */
+  align-items: baseline;
+  gap: var(--gap-within);
+  padding: var(--inset-control);
+  border-radius: var(--radius-2);
+  background: var(--plane-raised);
+}
+
+/* Neutral by default. Saturation is a state, so only the flagged row and, when switched on, every row takes it.
+   A status dot is a mark: it holds no content, so it is a circle. */
+.ex-rarity-creates-signal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; /* a mark */
+  /* Centered on the cap height of the first line, which is where the trimmed title starts. */
+  align-self: start;
+  font: var(--text-body);
+  margin-top: calc((1cap - 10px) / 2);
+  background: var(--ink-3);
+  transition: background-color var(--dur-feedback) linear;
+}
+
+.ex-rarity-creates-signal-row[data-saturated='true'] .ex-rarity-creates-signal-dot {
+  background: var(--signal-danger);
+}
+
+.ex-rarity-creates-signal-main {
+  display: grid;
+  gap: var(--gap-tight);
+  min-width: 0;
+}
+
+/* A row lays its items side by side, so each item trims its own outer lines, and the baselines still meet. */
+.ex-rarity-creates-signal-main > :first-child {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-rarity-creates-signal-main > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+.ex-rarity-creates-signal-main > :only-child,
+.ex-rarity-creates-signal-time {
+  text-box: trim-both cap alphabetic;
+}
+
+.ex-rarity-creates-signal-title {
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.ex-rarity-creates-signal-description {
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+.ex-rarity-creates-signal-time {
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The last line of the controls column, so its baseline is the frame's bottom inset. */
+.ex-rarity-creates-signal-count {
+  text-box: trim-end cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}

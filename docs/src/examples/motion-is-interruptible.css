@@ -1,0 +1,20 @@
+/* Each row's head is a standard control: 44 px tall with body text, its label --inset-control from the edge on
+   every side. The title and count trim to their ink and align on the baseline, so the height comes from the inset.
+   The opened text keeps the same side inset, and its last line trims inside the clip's bottom padding. */
+
+.ex-motion-is-interruptible-list .morph-head {
+  min-height: var(--control-height);
+  padding: var(--inset-control);
+}
+
+.ex-motion-is-interruptible-list :is(.morph-title, .morph-meta) {
+  text-box: trim-both cap alphabetic;
+}
+
+.ex-motion-is-interruptible-list .morph-content {
+  padding: 0 var(--inset-control) var(--inset-control);
+}
+
+.ex-motion-is-interruptible-list .morph-content > :last-child {
+  text-box: trim-end cap alphabetic;
+}

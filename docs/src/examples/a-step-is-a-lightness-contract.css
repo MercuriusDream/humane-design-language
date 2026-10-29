@@ -1,0 +1,109 @@
+/* Lightness rows. Grayscale removes hue; each row keeps its place in the hierarchy.
+   The filter is a fade, not travel, so it stays on under reduced motion. */
+
+/* The table follows the width it is given, so a narrow frame or larger text can shorten the hue names. */
+.ex-a-step-is-a-lightness-contract-fit {
+  container-type: inline-size;
+}
+
+/* Separate borders put the spacing around the outer cells too. The table reaches past its box by that much,
+   so the swatches and labels sit at the frame's own inset. */
+.ex-a-step-is-a-lightness-contract-table {
+  width: calc(100% + 2 * var(--gap-tight));
+  margin: calc(var(--gap-tight) * -1);
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: var(--gap-tight);
+  font: var(--text-small);
+  color: var(--ink-1);
+  transition: filter var(--dur-fade) linear;
+}
+
+.ex-a-step-is-a-lightness-contract-table[data-grayscale] {
+  filter: grayscale(1);
+}
+
+.ex-a-step-is-a-lightness-contract-table th,
+.ex-a-step-is-a-lightness-contract-table td {
+  padding: 0;
+  font: var(--text-small);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.ex-a-step-is-a-lightness-contract-table th {
+  white-space: nowrap;
+}
+
+/* The header row is the table's first line, so it trims to its cap height. */
+.ex-a-step-is-a-lightness-contract-table thead th {
+  font: var(--text-label);
+  color: var(--ink-1);
+  padding-bottom: var(--gap-tight);
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-a-step-is-a-lightness-contract-table .ex-a-step-is-a-lightness-contract-hue-head {
+  text-align: center;
+}
+
+.ex-a-step-is-a-lightness-contract-step-head,
+.ex-a-step-is-a-lightness-contract-step {
+  width: 4rem;
+}
+
+.ex-a-step-is-a-lightness-contract-step-name {
+  display: block;
+  font: var(--text-label);
+  color: var(--ink-1);
+}
+
+.ex-a-step-is-a-lightness-contract-step-value {
+  display: block;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-a-step-is-a-lightness-contract-swatch {
+  display: block;
+  height: 44px;
+  border-radius: var(--radius-1);
+}
+
+.ex-a-step-is-a-lightness-contract-ratio {
+  display: block;
+  text-align: center;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+/* The last row's ratios are the table's last line, so they trim below their baseline and the frame's inset reaches
+   the text, as the header trims above it. */
+.ex-a-step-is-a-lightness-contract-table tbody tr:last-child .ex-a-step-is-a-lightness-contract-ratio {
+  text-box: trim-end cap alphabetic;
+}
+
+.ex-a-step-is-a-lightness-contract-hue-initial,
+.ex-a-step-is-a-lightness-contract-step-contrast {
+  display: none;
+}
+
+/* Too narrow for four names, as at a phone width: the names run together into one line
+   of words. Each column shows its initial, and the full name stays for screen readers. The width is in rem,
+   so it follows the text size. */
+@container (max-width: 23rem) {
+  .ex-a-step-is-a-lightness-contract-hue-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .ex-a-step-is-a-lightness-contract-hue-initial {
+    display: inline;
+  }
+
+}

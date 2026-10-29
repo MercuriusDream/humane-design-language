@@ -1,0 +1,23 @@
+/* Disclosure docs. The example stacks rows with a group gap. Body text uses the body type token. */
+
+.doc-disclosure-stack {
+  display: grid;
+  gap: var(--gap-between);
+  min-width: 0;
+}
+
+.doc-disclosure-text {
+  font: var(--text-body);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+/* A row nested under text in an open row sits a within-group gap below the text, not against its descenders. */
+.doc-disclosure-text + .h-disclosure {
+  margin-top: var(--gap-within);
+}
+
+.doc-disclosure-props {
+  display: grid;
+  gap: var(--space-2);
+}

@@ -1,0 +1,135 @@
+/* Miniature page frame. It sits at depth 1 inside the example, so its corners use --radius-1.
+   Its sidebar is a root surface (data-root), inset from the frame like the real one: the system sets its radius
+   from its size, and its items take the depth 1 radius below it. The column's text is set in system type. */
+
+.ex-content-is-centered-frame {
+  /* The sidebar takes 28 percent of the frame, and never less than its items need, so the frame keeps working
+     at 360 px wide. A percentage here resolves against the frame for both the sidebar and the page. */
+  --sidebar: max(28%, 7.5rem);
+  container-type: inline-size;
+  position: relative;
+  overflow: hidden;
+  min-height: 14rem;
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+.ex-content-is-centered-sidebar {
+  position: absolute;
+  top: var(--pad-1);
+  bottom: var(--pad-1);
+  left: var(--pad-1);
+  display: grid;
+  align-content: start;
+  gap: var(--gap-within);
+  width: var(--sidebar);
+  padding: var(--pad-0);
+  background: var(--plane-raised);
+}
+
+.ex-content-is-centered-frame[data-side='right'] .ex-content-is-centered-sidebar {
+  left: auto;
+  right: var(--pad-1);
+}
+
+/* The page reserves the sidebar, its inset, and one gutter on the sidebar's side, and the same gutter on the
+   other side. The column is centered in what remains, which is the space beside the sidebar. The gutter is the
+   sidebar's inset plus its padding, so the column's first line sits level with the sidebar's title. The padding
+   transitions, so the column recenters as the sidebar moves. */
+.ex-content-is-centered-page {
+  --gutter: calc(var(--pad-1) + var(--pad-0));
+  box-sizing: border-box;
+  padding: var(--gutter);
+  transition:
+    padding-left calc(var(--dur) * var(--travel)) var(--ease-morph),
+    padding-right calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-content-is-centered-frame[data-side='left'] .ex-content-is-centered-page {
+  padding-left: calc(var(--sidebar) + var(--pad-1) + var(--gutter));
+}
+
+.ex-content-is-centered-frame[data-side='right'] .ex-content-is-centered-page {
+  padding-right: calc(var(--sidebar) + var(--pad-1) + var(--gutter));
+}
+
+/* Narrower than the space beside the sidebar, so the margins on both sides of it show. */
+.ex-content-is-centered-column {
+  display: grid;
+  gap: var(--gap-within);
+  max-width: 18rem;
+  margin-inline: auto;
+  text-align: start;
+}
+
+/* The column is a grid, so its first and last lines trim themselves at the page's padded edge. */
+.ex-content-is-centered-column > :first-child {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-content-is-centered-column > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+.ex-content-is-centered-heading {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-content-is-centered-text {
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* The title trims at the sidebar's top edge and starts at the items' label inset, so it lines up with them. */
+.ex-content-is-centered-title {
+  padding: 0 var(--inset-control-compact);
+  text-box: trim-start cap alphabetic;
+  font: var(--text-label);
+  color: var(--ink-1);
+}
+
+.ex-content-is-centered-nav {
+  display: grid;
+  gap: var(--gap-tight);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Items are compact rows: the label sits --inset-control-compact from the edge on every side. */
+.ex-content-is-centered-item {
+  display: flex;
+  align-items: center;
+  min-height: var(--control-height-compact);
+  padding: 0 var(--inset-control-compact);
+  border-radius: var(--radius-1);
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+.ex-content-is-centered-item[data-current] {
+  background: var(--plane-control);
+  color: var(--ink-1);
+}
+
+/* Too narrow to hold a readable column beside the sidebar, as on a phone or at large text sizes: the sidebar sits
+   above the column, at the same inset, and the column is centered in the full width below it. */
+@container (max-width: 26rem) {
+  .ex-content-is-centered-sidebar {
+    position: static;
+    width: auto;
+    margin: var(--pad-1) var(--pad-1) 0;
+  }
+
+  /* Stacked, the sidebar ends at its last item, which has no plane of its own. That row gives back its inset below
+     the label, so the label sits pad-0 from the sidebar's bottom, as the title does from its top. */
+  .ex-content-is-centered-nav {
+    margin-bottom: calc(-1 * var(--inset-control-compact));
+  }
+
+  .ex-content-is-centered-frame[data-side] .ex-content-is-centered-page {
+    padding: var(--gutter);
+  }
+}

@@ -1,0 +1,19 @@
+/* TextField doc page. Class prefix doc-text-field-. */
+
+.doc-text-field-stack {
+  display: grid;
+  gap: var(--gap-between);
+  min-width: 0;
+}
+
+/* A depth 1 surface. The fields inside it sit at depth 2 and take its radius. */
+.doc-text-field-stack[data-surface] {
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+/* The first label opens the specimen, so its first line meets the inset of the frame, or of the surface. */
+.doc-text-field-stack > :first-child > .h-field-label {
+  text-box: trim-start cap alphabetic;
+}

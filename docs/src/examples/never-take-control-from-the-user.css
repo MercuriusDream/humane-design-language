@@ -1,0 +1,45 @@
+/* Media card. The card is a depth 1 surface inside the example frame, and its button is depth 2. */
+
+.ex-never-take-control-from-the-user-head {
+  display: grid;
+  gap: var(--gap-tight);
+}
+
+/* The head is a grid at the surface's padded top edge, so its first line trims itself. */
+.ex-never-take-control-from-the-user-head > :first-child {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-never-take-control-from-the-user-title {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-never-take-control-from-the-user-meta,
+.ex-never-take-control-from-the-user-time {
+  font: var(--text-small);
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-never-take-control-from-the-user-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-within);
+  margin-top: var(--gap-between);
+}
+
+/* Visually hidden, still read by assistive technology. */
+.ex-never-take-control-from-the-user-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,0 +1,32 @@
+/* Notice. Words on a depth 1 plane. Padding and radius come from Surface depth 1.
+   The title and body are one message: they sit --gap-tight apart. An action is the next step, so it sits
+   --gap-within below the words. The spacing is set once, on each child, never twice through a parent gap. */
+
+.h-notice {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title: the same size as the body, set heavier. The danger tone sets only the title in the signal color. */
+.h-notice-title {
+  font: var(--text-body);
+  font-weight: 600; /* body role, title weight */
+  color: var(--ink-1);
+}
+
+.h-notice[data-tone='danger'] .h-notice-title {
+  color: var(--signal-danger);
+}
+
+.h-notice-body {
+  margin-top: var(--gap-tight);
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* A flex row, not a block: the padded surface trims the leading of a last block child, and a trimmed block
+   holding a 44px button would let the button hang past the bottom edge. The inset meets the button's edge. */
+.h-notice-action {
+  display: flex;
+  margin-top: var(--gap-within);
+}

@@ -1,0 +1,19 @@
+/* Notice documentation. The stack holds the live specimen; the notice itself comes from the system. */
+
+.doc-notice-specimen {
+  display: grid;
+  gap: var(--gap-between);
+  max-width: 360px;
+  min-width: 0;
+}
+
+/* An arriving notice changes by opacity only, in place. Opacity fades stay on under reduced motion. */
+.doc-notice-arrival {
+  animation: doc-notice-fade var(--dur-fade) linear;
+}
+
+@keyframes doc-notice-fade {
+  from {
+    opacity: 0;
+  }
+}

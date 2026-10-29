@@ -1,0 +1,26 @@
+{
+  "name": "humane-design",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MercuriusDream/humane-design-language"
+  },
+  "homepage": "https://humane.mercuriusdream.com",
+  "type": "module",
+  "workspaces": [
+    "system",
+    "docs",
+    "flagship",
+    "landing"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run build --workspaces --if-present",
+    "build:site": "vite build",
+    "preview": "vite preview",
+    "typecheck": "npm run typecheck --workspaces --if-present && tsc --noEmit -p tests/tsconfig.json",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs"
+  }
+}

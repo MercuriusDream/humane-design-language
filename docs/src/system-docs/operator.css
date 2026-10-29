@@ -1,0 +1,27 @@
+/* Operator documentation. Layout only; the line and its link come from the system. */
+
+/* Two separate controls, so they sit a group gap apart, as in every frame's controls column. */
+.doc-operator-controls {
+  display: grid;
+  gap: var(--gap-between);
+  max-width: 100%;
+}
+
+.doc-operator-card {
+  display: grid;
+  gap: var(--gap-within);
+  max-width: 360px;
+  min-width: 0;
+}
+
+.doc-operator-decision {
+  margin: 0;
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.doc-operator-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-within);
+}

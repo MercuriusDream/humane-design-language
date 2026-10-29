@@ -1,0 +1,47 @@
+/* Corners are small, never chosen. The large root resizes; its corner, the nested corner, and the button
+   stay at the same 2px. The readout is read from the page. */
+
+.ex-corners-are-small-never-chosen-stage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--gap-between);
+  min-width: 0;
+}
+
+.ex-corners-are-small-never-chosen-root {
+  box-sizing: border-box;
+  flex: 1 1 15rem;
+  display: grid;
+  align-content: start;
+  gap: var(--gap-within);
+  padding: var(--pad-0);
+  transition: width calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph);
+}
+
+.ex-corners-are-small-never-chosen-root:last-of-type {
+  flex: 0 1 12rem;
+}
+
+.ex-corners-are-small-never-chosen-panel {
+  display: grid;
+  justify-items: start;
+  gap: var(--gap-within);
+  padding: var(--pad-1);
+}
+
+.ex-corners-are-small-never-chosen-label {
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-corners-are-small-never-chosen-text {
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+/* The readout is the last child, so it takes the whole row under the two roots. */
+.ex-corners-are-small-never-chosen-stage > .readout {
+  flex: 1 0 100%;
+}

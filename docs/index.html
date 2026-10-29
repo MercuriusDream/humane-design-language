@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Humane Design Language</title>
+    <script>
+      // Apply stored display settings before first paint, so the page never flashes the wrong theme.
+      try {
+        let value;
+        try { value = JSON.parse(localStorage.getItem('humane-preferences') || '{}'); } catch {}
+        const s = value && typeof value === 'object' ? value : {};
+        const root = document.documentElement;
+        if (s.theme === 'light' || s.theme === 'dark') root.style.colorScheme = s.theme;
+        const high = s.contrast === 'high' || (s.contrast !== 'standard' && matchMedia('(prefers-contrast: more)').matches);
+        root.dataset.contrast = high ? 'high' : 'standard';
+        if (s.grayscale === true) root.dataset.grayscale = '';
+        const reduced = typeof s.reducedMotion === 'boolean' ? s.reducedMotion : matchMedia('(prefers-reduced-motion: reduce)').matches;
+        root.dataset.motion = reduced ? 'reduced' : 'full';
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./src/main.tsx"></script>
+  </body>
+</html>

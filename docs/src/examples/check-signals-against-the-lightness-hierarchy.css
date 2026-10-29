@@ -1,0 +1,88 @@
+/* Lightness ladder. Rows are depth 1 surfaces; the meter inside a row is a bar of a chart. */
+
+.ex-check-signals-against-the-lightness-hierarchy-list {
+  display: grid;
+  gap: var(--gap-tight);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ex-check-signals-against-the-lightness-hierarchy-list[data-gray='true'] {
+  filter: grayscale(1);
+}
+
+.ex-check-signals-against-the-lightness-hierarchy-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(96px, 40%);
+  align-items: center;
+  gap: var(--gap-within);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+.ex-check-signals-against-the-lightness-hierarchy-main {
+  display: grid;
+  gap: var(--gap-tight);
+  min-width: 0;
+}
+
+/* The row is a grid, so the lines at its padded edges trim themselves: the sample at the top, the reading at the bottom. */
+.ex-check-signals-against-the-lightness-hierarchy-sample {
+  text-box: trim-start cap alphabetic;
+  margin: 0;
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--tone);
+  overflow-wrap: anywhere;
+}
+
+.ex-check-signals-against-the-lightness-hierarchy-name {
+  font: var(--text-small);
+  font-family: var(--font-code);
+  color: var(--ink-2);
+}
+
+.ex-check-signals-against-the-lightness-hierarchy-meter {
+  display: grid;
+  gap: var(--gap-tight);
+  min-width: 0;
+}
+
+/* A bar, not a mark: its length is the reading, so it is content, not a circle. It takes no press, so it
+   needs no corner; its ends are square. */
+.ex-check-signals-against-the-lightness-hierarchy-track {
+  display: block;
+  height: 10px;
+  background: var(--plane-control);
+  overflow: hidden;
+}
+
+.ex-check-signals-against-the-lightness-hierarchy-fill {
+  display: block;
+  height: 100%;
+  width: var(--l);
+  background: var(--tone);
+  transition: width calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-check-signals-against-the-lightness-hierarchy-value {
+  text-box: trim-end cap alphabetic;
+  font: var(--text-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+}
+
+/* Side by side, the token name is the main column's last line. Stacked, it sits above the meter, so it keeps its leading. */
+@media (min-width: 421px) {
+  .ex-check-signals-against-the-lightness-hierarchy-name {
+    text-box: trim-end cap alphabetic;
+  }
+}
+
+@media (max-width: 420px) {
+  .ex-check-signals-against-the-lightness-hierarchy-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

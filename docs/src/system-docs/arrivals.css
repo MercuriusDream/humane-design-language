@@ -1,0 +1,56 @@
+/* Arrivals docs. Layout only; every color and size comes from tokens. */
+
+.doc-arrivals-controls {
+  display: grid;
+  gap: var(--gap-between);
+  justify-items: start;
+}
+
+.doc-arrivals-specimen {
+  display: grid;
+  min-width: 0;
+}
+
+.doc-arrivals-list {
+  display: grid;
+  gap: var(--gap-within);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-arrivals-item {
+  display: grid;
+  gap: var(--gap-tight);
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+/* The item is a padded plane laid out as a grid, so its first and last lines trim themselves. */
+.doc-arrivals-from {
+  text-box: trim-start cap alphabetic;
+  font: var(--text-label);
+  color: var(--ink-1);
+}
+
+.doc-arrivals-text {
+  text-box: trim-end cap alphabetic;
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+/* With nothing waiting, the reserved slot says so, as in the rule examples that use it, so the space above the list
+   reads as a place and not as a gap at the top of the frame. */
+.doc-arrivals-specimen .h-arrivals-slot:empty::before {
+  content: 'Nothing new';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex: 1;
+  border-radius: var(--radius-1);
+  background: var(--plane-base); /* one plane above the sunken frame, so the empty slot reads as a band */
+  font: var(--text-small);
+  color: var(--ink-3);
+}

@@ -1,0 +1,40 @@
+/* One thought per sentence. The message is a depth 1 surface inside the example frame.
+   Splitting the copy only adds space between sentences, so the text itself stays in place. */
+
+.ex-one-thought-per-sentence-message {
+  display: grid;
+  gap: var(--gap-within);
+  max-width: 44ch;
+  padding: var(--pad-1);
+  border-radius: var(--radius-1);
+  background: var(--plane-raised);
+}
+
+.ex-one-thought-per-sentence-text {
+  display: grid;
+  row-gap: 0;
+  font: var(--text-body);
+  color: var(--ink-1);
+  transition: row-gap calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-one-thought-per-sentence-message[data-version='after'] .ex-one-thought-per-sentence-text {
+  row-gap: var(--gap-tight);
+}
+
+/* An empty second sentence takes no row, so the before copy stays one line. */
+.ex-one-thought-per-sentence-sentence:empty {
+  display: none;
+}
+
+/* The message's first and last lines trim at its padded edges. The text is a grid, so its first sentence trims. */
+.ex-one-thought-per-sentence-sentence:first-child {
+  text-box: trim-start cap alphabetic;
+}
+
+.ex-one-thought-per-sentence-count {
+  text-box: trim-end cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}

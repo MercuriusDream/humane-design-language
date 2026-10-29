@@ -1,0 +1,7 @@
+/* Switch documentation. The stack holds the live specimens; the switches themselves come from the system. */
+
+.doc-switch-stack {
+  display: grid;
+  gap: var(--gap-within);
+  max-width: 360px;
+}

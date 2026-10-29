@@ -1,0 +1,19 @@
+/* Slider doc. Three live controls share one column. The gap between them is a group gap, so it uses the between token. */
+
+.doc-slider-stack {
+  display: grid;
+  gap: var(--gap-between);
+  min-width: 0;
+}
+
+/* The first slider's head opens the specimen. It is a row, so each item in it drops the leading above its own
+   line. Below, the gap to the track stays on the line box, as in the sliders under it. */
+.doc-slider-stack > :first-child .h-slider-head > * {
+  text-box: trim-start cap alphabetic;
+}
+
+/* The last slider ends the specimen. Its input is a control height tall with the thumb centered in it, so it gives
+   back the space below the thumb, and the frame's inset reaches the thumb's edge. */
+.doc-slider-stack > :last-child input {
+  margin-block-end: calc(var(--h-slider-row-pad) * -1);
+}

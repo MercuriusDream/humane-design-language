@@ -1,0 +1,50 @@
+/* Respond at once. The press color has no delay on entry: :active sets a zero duration,
+   so the first frame after input already shows it. Release keeps the feedback fade. */
+
+.ex-respond-at-once-plane {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 240px;
+  padding: var(--pad-1);
+  border: 0;
+  border-radius: var(--radius-1);
+  background: var(--plane-control);
+  color: var(--ink-1);
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--dur-feedback) linear;
+}
+
+.ex-respond-at-once-plane:hover {
+  background: var(--plane-control-hover);
+}
+
+.ex-respond-at-once-plane:active {
+  background: var(--plane-control-active);
+  transition-duration: 0ms;
+}
+
+.ex-respond-at-once-readout {
+  display: grid;
+  gap: var(--gap-tight);
+  margin: 0;
+  font: var(--text-small);
+}
+
+.ex-respond-at-once-readout > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+.ex-respond-at-once-readout dt {
+  color: var(--ink-2);
+}
+
+.ex-respond-at-once-readout dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,166 @@
+/* Navigation is a sidebar that morphs. One element resizes, travels to the other side, and
+   collapses into its own toggle. The sidebar is a root surface (data-root): it takes the 2px corner,
+   so this file sets none here and does not transition it. Closed, it is a short root as tall as the
+   toggle plus its padding. The toggle and items sit at depth 1. */
+
+.ex-navigation-is-a-sidebar-that-morphs-stage {
+  position: relative;
+  min-height: 16.25rem;
+  border-radius: var(--radius-1);
+  background: var(--plane-base);
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-sidebar {
+  position: absolute;
+  z-index: 1;
+  top: var(--pad-1);
+  left: var(--pad-1);
+  display: grid;
+  align-content: start;
+  gap: var(--gap-within);
+  width: var(--sb-w);
+  height: calc(100% - 2 * var(--pad-1));
+  padding: var(--pad-0);
+  overflow: auto;
+  background: var(--plane-raised);
+  transition:
+    left calc(var(--dur) * var(--travel)) var(--ease-morph),
+    width calc(var(--dur) * var(--travel)) var(--ease-morph),
+    height calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-stage[data-side='right'] .ex-navigation-is-a-sidebar-that-morphs-sidebar {
+  left: calc(100% - var(--sb-w) - var(--pad-1));
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-sidebar[data-open='false'] {
+  height: calc(var(--control-height-compact) + 2 * var(--pad-0));
+  overflow: hidden;
+}
+
+/* Over the content on narrow screens, elevation separates it from what it covers. */
+.ex-navigation-is-a-sidebar-that-morphs-stage[data-overlay] .ex-navigation-is-a-sidebar-that-morphs-sidebar[data-open='true'] {
+  box-shadow: 0 12px 40px color-mix(in oklch, var(--ink-1) 22%, transparent);
+}
+
+/* Toggle. The same row in both forms, with the app's name in each.
+   A compact control: its label sits --inset-control-compact from its edge on every side.
+   It starts at the sidebar's start edge on either side, so the header lines up with the items it heads. */
+
+.ex-navigation-is-a-sidebar-that-morphs-toggle {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: var(--gap-within);
+  width: max-content;
+  max-width: 100%;
+  min-height: var(--control-height-compact);
+  padding: 0 var(--inset-control-compact);
+  border-radius: var(--radius-1);
+  color: var(--ink-1);
+  font: var(--text-label);
+  transition: background-color var(--dur-feedback) linear;
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-toggle:hover {
+  background: var(--plane-control);
+}
+
+/* Sized in rem, as the system sidebar sizes its icon, so it grows with the label when text is enlarged.
+   The label here is a step smaller than the system sidebar's title, so the icon is too. */
+.ex-navigation-is-a-sidebar-that-morphs-icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  color: var(--ink-2);
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-toggle-text {
+  white-space: nowrap;
+}
+
+/* Navigation. Hidden and inert while closed, and clipped by the shrinking surface. */
+
+.ex-navigation-is-a-sidebar-that-morphs-nav {
+  display: grid;
+  gap: var(--gap-tight);
+  width: 100%;
+  transition: opacity var(--dur-fade) linear;
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-sidebar[data-open='false'] .ex-navigation-is-a-sidebar-that-morphs-nav {
+  opacity: 0;
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-nav-item {
+  display: flex;
+  align-items: center;
+  height: var(--control-height-compact);
+  padding: 0 var(--inset-control-compact);
+  border-radius: var(--radius-1);
+  color: var(--ink-2);
+  font: var(--text-small);
+  text-align: start;
+  transition: background-color var(--dur-feedback) linear;
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-nav-item:hover {
+  background: var(--plane-control-hover);
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-nav-item[aria-current='page'] {
+  background: var(--plane-control);
+  color: var(--ink-1);
+}
+
+/* Content. Its reading column is centered in the space the sidebar leaves beside it.
+   The space is reserved at the sidebar's side, so the column moves as the sidebar grows. The gutter is the sidebar's
+   own inset plus its padding, so the column starts on the line where the sidebar's toggle row starts. */
+
+.ex-navigation-is-a-sidebar-that-morphs-content {
+  --gutter: calc(var(--pad-1) + var(--pad-0));
+  position: relative;
+  min-height: 16.25rem;
+  padding: var(--gutter);
+  transition:
+    padding-left calc(var(--dur) * var(--travel)) var(--ease-morph),
+    padding-right calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-stage[data-side='left'] .ex-navigation-is-a-sidebar-that-morphs-content {
+  padding-left: calc(var(--pad-1) + var(--sb-w) + var(--gutter));
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-stage[data-side='right'] .ex-navigation-is-a-sidebar-that-morphs-content {
+  padding-right: calc(var(--pad-1) + var(--sb-w) + var(--gutter));
+}
+
+/* Narrow screens: the sidebar overlays the content, so nothing is reserved. The closed toggle
+   sits above the heading instead, one group gap above it. */
+.ex-navigation-is-a-sidebar-that-morphs-stage[data-overlay] .ex-navigation-is-a-sidebar-that-morphs-content {
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+  padding-top: calc(var(--pad-1) + var(--control-height-compact) + 2 * var(--pad-0) + var(--gap-within));
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-column {
+  display: grid;
+  gap: var(--gap-within);
+  max-width: 36ch;
+  margin-inline: auto;
+}
+
+/* The heading shares the toggle's row: both are centered on the compact control height, so their text lines up. */
+.ex-navigation-is-a-sidebar-that-morphs-heading {
+  display: flex;
+  align-items: center;
+  min-height: var(--control-height-compact);
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-body {
+  font: var(--text-small);
+  color: var(--ink-2);
+}

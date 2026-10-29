@@ -1,0 +1,12 @@
+/* Stack of three variants. Each label belongs to its own track, so the tracks sit a group gap apart and each
+   label stays closer to its track than to the one above it. */
+.doc-segmented-stack {
+  display: grid;
+  gap: var(--gap-between);
+  max-width: 100%;
+}
+
+/* The first label opens the specimen, so its first line meets the frame's top inset. */
+.doc-segmented-stack > :first-child > .h-field-label {
+  text-box: trim-start cap alphabetic;
+}

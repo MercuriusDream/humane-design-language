@@ -1,0 +1,75 @@
+/* ProgressSurface. The surface's own plane fills to show progress: a state of the object, not a bar beside it. */
+
+.h-progress-surface {
+  position: relative;
+  min-width: 0;
+  background: var(--plane-raised);
+}
+
+.h-progress-surface[data-depth='1'] {
+  border-radius: var(--radius-1);
+  padding: var(--pad-1);
+}
+
+.h-progress-surface[data-depth='2'] {
+  border-radius: var(--radius-2);
+  padding: var(--pad-2);
+}
+
+/* The track clips the fill to the surface's corners. The surface itself does not clip, so descenders of
+   trimmed text can reach into its padding at any text size. */
+.h-progress-surface-track {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* The fill starts at the start edge and grows toward the end edge. Its scale is set inline.
+   A size change: its duration is set from the change by the component, and travel is removed under reduced motion. */
+.h-progress-surface-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--plane-fill);
+  transform-origin: left;
+  transition: transform calc(var(--dur, var(--dur-fade)) * var(--travel)) var(--ease-morph);
+  /* The fill is decoration under the content; it must never block the pointer. */
+  pointer-events: none;
+}
+
+.h-progress-surface:dir(rtl) .h-progress-surface-fill {
+  transform-origin: right;
+}
+
+/* Content draws above the fill because it is positioned after it. */
+.h-progress-surface-content {
+  position: relative;
+  text-box: trim-both cap alphabetic;
+}
+
+.h-progress-surface-content > :first-child {
+  text-box: trim-start cap alphabetic;
+}
+
+.h-progress-surface-content > :last-child {
+  text-box: trim-end cap alphabetic;
+}
+
+.h-progress-surface-content > :only-child {
+  text-box: trim-both cap alphabetic;
+}
+
+/* Visually hidden, still exposed to assistive technology. */
+.h-progress-surface-native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,0 +1,72 @@
+/* An album card at depth 1. Its triggers sit in its head; the photos below fill the room the menu needs,
+   so the menu, a root of its own, opens over them. */
+
+.ex-new-things-grow-from-their-trigger-album {
+  display: grid;
+  gap: var(--gap-between);
+}
+
+.ex-new-things-grow-from-their-trigger-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-within) var(--gap-between);
+}
+
+/* Stacked lines: the title trims above, the line under it trims below. The buttons beside them are centered. */
+.ex-new-things-grow-from-their-trigger-text {
+  display: grid;
+  gap: var(--gap-within);
+}
+
+.ex-new-things-grow-from-their-trigger-title {
+  text-box: trim-start cap alphabetic;
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+.ex-new-things-grow-from-their-trigger-result {
+  text-box: trim-end cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-3);
+}
+
+.ex-new-things-grow-from-their-trigger-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-within);
+}
+
+/* Each trigger keeps its width; when both do not fit, the second moves to the next line. */
+.ex-new-things-grow-from-their-trigger-actions > * {
+  flex: none;
+}
+
+.ex-new-things-grow-from-their-trigger-photos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap-tight);
+}
+
+/* Photos take no press, but they sit at depth 2 beside the buttons, so they share the buttons' radius. */
+.ex-new-things-grow-from-their-trigger-photo {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-2);
+  background: var(--plane-sunken);
+  color: var(--plane-control-active);
+}
+
+/* On a narrow album the photos are short, and the open menu would hang past the frame. Two rows of photos are kept
+   at least as tall as the menu below its trigger: three items, the gaps between them, its padding and its offset,
+   less the gap above the photos. In rem through the control height, so the room grows with the text. */
+.ex-new-things-grow-from-their-trigger-photo {
+  --menu-room: calc(
+    3 * var(--control-height) + 3 * var(--gap-tight) + 2 * var(--pad-0) - var(--gap-between)
+  );
+  width: 100%;
+  min-height: calc((var(--menu-room) - var(--gap-tight)) / 2);
+}

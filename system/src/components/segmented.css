@@ -1,0 +1,118 @@
+/* Segmented. A track with 3px padding. The track takes the 2px control corner; the indicator and options
+   take 0, so the inside is sharper than its holder. No pills. The track is --control-height (compact:
+   --control-height-compact), so an option is that minus 6px.
+   An option is an inner piece: its side padding is one step of the scale below the tier's inset (--space-3 standard,
+   --space-2 compact), so with the track's 3px the first label's ink sits within a pixel of where a button's label
+   would, and an option's insets match its own top and bottom.
+   Options share the track's width equally unless a label needs more. When they cannot fit on one
+   line, as with very large text on a phone, they wrap onto more lines; the track never scrolls. */
+
+.h-segmented-field {
+  display: grid;
+  gap: var(--gap-within);
+  min-width: 0;
+}
+
+.h-segmented {
+  --h-segmented-height: var(--control-height);
+  --h-segmented-option-pad: var(--space-3);
+  --h-segmented-option-height: calc(var(--h-segmented-height) - 6px);
+  --h-segmented-radius: var(--radius-control-max);
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  min-width: 0;
+  padding: 3px; /* the indicator and options take 0, one step sharper than the 2px track */
+  border-radius: var(--h-segmented-radius);
+  background: var(--plane-control);
+}
+
+.h-segmented[data-size='compact'] {
+  --h-segmented-height: var(--control-height-compact);
+  --h-segmented-option-pad: var(--space-2);
+}
+
+/* Position and size are set on the track by Segmented.tsx. The duration comes from morphDuration(distance). */
+.h-segmented-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--indicator-w, 0px);
+  height: var(--indicator-h, 0px);
+  border-radius: max(0px, calc(var(--h-segmented-radius) - 3px));
+  background: var(--plane-selected);
+  transform: translate(var(--indicator-x, 3px), var(--indicator-y, 3px));
+  transition:
+    transform calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph),
+    width calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph),
+    height calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph);
+}
+
+/* Every option starts from nothing and grows by an equal share, so the widths are equal; the minimum is the label's
+   width (or the whole line, when the label is wider than the line), so a longer label takes what it needs and an
+   option that cannot fit beside the others moves to a new line whole. */
+.h-segmented-option {
+  position: relative;
+  flex: 1 1 0;
+  min-width: fit-content;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--h-segmented-option-height);
+  padding: 0 var(--h-segmented-option-pad);
+  border-radius: max(0px, calc(var(--h-segmented-radius) - 3px));
+  font: var(--text-body);
+  color: var(--ink-2);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  transition:
+    color var(--dur-feedback) linear,
+    background-color var(--dur-feedback) linear;
+}
+
+.h-segmented[data-size='compact'] .h-segmented-option {
+  font: var(--text-small);
+}
+
+/* Options touch, so the ring sits inside the option and never covers a neighbour. */
+.h-segmented-option:focus-visible {
+  outline-offset: calc(var(--focus-width) * -1);
+}
+
+/* An option rests on the track's control plane, so it steps as a button does: the hover plane under the pointer,
+   the active plane while pressed. The selected one already has its own plane and does not change. */
+.h-segmented-option:not([aria-pressed='true']):hover {
+  background: var(--plane-control-hover);
+}
+
+.h-segmented-option:not([aria-pressed='true']):active {
+  background: var(--plane-control-active);
+}
+
+/* Selection is shown by the plane under the option and by ink, never by weight. */
+.h-segmented-option[aria-pressed='true'] {
+  color: var(--ink-1);
+}
+
+/* Forced colors: an outline carries the track boundary without changing its box; the selected option keeps
+   the Highlight plane and HighlightText ink. */
+@media (forced-colors: active) {
+  .h-segmented {
+    outline: var(--stroke) solid CanvasText;
+    outline-offset: -1px;
+  }
+
+  .h-segmented-indicator {
+    background: Highlight;
+  }
+
+  .h-segmented-option {
+    color: CanvasText;
+  }
+
+  .h-segmented-option[aria-pressed='true'] {
+    color: HighlightText;
+  }
+}

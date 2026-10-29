@@ -1,0 +1,75 @@
+/* Example frame. A root surface (data-root): it takes the 2px corner, with depth 0 padding and nothing
+   else at the frame level, so the controls column and the specimen start at the same top and left inset. Children sit
+   at depth 1. The inset is measured to the ink: the frame's edge to the first and last line, or to a control's edge. */
+
+.example {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--pad-0);
+  background: var(--plane-sunken);
+}
+
+/* The controls column is in rem, so its labels keep their measure when the user enlarges text. */
+.example[data-side] {
+  grid-template-columns: minmax(11.25rem, 15rem) minmax(0, 1fr);
+}
+
+.example[data-bare] {
+  padding: 0;
+  background: none;
+}
+
+/* Inside a frame: a label to its control is --space-2 (set by the controls), groups are --space-5 apart. */
+.example-controls {
+  display: grid;
+  align-content: start;
+  gap: var(--space-5);
+}
+
+/* The hint meets the frame's top edge, so it drops the leading above its first line. Below it, the gap to the next
+   control is set on the line box, so it trims there only when nothing follows it. */
+.example-hint {
+  text-box: trim-start cap alphabetic;
+  font: var(--text-small);
+  color: var(--ink-1);
+  text-wrap: pretty; /* the column is narrow, so a last line of one word is common */
+}
+
+.example-hint:last-child {
+  text-box: trim-both cap alphabetic;
+}
+
+/* A radio group last in the column gives back the row space below its last mark, so the frame's inset reaches the
+   mark. A one-line row is its tier's height (the group's --h-choice-height) with the mark centered on the line. A last
+   row with a hint ends on the hint's text instead, so it keeps its row. */
+.example:not([data-bare]) .example-controls > .h-radio-group:last-child:not(:has(.h-radio-row:last-child .h-radio-hint)) {
+  margin-block-end: calc(var(--h-choice-mark-pad) * -1);
+}
+
+/* A slider last in the column gives back the row space below its thumb, the same way. */
+.example:not([data-bare]) .example-controls > .h-slider:last-child input {
+  margin-block-end: calc(var(--h-slider-row-pad) * -1);
+}
+
+/* Switches that follow each other are one group of settings, as in PreferenceControls: --gap-within apart. */
+.example-controls > .h-switch + .h-switch {
+  margin-block-start: calc(var(--gap-within) - var(--gap-between));
+}
+
+/* A button in the controls column keeps its own width, like the controls beside it keep their labels. */
+.example-controls > .h-button {
+  justify-self: start;
+}
+
+/* A specimen's text at the frame's edge trims itself, in the component's doc stylesheet. */
+.example-body {
+  min-width: 0;
+}
+
+/* Below 40rem of column the controls stack over the specimen, on a phone or at large text. The container is the
+   rule or component the frame belongs to (app.css). */
+@container entry (max-width: 40rem) {
+  .example[data-side] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

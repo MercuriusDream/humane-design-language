@@ -1,0 +1,119 @@
+/* Attention is finite. The card is a depth 1 surface inside the example frame.
+   Decoration is added as a morph of the card's own height, not as a swap. */
+
+/* No card gap: spacing lives inside each child, so a collapsed decoration block leaves no hole. */
+.ex-attention-is-finite-card {
+  display: grid;
+  min-width: 0;
+}
+
+.ex-attention-is-finite-title {
+  margin: 0 0 var(--gap-within);
+  font: var(--text-body);
+  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  color: var(--ink-1);
+}
+
+/* Decoration block. Its height morphs from 0 to its natural height (duration from size).
+   The fade stays on under reduced motion; only the travel is removed. */
+.ex-attention-is-finite-decor {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph);
+}
+
+.ex-attention-is-finite-decor[data-on] {
+  grid-template-rows: 1fr;
+}
+
+.ex-attention-is-finite-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ex-attention-is-finite-decor-inner {
+  display: grid;
+  gap: var(--gap-within);
+  padding-bottom: var(--gap-within);
+  opacity: 0;
+  transition: opacity var(--dur-fade) linear;
+}
+
+.ex-attention-is-finite-decor[data-on] .ex-attention-is-finite-decor-inner {
+  opacity: 1;
+}
+
+.ex-attention-is-finite-tagline {
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+.ex-attention-is-finite-icons {
+  display: flex;
+  gap: var(--gap-within);
+  color: var(--ink-3);
+}
+
+.ex-attention-is-finite-icon {
+  display: block;
+}
+
+/* The number is the one thing that matters, so it is the largest type on the card. */
+.ex-attention-is-finite-number {
+  display: grid;
+  justify-items: start;
+  gap: var(--gap-tight);
+  width: 100%;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-2);
+  background: none;
+  color: var(--ink-1);
+  text-align: start;
+}
+
+.ex-attention-is-finite-value {
+  /* The number is the card's one essential value: the heading size, a specimen of rarity. */
+  font: var(--text-heading);
+  letter-spacing: var(--tracking-heading);
+  font-variant-numeric: tabular-nums;
+}
+
+.ex-attention-is-finite-caption {
+  font: var(--text-small);
+  color: var(--ink-2);
+}
+
+.ex-attention-is-finite-meta {
+  margin: var(--gap-within) 0 0;
+  font: var(--text-small);
+  color: var(--ink-3);
+}
+
+.ex-attention-is-finite-results {
+  display: grid;
+  gap: var(--gap-tight);
+  margin: 0;
+  font: var(--text-small);
+}
+
+.ex-attention-is-finite-results > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-within);
+}
+
+/* The last row is the controls column's last line, so it trims below its baseline. */
+.ex-attention-is-finite-results > div:last-child > * {
+  text-box: trim-end cap alphabetic;
+}
+
+.ex-attention-is-finite-results dt {
+  color: var(--ink-2);
+}
+
+.ex-attention-is-finite-results dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
