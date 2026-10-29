@@ -27,7 +27,7 @@ const serverReady = new Promise((resolve, reject) => {
 });
 // Attach a rejection handler immediately; startup may fail before Chrome's endpoint is ready.
 serverReady.catch(() => {});
-const chrome = spawn(chromePath, ['--headless=new', '--disable-gpu', '--no-first-run', '--no-default-browser-check', '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'] });
+const chrome = spawn(chromePath, ['--headless=new', '--disable-gpu', '--no-sandbox', '--no-first-run', '--no-default-browser-check', '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank'], { stdio: ['ignore', 'ignore', 'pipe'] });
 let socket;
 let sessionId;
 let sequence = 0;
