@@ -62,6 +62,10 @@ export function App() {
             ))}
           </ul>
         </section>
+
+        <footer className="landing-foot">
+          <p>This site uses Cloudflare Web Analytics.</p>
+        </footer>
       </main>
     </PreferencesProvider>
   );

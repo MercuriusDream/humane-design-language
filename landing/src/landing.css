@@ -124,3 +124,12 @@
   font: var(--text-small);
   color: var(--ink-2);
 }
+
+.landing-foot {
+  margin-top: var(--space-7);
+}
+
+.landing-foot p {
+  font: var(--text-small);
+  color: var(--ink-3);
+}

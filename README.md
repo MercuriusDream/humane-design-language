@@ -10,6 +10,8 @@ A design language derived from perceptual premises: every rule names the premise
 - Language and system docs: https://humane.mercuriusdream.com/docs/
 - Letters demo: https://humane.mercuriusdream.com/flagship/
 
+The site uses Cloudflare Web Analytics.
+
 ## The language
 
 [LANGUAGE.md](LANGUAGE.md) is the normative text. It defines relationships rather than fixed values, in three layers: premises, rules, and signature. The docs site parses this file at build time, so the page cannot drift from it.
