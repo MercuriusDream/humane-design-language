@@ -49,9 +49,11 @@ Requires `light-dark()`, OKLCH, native `dialog` and Popover, `:has()`, container
 
 ## Manual checks that remain
 
-Automated checks cover Chrome, token contrast, reflow, focus paths, forced-colors emulation, and core interactions. They do not replace:
+Automated checks cover Chrome and Safari, token contrast, reflow, focus paths, forced-colors emulation, and core interactions. Static verification covers programmatic exposure: live regions, control names, and focus targets.
 
-- VoiceOver or NVDA reading of the docs definition lists, forms, dialogs, menus, and announcements.
-- An actual forced-colors environment on each supported operating system.
-- Safari and Firefox rendering, especially `text-box`, OKLCH gamut mapping, and popover positioning.
+Not yet verified:
+
+- VoiceOver and NVDA reading of the docs definition lists, forms, dialogs, menus, and announcements. Static checks passed; no end-to-end screen-reader pass.
+- A real forced-colors environment. Only emulation is verified.
+- Firefox rendering, especially `text-box`, OKLCH gamut mapping, and popover positioning.
 - A visual pass over the complete docs and flagship at 200% text.
