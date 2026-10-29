@@ -13,6 +13,7 @@ Guidance for agents working in this repository.
 
 - `npm ci`, `npm run dev`, `npm run build:site`, `npm run typecheck`, `npm test`, `npm run test:browser`.
 - `test:browser` uses a local Chrome or Chromium (`CHROME_PATH` overrides discovery) and runs in CI.
+- `test:safari` drives real Safari over safaridriver (macOS only, needs "Allow remote automation" in Safari Settings > Developer). It checks the production site; `SMOKE_BASE` overrides the target.
 
 ## Rules
 

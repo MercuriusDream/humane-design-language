@@ -21,6 +21,7 @@
     "preview": "vite preview",
     "typecheck": "npm run typecheck --workspaces --if-present && tsc --noEmit -p tests/tsconfig.json",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
-    "test:browser": "node tests/browser.mjs"
+    "test:browser": "node tests/browser.mjs",
+    "test:safari": "node tests/safari.mjs"
   }
 }
