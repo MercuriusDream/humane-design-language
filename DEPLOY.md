@@ -41,7 +41,7 @@ If the site is served below a path prefix, set Vite's `base` and the correspondi
 
 ## Browser baseline
 
-Requires `light-dark()`, OKLCH, native `dialog` and Popover, `:has()`, container queries, and `text-box`. Chrome 156 is the tested engine. Browsers without `text-box` keep the layout but lose exact ink trimming; browsers without native Popover have no menu fallback. Safari and Firefox are not certified by the browser suite.
+Requires `light-dark()`, OKLCH, native `dialog` and Popover, `:has()`, container queries, and `text-box`. Chrome 156 and Safari 27 are tested engines (`tests/browser.mjs` and `tests/safari.mjs`). Browsers without `text-box` keep the layout but lose exact ink trimming; browsers without native Popover have no menu fallback. Firefox is not certified by the suites.
 
 ## Package release is separate
 
