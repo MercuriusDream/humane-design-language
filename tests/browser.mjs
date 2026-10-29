@@ -13,7 +13,7 @@ const chromePath = process.env.CHROME_PATH ?? [
 ].find(existsSync);
 if (!chromePath) throw new Error('Set CHROME_PATH to a Chrome/Chromium executable. No browser dependency is downloaded.');
 const profile = await mkdtemp(join(tmpdir(), 'humane-browser-'));
-const vite = spawn(process.execPath, ['node_modules/vite/bin/vite.js', '--config', 'tests/vite.config.ts'], { stdio: ['ignore', 'pipe', 'pipe'] });
+const vite = spawn(process.execPath, ['node_modules/vite/bin/vite.js', '--config', 'tests/vite.config.ts'], { stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, NO_COLOR: '1', FORCE_COLOR: '0' } });
 let serverLog = '';
 const serverReady = new Promise((resolve, reject) => {
   const timer = setTimeout(() => reject(new Error(`Vite startup timed out: ${serverLog}`)), 15000);
