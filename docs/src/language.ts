@@ -1,5 +1,5 @@
-// The docs read the language straight from README.md, so the page can never drift from it.
-import readme from '../../README.md?raw';
+// The docs read the language straight from LANGUAGE.md, so the page can never drift from it.
+import readme from '../../LANGUAGE.md?raw';
 
 export type Rule = {
   slug: string;

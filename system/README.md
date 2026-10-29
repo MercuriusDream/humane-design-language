@@ -1,6 +1,6 @@
 # Humane Design System
 
-This is the specification of the Humane Design System. It turns the relationships in the [Humane Design Language](../README.md) into values and components. Each value below names the language relationship it satisfies. The values are the ones in `src/styles/tokens.css` and `src/lib/motion.ts`. Where this document and those files disagree, the files are correct and this document must be updated.
+This is the specification of the Humane Design System. It turns the relationships in the [Humane Design Language](../LANGUAGE.md) into values and components. Each value below names the language relationship it satisfies. The values are the ones in `src/styles/tokens.css` and `src/lib/motion.ts`. Where this document and those files disagree, the files are correct and this document must be updated.
 
 Contributors who write components read [CONVENTIONS.md](CONVENTIONS.md) next.
 

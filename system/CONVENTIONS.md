@@ -1,6 +1,6 @@
 # Humane Design System: component conventions
 
-Components in `system/src/components` are expected to follow these rules; known gaps are recorded in the system specification. They turn the language in `../README.md` into code.
+Components in `system/src/components` are expected to follow these rules; known gaps are recorded in the system specification. They turn the language in `../LANGUAGE.md` into code.
 
 ## Files
 
@@ -76,4 +76,4 @@ Use these custom properties. Never write a raw color, and never write a font siz
 
 ## Checking your work
 
-Run `npm run typecheck`, `npm test`, and `npm run build` from the repository root; run `npm run test:browser` for the covered browser scenarios. Record results rather than treating compilation as conformance. Fix regressions introduced by your changes and report unrelated failures to their owner. Manually review screen-reader behavior, forced colors, ink insets, signal counts, and interruption where automation does not establish the language requirement. Follow the signal-region and counting rule in `README.md`: repeated marks for one error count together, concurrent actionable errors remain exposed, and focus is always visible and exempt from the signal budget.
+Run `npm run typecheck`, `npm test`, and `npm run build` from the repository root; run `npm run test:browser` for the covered browser scenarios. Record results rather than treating compilation as conformance. Fix regressions introduced by your changes and report unrelated failures to their owner. Manually review screen-reader behavior, forced colors, ink insets, signal counts, and interruption where automation does not establish the language requirement. Follow the signal-region and counting rule in `LANGUAGE.md`: repeated marks for one error count together, concurrent actionable errors remain exposed, and focus is always visible and exempt from the signal budget.

@@ -4,7 +4,7 @@ import test from 'node:test';
 import { colorContrast } from '../system/src/lib/color.ts';
 
 const read = path => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
-const language = read('README.md');
+const language = read('LANGUAGE.md');
 const system = read('system/README.md');
 const slug = name => name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
 const names = [...language.matchAll(/^\*\*([^*]+)\*\*/gm)].map(match => match[1].replace(/\.$/, ''));
