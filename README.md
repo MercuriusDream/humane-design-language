@@ -2,7 +2,7 @@
 
 Interface design principles derived from perceptual premises. Every rule names the premise it follows from. This repository holds the language, a React and TypeScript reference implementation, interactive documentation, and a demonstration mail app.
 
-**Public alpha, 0.1.0.** Rules are frozen for 0.1. Values remain open.
+**Public alpha, 0.1.1.** Rules are frozen for 0.1. Values remain open.
 
 - Site: https://humane.mercuriusdream.com
 - Language and system docs: https://humane.mercuriusdream.com/docs/

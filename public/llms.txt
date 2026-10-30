@@ -1,6 +1,6 @@
 # Humane Design Language
 
-> Interface design principles, a React and TypeScript reference system, interactive documentation, and a demonstration mail app. Public alpha 0.1.0.
+> Interface design principles, a React and TypeScript reference system, interactive documentation, and a demonstration mail app. Public alpha 0.1.1.
 
 The normative language is LANGUAGE.md. Component source and Props types are authoritative for API behavior. The Markdown files below are generated from canonical repository sources during the site build.
 
