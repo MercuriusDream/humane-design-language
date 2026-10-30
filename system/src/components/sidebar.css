@@ -33,6 +33,11 @@
     box-shadow var(--dur-fade) linear;
 }
 
+/* The first paint already uses the measured closed width. Do not animate from the pre-measure fallback. */
+.h-sidebar:not([data-ready]) {
+  transition: none;
+}
+
 /* Docked: a section. It meets the window's edges, so it has no inset and no corner there. */
 .h-sidebar[data-open='true']:not([data-overlay]) {
   top: 0;
@@ -53,6 +58,7 @@
 
 .h-sidebar[data-open='false'] {
   width: var(--closed-width);
+  max-width: calc(100vw - 2 * var(--sidebar-inset));
   height: var(--sidebar-closed-height);
 }
 
@@ -172,6 +178,21 @@
 
 .h-sidebar-current {
   font: var(--text-label);
+}
+
+/* Measure every possible closed label, not the active one. This keeps scroll-driven text updates in place. */
+.h-sidebar-measure {
+  position: absolute;
+  visibility: hidden;
+  width: max-content;
+  pointer-events: none;
+}
+
+.h-sidebar-measure > span {
+  display: block;
+  width: max-content;
+  font: var(--text-label);
+  white-space: nowrap;
 }
 
 .h-sidebar[data-open='true'] .h-sidebar-current,

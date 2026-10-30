@@ -106,8 +106,8 @@ export default function ButtonDoc() {
   return (
     <>
       <p className="rule-text">
-        A button is a plane identified by its label, not by its color. Its variant says what the action weighs, and
-        saturation appears only on danger, so choices with equal consequence take the same variant.
+        A button's label identifies its action. Variants distinguish primary, secondary, and destructive actions.
+        Saturation appears only on danger, so choices with equal consequence take the same variant.
       </p>
       <Serves
         rules={[

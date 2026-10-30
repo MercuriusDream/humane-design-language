@@ -1,14 +1,14 @@
 # Humane Design Language
 
-*A humane perception.*
-
-A design language derived from perceptual premises: every rule names the premise it follows from. This repository holds the language, a reference implementation, and the site that documents them.
+Interface design principles derived from perceptual premises. Every rule names the premise it follows from. This repository holds the language, a React and TypeScript reference implementation, interactive documentation, and a demonstration mail app.
 
 **Public alpha, 0.1.0.** Rules are frozen for 0.1. Values remain open.
 
 - Site: https://humane.mercuriusdream.com
 - Language and system docs: https://humane.mercuriusdream.com/docs/
 - Letters demo: https://humane.mercuriusdream.com/flagship/
+- LLM documentation index: https://humane.mercuriusdream.com/llms.txt
+- Agent documentation map: [AGENT-MAP.md](AGENT-MAP.md)
 
 The site uses Cloudflare Web Analytics.
 

@@ -79,7 +79,7 @@ function Letters() {
       column={sections ? 'full' : 'wide'}
       sidebarExtra={
         <p className="sidebar-account">
-          Signed in as{' '}
+          Demo account:{' '}
           {/* A narrow panel or large text breaks the address after the @, not inside a word. */}
           <span className="sidebar-account-address">
             {ME.address.split('@')[0]}@<wbr />

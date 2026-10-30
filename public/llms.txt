@@ -1,0 +1,27 @@
+# Humane Design Language
+
+> Interface design principles, a React and TypeScript reference system, interactive documentation, and a demonstration mail app. Public alpha 0.1.0.
+
+The normative language is LANGUAGE.md. Component source and Props types are authoritative for API behavior. The Markdown files below are generated from canonical repository sources during the site build.
+
+## Start here
+
+- [Documentation map for coding agents](https://humane.mercuriusdream.com/llms/AGENT-MAP.md): Source precedence, task routing, parser contracts, package facts, and verification commands.
+- [Humane Design Language](https://humane.mercuriusdream.com/llms/LANGUAGE.md): Normative intent, premises, rules, signature, and conformance tests.
+- [Rendered documentation](https://humane.mercuriusdream.com/docs/): The language with interactive examples and component references.
+
+## Reference system
+
+- [System specification](https://humane.mercuriusdream.com/llms/system/README.md): Tokens, layout, motion, components, and disclosed implementation limits.
+- [Component conventions](https://humane.mercuriusdream.com/llms/system/CONVENTIONS.md): File, naming, token, shape, motion, copy, and accessibility rules for contributors.
+- [Letters demonstration](https://humane.mercuriusdream.com/flagship/): A local mail app built with the reference system. Sending is simulated.
+
+## Repository and verification
+
+- [Repository overview](https://humane.mercuriusdream.com/llms/README.md)
+- [Agent guidance](https://humane.mercuriusdream.com/llms/AGENTS.md)
+- [Test guide](https://humane.mercuriusdream.com/llms/tests/README.md)
+- [Release audit](https://humane.mercuriusdream.com/llms/AUDIT.md): Historical verification results and disclosed limits, not a current conformance certificate.
+- [Deployment guide](https://humane.mercuriusdream.com/llms/DEPLOY.md)
+- [References](https://humane.mercuriusdream.com/llms/REFERENCES.md)
+- [MIT license](https://humane.mercuriusdream.com/llms/LICENSE)

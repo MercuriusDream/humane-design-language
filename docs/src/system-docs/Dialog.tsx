@@ -151,7 +151,7 @@ export default function DialogDoc() {
             </>
           }
         >
-          <p>The 14 photos in this project leave this device. This cannot be undone.</p>
+          <p>The 14 photos in this project will be deleted from this device. This cannot be undone.</p>
         </Dialog>
 
         <Dialog open={active === 'notice'} onClose={close} origin={origin} title="Export finished">

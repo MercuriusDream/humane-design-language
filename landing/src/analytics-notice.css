@@ -1,0 +1,49 @@
+/* A nonmodal site disclosure. It appears in place, stays until dismissed, and never takes focus. */
+.landing-analytics {
+  position: fixed;
+  z-index: 20;
+  inset-inline-end: var(--space-5);
+  bottom: var(--space-5);
+  display: grid;
+  gap: var(--space-3);
+  width: min(24rem, calc(100vw - 2 * var(--space-5)));
+  max-height: calc(100dvh - 2 * var(--space-5));
+  overflow-y: auto;
+}
+
+.landing-analytics-title {
+  font: var(--text-heading);
+  letter-spacing: var(--tracking-heading);
+  color: var(--ink-1);
+}
+
+.landing-analytics-text {
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.landing-analytics-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-within);
+  font: var(--text-small);
+}
+
+.landing-analytics-actions a {
+  color: var(--ink-2);
+}
+
+/* Keeps the final footer reachable above the fixed notice, including at larger text sizes. */
+.landing-analytics-reserve {
+  block-size: 14rem;
+}
+
+@media (max-width: 40em) {
+  .landing-analytics {
+    inset-inline-end: var(--space-4);
+    bottom: var(--space-4);
+    width: calc(100vw - 2 * var(--space-4));
+  }
+}

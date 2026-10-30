@@ -76,20 +76,20 @@ function section(markdown: string, heading: RegExp): string {
 }
 
 const GROUPS: [string, string, RegExp][] = [
-  ['premises', 'Premises', /^## 2\. Premises\n/m],
+  ['premises', 'Premises', /^## Premises\n/m],
   ['space', 'Space', /^### Space\n/m],
   ['color', 'Color', /^### Color\n/m],
   ['type', 'Type', /^### Type\n/m],
   ['motion', 'Time and motion', /^### Time and Motion\n/m],
   ['agency', 'Agency', /^### Agency\n/m],
   ['communication', 'Communication', /^### Communication\n/m],
-  ['signature', 'Signature', /^## 4\. Signature\n/m],
+  ['signature', 'Signature', /^## Signature\n/m],
 ];
 
 export const LANGUAGE: Group[] = GROUPS.map(([id, title, heading]) => ({ id, title, ...rulesIn(section(readme, heading)) }));
 
 export const INTENT: { lead: string; points: string[] } = (() => {
-  const block = section(readme, /^## 1\. Intent\n/m);
+  const block = section(readme, /^## Intent\n/m);
   const chunks = block.split(/\n\s*\n/).map((c) => c.trim()).filter(Boolean);
   const list = chunks.find((c) => c.startsWith('- ')) ?? '';
   return {
@@ -98,7 +98,7 @@ export const INTENT: { lead: string; points: string[] } = (() => {
   };
 })();
 
-export const CONFORMANCE: { name: string; condition: string }[] = section(readme, /^## 6\. Conformance Tests\n/m)
+export const CONFORMANCE: { name: string; condition: string }[] = section(readme, /^## Conformance Tests\n/m)
   .split('\n')
   .filter((line) => line.startsWith('|') && !line.includes('---'))
   .slice(1)

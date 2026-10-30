@@ -54,29 +54,35 @@ export function Sidebar({ title, items, activeId, onSelect, open, onOpenChange, 
     if (overlay && !open) returnBodyFocus();
     if (bodyRef.current) bodyRef.current.inert = !open;
   }, [overlay, open]);
-  const currentRef = useRef<HTMLSpanElement>(null);
+  const measureRef = useRef<HTMLSpanElement>(null);
   const iconRef = useRef<SVGSVGElement>(null);
   const indicator = useIndicator(activeId);
   const [closedWidth, setClosedWidth] = useState(160);
+  const [transitionsReady, setTransitionsReady] = useState(false);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setTransitionsReady(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
   const activeLabel = items.find((item) => item.id === activeId)?.label ?? title;
+  const closedLabels = [title, ...items.map((item) => item.label)];
+  const closedLabelKey = closedLabels.join('\n');
 
-  // The closed form is as wide as its icon and the label it shows, so it morphs when the current item changes,
-  // and it is measured again whenever either changes size, such as when the user enlarges text.
-  // The label is clipped to the closed form, so its box would report the old width: the text itself is measured.
+  // Reserve the widest possible label once. Reading-position updates change only the words and selected item,
+  // never the toggle's geometry. Hidden text remains measurable and follows font and text-size changes.
   useLayoutEffect(() => {
-    const label = currentRef.current;
+    const measureElement = measureRef.current;
     const icon = iconRef.current;
-    if (!label || !icon) return;
-    const text = document.createRange();
-    text.selectNodeContents(label);
-    const measure = () =>
-      setClosedWidth(Math.ceil(text.getBoundingClientRect().width) + Math.ceil(icon.getBoundingClientRect().width) + CLOSED_CHROME_PX);
+    if (!measureElement || !icon) return;
+    const measure = () => {
+      const labelWidth = Math.max(...Array.from(measureElement.children, (label) => label.getBoundingClientRect().width));
+      setClosedWidth(Math.ceil(labelWidth) + Math.ceil(icon.getBoundingClientRect().width) + CLOSED_CHROME_PX);
+    };
     measure();
     const observer = new ResizeObserver(measure);
-    observer.observe(label);
+    observer.observe(measureElement);
     observer.observe(icon);
     return () => observer.disconnect();
-  }, [activeLabel]);
+  }, [closedLabelKey]);
 
   useSideMorph(surfaceRef, side, reducedMotion);
   useReducedCrossfade(surfaceRef, open, reducedMotion);
@@ -112,6 +118,7 @@ export function Sidebar({ title, items, activeId, onSelect, open, onOpenChange, 
       data-open={open}
       data-overlay={overlay || undefined}
       data-side={side}
+      data-ready={transitionsReady || undefined}
       aria-label={title}
       style={
         {
@@ -135,12 +142,14 @@ export function Sidebar({ title, items, activeId, onSelect, open, onOpenChange, 
             closed, the current label starts where the title did, and the icon stays at the end as the surface morphs. */}
         <span className="h-sidebar-toggle-text" aria-hidden="true">
           <span className="h-sidebar-title">{title}</span>
-          <span className="h-sidebar-current" ref={currentRef}>
-            {activeLabel}
-          </span>
+          <span className="h-sidebar-current">{activeLabel}</span>
         </span>
         <SidebarIcon ref={iconRef} />
       </button>
+
+      <span className="h-sidebar-measure" ref={measureRef} aria-hidden="true">
+        {closedLabels.map((label, index) => <span key={`${index}:${label}`}>{label}</span>)}
+      </span>
 
       <div className="h-sidebar-body" ref={bodyRef} id={bodyId}>
         <nav aria-label={navLabel}>

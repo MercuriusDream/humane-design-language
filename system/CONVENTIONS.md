@@ -61,6 +61,8 @@ Use these custom properties. Never write a raw color, and never write a font siz
 ## Words
 
 - Sentence case everywhere. No uppercase or letter-spaced labels. Monospace only for code.
+- Use neutral, specific language. Prefer established terms over slogans, metaphors, personality claims, and newly branded vocabulary. State what a control does or what a value means.
+- Do not repeat location, category, or sequence labels above a title. A menu or dropdown icon must add information not already conveyed by the control and its native affordance.
 - No em-dashes in any string. Use a period, a colon, or a second sentence.
 - No status pills or badges ("NEW", "LIVE", "WORKING"). A count is a plain number in `--ink-3`.
 - Errors say what happened and what to do next.

@@ -3,11 +3,11 @@ import { ALL_RULES } from '../language';
 
 const NAMES = new Map(ALL_RULES.map((rule) => [rule.slug, rule.name]));
 
-/** The line under a component's description: "Serves a, b, and c.", each rule in lowercase and linked to its section. */
+/** Related rules under a component's description, each linked to its section. */
 export function Serves({ rules }: { rules: string[] }) {
   return (
     <p className="rule-from">
-      Serves{' '}
+      Related rules:{' '}
       {rules.map((slug, i) => {
         const name = NAMES.get(slug);
         if (!name) throw new Error(`Serves: no rule with the slug "${slug}"`);

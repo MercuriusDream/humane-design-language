@@ -96,6 +96,8 @@ function Fixture() {
 const app = new URLSearchParams(location.search).get('app');
 if (app === 'docs') {
   void import('../docs/src/main');
+} else if (app === 'landing') {
+  void import('../landing/src/main');
 } else if (app === 'flagship') {
   void import('../flagship/src/main');
 } else {

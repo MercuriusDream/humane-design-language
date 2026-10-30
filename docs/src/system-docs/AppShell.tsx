@@ -13,7 +13,7 @@ const PROPS: PropRow[] = [
   {
     prop: 'title',
     type: 'string',
-    meaning: 'The product name. The closed sidebar shows it beside the name of the current section.',
+    meaning: 'The product name, shown on the open sidebar. The closed sidebar shows the current section instead.',
   },
   {
     prop: 'items',

@@ -72,7 +72,7 @@ export function Outbox({ reserved = true }: { reserved?: boolean }) {
           <Button onClick={() => setConfirmReplace(false)}>Keep stored mail</Button>
           <Button variant="danger" onClick={() => { setConfirmReplace(false); replaceStored(); }}>Replace stored mail</Button>
         </>}>
-        <p>This permanently replaces the existing stored snapshot with this session. Export stored mail first if you need to keep it. This replacement cannot be undone.</p>
+        <p>This replaces previously saved mail with the mail currently open in this tab. Export stored mail first if you need to keep it. This replacement cannot be undone.</p>
       </Dialog>
     </section>
   );

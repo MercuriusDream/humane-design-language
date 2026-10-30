@@ -6,7 +6,7 @@ import './settings-view.css';
 
 const NOTIFY_OPTIONS: { value: Notify; label: string; hint?: string }[] = [
   { value: 'every', label: 'Every letter' },
-  { value: 'people', label: 'Only people I have written to', hint: 'Fewer interruptions' },
+  { value: 'people', label: 'Only people I have written to' },
   { value: 'none', label: 'None' },
 ];
 
@@ -40,7 +40,7 @@ export function SettingsView() {
         </h2>
         <RadioGroup
           size="compact"
-          label="Politely announce incoming letters in this app"
+          label="Announce new letters to screen readers"
           name="notifications"
           options={NOTIFY_OPTIONS}
           value={notify}
@@ -67,7 +67,7 @@ export function SettingsView() {
         <h2 id="settings-account" className="settings-view-heading">
           Account
         </h2>
-        <Operator operator="Humane Post" detail={`Signed in as ${ME.address}`} />
+        <Operator operator="Humane Post" detail={`Demo account: ${ME.address}`} />
         <Disclosure size="compact" title="Data this app keeps">
           <ul className="settings-view-list">
             <li>Letters you have received and sent, including archived ones.</li>

@@ -1,22 +1,12 @@
-/* Landing. One centered column: the name and the intent, the three parts as root surfaces, then the premises.
-   No navigation bar: the parts are content, and each part keeps its own sidebar. */
-
+/* Landing. Concrete orientation, three destinations, one working rule, the premises, and an adoption path. */
 .landing {
   display: grid;
-  gap: var(--space-8);
+  gap: var(--space-9);
   max-width: 68rem;
   margin-inline: auto;
-  padding: var(--space-9) var(--space-5) var(--space-9);
+  padding: var(--space-9) var(--space-5);
 }
 
-@media (max-width: 40em) {
-  .landing {
-    gap: var(--space-7);
-    padding: var(--space-8) var(--space-4) var(--space-8);
-  }
-}
-
-/* A heading sits closer to what it introduces: title to lead --space-4, the head to the parts --space-8. */
 .landing-head {
   display: grid;
   gap: var(--space-4);
@@ -28,14 +18,23 @@
 }
 
 .landing-lead {
-  max-width: 38rem;
+  max-width: 42rem;
   font: var(--text-lead);
   color: var(--ink-2);
 }
 
-/* Parts. Equal choices, so equal weight: one width, one plane, one type.
-   The parts and the premises share one grid, the same tracks and the same --space-5 between columns, so each
-   premise column starts on the edge of the part above it. */
+.landing-heading {
+  font: var(--text-heading);
+  letter-spacing: var(--tracking-heading);
+  color: var(--ink-1);
+}
+
+/* Destination introductions are content, not a substitute for the documentation's primary sidebar. */
+.landing-destinations {
+  display: grid;
+  gap: var(--space-4);
+}
+
 .landing-parts {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
@@ -51,40 +50,25 @@
 .landing-part {
   display: grid;
   align-content: start;
-  gap: var(--space-3);
-  padding: var(--space-5);
+  gap: var(--space-2);
   color: var(--ink-1);
   text-decoration: none;
   transition: background-color var(--dur-feedback) linear;
 }
 
-.landing-part.h-surface[data-padded] {
-  padding: var(--space-5);
-}
-
 .landing-part:hover {
-  background: var(--plane-control-hover);
+  background: var(--plane-control);
 }
 
 .landing-part:active {
-  background: var(--plane-control-active);
+  background: var(--plane-control-hover);
 }
 
-/* A block, not a flex row, so the surface trims its first line and the top inset matches the sides. */
 .landing-part-name {
   display: block;
   font: var(--text-heading);
   letter-spacing: var(--tracking-heading);
-}
-
-/* The arrow is where the part leads, not decoration: it follows the name on its line and never moves. */
-.landing-part-mark {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  margin-inline-start: var(--gap-within);
-  vertical-align: -0.0625rem;
-  color: var(--ink-2);
+  text-box: trim-start cap alphabetic;
 }
 
 .landing-part-text {
@@ -92,15 +76,43 @@
   color: var(--ink-2);
 }
 
-/* Premises. A heading, then the six in a grid. Between premises is three times the gap inside one. */
-.landing-premises {
+/* One functional example supplies evidence without adding another promotional card. */
+.landing-example {
   display: grid;
   gap: var(--space-5);
 }
 
-.landing-heading {
-  font: var(--text-heading);
-  letter-spacing: var(--tracking-heading);
+.landing-example-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.landing-example-copy {
+  display: grid;
+  flex: 1 1 24rem;
+  gap: var(--space-2);
+  max-width: 42rem;
+}
+
+.landing-example-copy p,
+.landing-use-content p {
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.landing-rule-link {
+  justify-self: start;
+  font: var(--text-body);
+  color: var(--ink-2);
+}
+
+/* Premise names lead to a rule that puts the principle into practice. */
+.landing-premises {
+  display: grid;
+  gap: var(--space-5);
 }
 
 .landing-premise-list {
@@ -120,16 +132,50 @@
   font-weight: 600; /* body role, name weight */
 }
 
+.landing-premise-name a {
+  color: var(--ink-1);
+}
+
 .landing-premise-text {
-  font: var(--text-small);
+  font: var(--text-body);
+  color: var(--ink-1);
+}
+
+.landing-use {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.landing-use-content {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(12rem, 1fr);
+  gap: var(--space-6);
+}
+
+.landing-use-links {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  font: var(--text-body);
+}
+
+.landing-use-links a {
   color: var(--ink-2);
 }
 
 .landing-foot {
-  margin-top: var(--space-7);
+  display: flex;
+  justify-content: flex-start;
 }
 
-.landing-foot p {
-  font: var(--text-small);
-  color: var(--ink-3);
+@media (max-width: 40em) {
+  .landing {
+    gap: var(--space-8);
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .landing-use-content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
 }

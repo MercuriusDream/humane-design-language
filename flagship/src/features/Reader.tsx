@@ -4,7 +4,7 @@ import { useCompose } from '../compose';
 import { MAILBOX_LABELS, formatWhen, selectedLetter, useMail } from '../store';
 import './reader.css';
 
-/** The open letter. Serves: Continuity saves effort (it grows from its row) and Say who is behind it (verified senders and the notice). */
+/** The open letter. Serves: Continuity saves effort (it opens from its row) and Say who is behind it (verified senders and the notice). */
 export function Reader({ onBack }: { onBack?: () => void }) {
   const { state, dispatch } = useMail();
   const { openCompose } = useCompose();
@@ -12,16 +12,18 @@ export function Reader({ onBack }: { onBack?: () => void }) {
   const letter = selectedLetter(state);
   const letterId = letter?.id ?? null;
   const frameRef = useRef<HTMLDivElement>(null);
+  const openLetterId = useRef<string | null>(null);
 
-  // A new letter grows out of the row that was opened. Keyed by id so moving between letters morphs too.
   useLayoutEffect(() => {
     const frame = frameRef.current;
+    const wasOpen = openLetterId.current !== null;
+    openLetterId.current = letterId;
     if (!frame || !letterId) return;
-    const row = document.querySelector<HTMLElement>(`[data-letter-id="${CSS.escape(letterId)}"]`);
-    const grow = growFrom(frame, row, reducedMotion);
-    // Cancel a grow still running from the previous letter, so two morphs never stack on the frame.
-    return () => grow?.cancel();
-    // reducedMotion is read on open only; changing it does not replay the grow.
+    // The reader grows from its row only when it opens. Changing letters keeps the established frame in place.
+    const origin = wasOpen ? frame : document.querySelector<HTMLElement>(`[data-letter-id="${CSS.escape(letterId)}"]`);
+    const morph = growFrom(frame, origin, reducedMotion);
+    return () => morph?.cancel();
+    // reducedMotion is read on selection only; changing it does not replay the morph.
   }, [letterId]);
 
   const archive = (id: string) => {

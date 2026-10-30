@@ -29,8 +29,8 @@ function Docs() {
         <header className="page-header">
           <h1 className="page-title">Humane Design Language</h1>
           <p className="lead">
-            A language of relationships, not values. This page is built with it, and every demo on it is a rule you can
-            operate.
+            Design principles for layout, color, typography, motion, and interaction. This documentation uses the
+            reference components and includes interactive examples.
           </p>
         </header>
         {SECTIONS.map(({ id, title, Content }) => (

@@ -360,7 +360,7 @@ try {
     assert.ok(await evaluate('document.activeElement === document.querySelector(".h-sidebar-toggle")'));
   });
 
-  for (const app of ['docs', 'flagship']) {
+  for (const app of ['landing', 'docs', 'flagship']) {
     for (const width of [390, 1440]) {
       await check(`${app} renders at ${width}px and 200% text without horizontal page overflow`, async () => {
         await viewport(width, 32);
@@ -412,12 +412,94 @@ try {
     assert.notEqual(before, after);
     assert.ok(after.includes('Meets 3:1'), after);
   });
+  await check('docs scrolling changes the current label without moving the closed sidebar', async () => {
+    await viewport(390, 16);
+    await evaluate(`(() => {
+      const preferences = JSON.parse(localStorage.getItem('humane-preferences') ?? '{}');
+      localStorage.setItem('humane-preferences', JSON.stringify({...preferences, reducedMotion:false}));
+    })()`);
+    await open('docs');
+    await evaluate(`document.querySelector('.h-sidebar-toggle').focus({preventScroll:true})`);
+    const before = await rect('.h-sidebar');
+    await evaluate(`document.querySelector('#communication').scrollIntoView({behavior:'instant'})`);
+    await waitFor(`document.querySelector('.h-sidebar-current').textContent === 'Communication'`);
+    await frames();
+    const after = await rect('.h-sidebar');
+    assert.equal(await evaluate(`document.querySelector('.h-sidebar-current').textContent`), 'Communication');
+    assert.deepEqual(after, before);
+    assert.equal(await evaluate(`document.querySelector('.h-sidebar').getAnimations().length`), 0);
+    assert.ok(await evaluate(`document.activeElement === document.querySelector('.h-sidebar-toggle')`));
+  });
+  await check('landing undo works and analytics dismissal persists with a way to reopen', async () => {
+    await viewport(390, 16);
+    await evaluate(`localStorage.removeItem('humane-analytics-notice-dismissed')`);
+    await open('landing');
+    await waitFor(`document.querySelector('.landing-analytics')`);
+    await click('.landing-example .h-undoable-list-action');
+    await frames();
+    assert.equal(await evaluate(`document.querySelector('.landing-example .h-undoable-list-item').dataset.status`), 'removed');
+    await evaluate(`document.querySelector('.landing-analytics .h-button').focus({preventScroll:true})`);
+    await click('.landing-analytics .h-button');
+    await waitFor(`!document.querySelector('.landing-analytics')`);
+    assert.ok(await evaluate(`document.activeElement === document.querySelector('.landing-foot button')`));
+    await open('landing');
+    assert.equal(await evaluate(`document.querySelector('.landing-analytics') === null`), true);
+    await click('.landing-foot button');
+    await waitFor(`document.querySelector('.landing-analytics')`);
+    await key('Escape');
+    await waitFor(`!document.querySelector('.landing-analytics')`);
+  });
+  await evaluate(`(() => {
+    const preferences = JSON.parse(localStorage.getItem('humane-preferences') ?? '{}');
+    localStorage.setItem('humane-preferences', JSON.stringify({...preferences, reducedMotion:true}));
+  })()`);
   await viewport(390, 16);
   await evaluate(`(async () => {
     const {initial} = await import('/flagship/src/store.tsx');
     const {encodeMail} = await import('/flagship/src/mail-storage.ts');
     localStorage.setItem('humane-letters-v1', encodeMail({letters:initial.letters,waiting:[],outgoing:[],settings:{notify:'every',signature:''},laterReceived:true}));
   })()`);
+  await open('flagship');
+  await waitFor('document.querySelector(".h-placeholder[aria-busy=false]")');
+  await check('changing letters keeps the open reader in place', async () => {
+    await viewport(1440, 16);
+    await evaluate(`(() => {
+      const preferences = JSON.parse(localStorage.getItem('humane-preferences') ?? '{}');
+      localStorage.setItem('humane-preferences', JSON.stringify({...preferences, reducedMotion:false}));
+    })()`);
+    await open('flagship');
+    await waitFor('document.querySelector(".h-placeholder[aria-busy=false]")');
+    await click('.message-row');
+    await frames();
+    const openingTravel = await evaluate(`document.querySelector('.reader').getAnimations().flatMap(a => a.effect.getKeyframes()).some(frame => frame.transform && frame.transform !== 'none' && frame.transform !== 'translate(0px, 0px) scale(1, 1)')`);
+    assert.ok(openingTravel, 'the first letter grows from its row');
+    await settle();
+    const before = await rect('.reader');
+    const subject = await evaluate(`document.querySelectorAll('.message-row-subject')[1].textContent`);
+    await evaluate(`document.querySelectorAll('.message-row')[1].click()`);
+    await frames();
+    const change = await evaluate(`(() => {
+      const reader = document.querySelector('.reader');
+      const frames = reader.getAnimations().flatMap(a => a.effect.getKeyframes());
+      const rect = reader.getBoundingClientRect();
+      return {
+        left: rect.left,
+        top: rect.top,
+        subject: document.querySelector('.reader-subject').textContent,
+        faded: frames.some(frame => frame.opacity !== undefined && Number(frame.opacity) < 1),
+        transforms: frames.map(frame => frame.transform).filter(Boolean),
+      };
+    })()`);
+    assert.ok(Math.abs(change.left - before.left) < 1 && Math.abs(change.top - before.top) < 1, JSON.stringify(change));
+    assert.equal(change.subject, subject);
+    assert.ok(change.faded, JSON.stringify(change));
+    assert.ok(change.transforms.every(transform => transform === 'none' || transform === 'translate(0px, 0px) scale(1, 1)'), JSON.stringify(change));
+  });
+  await evaluate(`(() => {
+    const preferences = JSON.parse(localStorage.getItem('humane-preferences') ?? '{}');
+    localStorage.setItem('humane-preferences', JSON.stringify({...preferences, reducedMotion:true}));
+  })()`);
+  await viewport(390, 16);
   await open('flagship');
   await waitFor('document.querySelector(".h-placeholder[aria-busy=false]")');
   await check('single-pane reading and Back hand focus to the destination', async () => {

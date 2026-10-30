@@ -10,30 +10,30 @@ The document has three layers:
 
 When a situation is not covered by a rule, decide from the premises.
 
-## 1. Intent
+## Intent
 
-The experience is predictable, timely, comfortable, and stable, and it feels alive under the user's hand.
+Interfaces respond promptly, behave predictably, remain stable, and keep users in control.
 
 - Space and color keep it **predictable and stable**.
 - Time keeps it **timely**.
 - Respect for the user's control keeps it **comfortable**.
-- Morphing motion makes it feel **alive**. This liveliness exists only as a response to the user or to a real change in state. It never exists to capture attention.
+- Continuous transitions make changes easier to follow. Motion responds only to the user or to a real change in state. It never exists to capture attention.
 
-## 2. Premises
+## Premises
 
-**Luminance carries structure.** The visual system builds edges, grouping, and hierarchy mainly from differences in lightness. Hue and saturation carry identity and signal, not structure. An interface whose hierarchy disappears in grayscale has no hierarchy.
+**Luminance carries structure.** The visual system builds edges, grouping, and hierarchy mainly from differences in lightness. Hue and saturation carry identity and signal, not structure. Hierarchy must remain clear in grayscale.
 
 **Rarity creates signal.** An element stands out to the degree that it differs from its surroundings. Saturation works as a signal only while it is rare. Every saturated element that is not a signal weakens every element that is.
 
 **Continuity saves effort.** When an object changes state in place, people understand the change without thinking. When an object disappears and something appears elsewhere, people must work out whether the two are related.
 
-**Control creates safety.** Any change the user did not cause, at any scale, creates tension. Any action the user cannot undo creates fear.
+**Control creates safety.** Unexpected changes can disrupt users. Irreversible actions require clear consequences and safeguards.
 
-**Attention is finite.** Every element on screen spends some of the user's attention. An element that carries no information still spends it.
+**Attention is finite.** Unnecessary elements compete with useful information for attention.
 
 **Perception varies.** People differ in vision, color perception, motion tolerance, reading ability, and input method, and the same person differs between moments. A rule that works only for the typical user is not met.
 
-## 3. Rules
+## Rules
 
 ### Space
 
@@ -45,7 +45,7 @@ The experience is predictable, timely, comfortable, and stable, and it feels ali
 
 **Focus is a signal, not a separator.** The keyboard focus indicator is exempt from the outline rule. It may be an outline, and it may be saturated, because it marks where the user is acting. It must always be visible. *(Perception varies.)*
 
-**Interactive boundaries meet a contrast floor.** When a control is recognized by its edge, as a checkbox or a slider track is, that edge meets the system's contrast floor against its surroundings, whether it comes from a fill or a line. A control recognized by its words, such as a button by its label or a text field by its label, placeholder, or glyph, depends on their contrast instead, and needs no outline. Calm surfaces never excuse an invisible control. *(Perception varies.)*
+**Interactive boundaries meet a contrast floor.** When a control is recognized by its edge, as a checkbox or a slider track is, that edge meets the system's contrast floor against its surroundings, whether it comes from a fill or a line. A control recognized by its words, such as a button by its label or a text field by its label, placeholder, or glyph, depends on their contrast instead, and needs no outline. Controls must remain identifiable against their backgrounds. *(Perception varies.)*
 
 **Whitespace is syntax.** Without lines, space is what groups elements. Every gap means something. The gap between groups is clearly larger than the gap within a group (for example, at least twice as large). *(Luminance carries structure.)*
 
@@ -129,11 +129,11 @@ The experience is predictable, timely, comfortable, and stable, and it feels ali
 
 **Words are for intent, commands, and errors.** Labels on actions, instructions, and error messages use language. An error says what happened and what the user can do next. Where a visual change alone would be ambiguous, add words. *(Control creates safety.)*
 
-**Explain at the point of action, or not at all.** Do not add explanatory paragraphs, tips, or footnotes at the bottom of a screen, form, dialog, or section to describe what the interface above already shows. Text at the bottom arrives after the decision it explains. If a short hint is needed, it sits next to the control it is about. If the interface needs a paragraph to be understood, change the interface. *(Attention is finite.)*
+**Explain at the point of action, or not at all.** Do not add explanatory paragraphs, tips, or footnotes at the bottom of a screen, form, dialog, or section to describe what the interface above already shows. Text at the bottom arrives after the decision it explains. If a short hint is needed, it sits next to the control it is about. Simplify unclear controls before adding explanatory text. *(Attention is finite.)*
 
 **Say who is behind it.** Wherever the user decides something with consequences, such as a payment, personal data, or an official record, the interface states who operates it and who is asking. *(Control creates safety.)*
 
-## 4. Signature
+## Signature
 
 These choices are aesthetic. They do not follow from the premises, and they are what make the language look like itself.
 
@@ -147,7 +147,7 @@ These choices are aesthetic. They do not follow from the premises, and they are 
 
 **Content is centered.** The reading column is centered in the space beside the sidebar. Text inside it stays aligned to the start of the line.
 
-## 5. Translating the Language into a System
+## Translating the Language into a System
 
 Each design system turns these relationships into values for its medium. A system defines:
 
@@ -159,7 +159,7 @@ Each design system turns these relationships into values for its medium. A syste
 
 Values may differ between media. When the relationships hold, the result is the same language.
 
-## 6. Conformance Tests
+## Conformance Tests
 
 A system that implements this language passes every test.
 
