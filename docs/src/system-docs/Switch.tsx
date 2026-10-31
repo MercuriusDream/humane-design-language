@@ -27,7 +27,7 @@ const PROPS: PropRow[] = [
   {
     prop: 'size',
     type: "'standard' | 'compact'",
-    meaning: 'Standard is a 44 px row with body text. Compact is a 36 px row with small text. In both the track is the row’s height and five thirds as wide. Defaults to standard.',
+    meaning: 'Standard is a 44 px row with body text. Compact is a 36 px row with small text. The track is a 32 px pill in standard, 24 px in compact, five thirds as wide as it is tall. Defaults to standard.',
   },
 ];
 

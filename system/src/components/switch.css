@@ -1,14 +1,14 @@
 /* Switch. The one pill in the system: a track rounded at half its height, holding a circular thumb.
    Its shape is its function, a thumb that slides between two ends, so it is the stated exception to "no pills".
    Every other control takes its depth's radius.
-   Sizes: the track is the control, so it is exactly the control height of its size, like a button or a segmented
-   track (44 standard, 36 compact). Its width is five thirds of that; the thumb is the height less the 3px padding
-   on each side, the same as a segmented option; it travels two thirds of the height. The row is that height too.
+   Sizes: the row is the control height of its size (44 standard, 36 compact); the track, the pill, is smaller
+   inside it (--space-6 standard, --space-5 compact) and five thirds as wide. The thumb is the track less the
+   3px padding on each side and travels two thirds of the track's height.
    The row is --control-height with body text; compact is --control-height-compact with small text. */
 
 .h-switch {
-  --h-switch-track: var(--control-height);
-  --h-switch-dur: 85ms; /* morphDuration(29), the standard travel */
+  --h-switch-track: var(--space-6);
+  --h-switch-dur: 78ms; /* morphDuration(21), the standard travel */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,8 +19,8 @@
 }
 
 .h-switch[data-size='compact'] {
-  --h-switch-track: var(--control-height-compact);
-  --h-switch-dur: 81ms; /* morphDuration(24), the compact travel */
+  --h-switch-track: var(--space-5);
+  --h-switch-dur: 72ms; /* morphDuration(16), the compact travel */
   min-height: var(--control-height-compact);
 }
 
