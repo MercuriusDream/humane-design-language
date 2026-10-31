@@ -52,9 +52,9 @@ Use these custom properties. Never write a raw color, and never write a font siz
 ## Motion
 
 - Every visible change is a morph of the same element, never a swap. Something that appears because something was pressed grows from it: use `growFrom(el, originElement, reducedMotion)` from `../lib/morph`.
-- Durations come from size: `morphDuration(pixels)` from `../lib/motion` (40 ms floor, 300 ms ceiling, exponent 0.75). Pass the result through a CSS custom property, for example `style={{ '--dur': `${morphDuration(h)}ms` }}`, and use `calc(var(--dur) * var(--travel))` in the transition so reduced motion removes travel.
+- Durations come from size: `morphDuration(pixels)` from `../lib/motion` (48 ms floor, 360 ms ceiling, exponent 0.75). Pass the result through a CSS custom property, for example `style={{ '--dur': `${morphDuration(h)}ms` }}`, and use `calc(var(--dur) * var(--travel))` in the transition so reduced motion removes travel.
 - Use CSS transitions or Web Animations. Both can be interrupted: a CSS transition retargets from its current value, and a Web Animation can be `.reverse()`d mid-flight. Never wait for an animation to finish before accepting input. Position-based retargeting does not establish velocity continuity: the language's stronger requirement remains an open system gap.
-- Opacity fades use `var(--dur-fade) linear` and stay on under reduced motion. Travel and size changes use `calc(... * var(--travel))`.
+- Opacity fades use `var(--dur-fade)` with `--ease-morph` and stay on under reduced motion. State colors use `var(--dur-feedback)` with `--ease-morph`. Travel and size changes use `calc(... * var(--travel))`.
 - No idle motion: no shimmer, pulse, or spinner that loops without reporting progress.
 - Read reduced motion in JS with `usePreferences().reducedMotion` from `../preferences`.
 

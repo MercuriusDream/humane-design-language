@@ -42,7 +42,7 @@
 }
 
 .ex-lines-are-for-dense-repetition-only-table .h-table tbody tr + tr {
-  transition: border-top-color var(--dur-fade) linear;
+  transition: border-top-color var(--dur-fade) var(--ease-morph);
 }
 
 /* Lines off paints each row line in the table's own plane, so the layout does not shift. */

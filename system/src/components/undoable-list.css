@@ -22,7 +22,7 @@
   transition:
     grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph),
     padding-bottom calc(var(--dur) * var(--travel)) var(--ease-morph),
-    opacity var(--dur-fade) linear;
+    opacity var(--dur-fade) var(--ease-morph);
 }
 
 .h-undoable-list-item[data-status='leaving'] {
@@ -59,7 +59,7 @@
   padding: var(--pad-1);
   border-radius: var(--radius-1);
   background: var(--plane-raised);
-  transition: background-color var(--dur-fade) linear;
+  transition: background-color var(--dur-fade) var(--ease-morph);
 }
 
 .h-undoable-list-item:not([data-status='present']) .h-undoable-list-row {
@@ -72,7 +72,7 @@
   text-box: trim-both cap alphabetic;
   font: var(--text-body);
   color: var(--ink-1);
-  transition: color var(--dur-fade) linear;
+  transition: color var(--dur-fade) var(--ease-morph);
 }
 
 .h-undoable-list[data-size='compact'] .h-undoable-list-row {

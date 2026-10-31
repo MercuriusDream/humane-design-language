@@ -12,7 +12,7 @@
   position: relative;
   display: grid;
   gap: var(--gap-within);
-  transition: background-color var(--dur-fade) linear;
+  transition: background-color var(--dur-fade) var(--ease-morph);
 }
 
 /* The rule sits at the middle of the gap between two groups. It fades in with the lines mode. */
@@ -25,7 +25,7 @@
   height: var(--stroke);
   background: var(--line);
   opacity: 0;
-  transition: opacity var(--dur-fade) linear;
+  transition: opacity var(--dur-fade) var(--ease-morph);
 }
 
 .ex-divide-with-planes-panel[data-divide='lines'] .ex-divide-with-planes-section + .ex-divide-with-planes-section::before {

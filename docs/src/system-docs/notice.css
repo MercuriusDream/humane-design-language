@@ -9,7 +9,7 @@
 
 /* An arriving notice changes by opacity only, in place. Opacity fades stay on under reduced motion. */
 .doc-notice-arrival {
-  animation: doc-notice-fade var(--dur-fade) linear;
+  animation: doc-notice-fade var(--dur-fade) var(--ease-morph);
 }
 
 @keyframes doc-notice-fade {

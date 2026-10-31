@@ -12,12 +12,7 @@ When a situation is not covered by a rule, decide from the premises.
 
 ## Intent
 
-Interfaces respond promptly, behave predictably, remain stable, and keep users in control.
-
-- Space and color keep it **predictable and stable**.
-- Time keeps it **timely**.
-- Respect for the user's control keeps it **comfortable**.
-- Continuous transitions make changes easier to follow. Motion responds only to the user or to a real change in state. It never exists to capture attention.
+A humane design to set your eyeball free in a world full of eyecatchers.
 
 ## Premises
 

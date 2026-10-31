@@ -1,15 +1,10 @@
-/* Landing. Concrete orientation, three destinations, one working rule, the premises, and an adoption path. */
+/* Landing. One line and three destinations. */
 .landing {
   display: grid;
-  gap: var(--space-9);
+  gap: var(--space-8);
   max-width: 68rem;
   margin-inline: auto;
   padding: var(--space-9) var(--space-5);
-}
-
-.landing-head {
-  display: grid;
-  gap: var(--space-4);
 }
 
 .landing-title {
@@ -17,43 +12,28 @@
   letter-spacing: var(--tracking-display);
 }
 
-.landing-lead {
-  max-width: 42rem;
-  font: var(--text-lead);
-  color: var(--ink-2);
-}
-
-.landing-heading {
-  font: var(--text-heading);
-  letter-spacing: var(--tracking-heading);
-  color: var(--ink-1);
-}
-
-/* Destination introductions are content, not a substitute for the documentation's primary sidebar. */
-.landing-destinations {
-  display: grid;
-  gap: var(--space-4);
-}
-
+/* About, System, Example. Small pills in a row on a wide screen, a stack on a narrow one. */
 .landing-parts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
-  gap: var(--space-5);
+  justify-content: start;
+  gap: var(--space-3);
 }
 
-.landing-part-item {
-  display: grid;
-  min-width: 0;
+@media (min-width: 40.01em) {
+  .landing-parts {
+    grid-auto-flow: column;
+  }
 }
 
 /* A root surface that is one link. The pointer changes its plane and nothing else. */
 .landing-part {
-  display: grid;
-  align-content: start;
-  gap: var(--space-2);
+  display: block;
+  padding: var(--space-2) var(--space-4);
+  font: var(--text-body);
+  font-weight: 600;
   color: var(--ink-1);
   text-decoration: none;
-  transition: background-color var(--dur-feedback) linear;
+  transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
 .landing-part:hover {
@@ -64,105 +44,6 @@
   background: var(--plane-control-hover);
 }
 
-.landing-part-name {
-  display: block;
-  font: var(--text-heading);
-  letter-spacing: var(--tracking-heading);
-  text-box: trim-start cap alphabetic;
-}
-
-.landing-part-text {
-  font: var(--text-body);
-  color: var(--ink-2);
-}
-
-/* One functional example supplies evidence without adding another promotional card. */
-.landing-example {
-  display: grid;
-  gap: var(--space-5);
-}
-
-.landing-example-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: start;
-  justify-content: space-between;
-  gap: var(--space-5);
-}
-
-.landing-example-copy {
-  display: grid;
-  flex: 1 1 24rem;
-  gap: var(--space-2);
-  max-width: 42rem;
-}
-
-.landing-example-copy p,
-.landing-use-content p {
-  font: var(--text-body);
-  color: var(--ink-1);
-}
-
-.landing-rule-link {
-  justify-self: start;
-  font: var(--text-body);
-  color: var(--ink-2);
-}
-
-/* Premise names lead to a rule that puts the principle into practice. */
-.landing-premises {
-  display: grid;
-  gap: var(--space-5);
-}
-
-.landing-premise-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
-  gap: var(--space-6) var(--space-5);
-}
-
-.landing-premise {
-  display: grid;
-  align-content: start;
-  gap: var(--space-2);
-}
-
-.landing-premise-name {
-  font: var(--text-body);
-  font-weight: 600; /* body role, name weight */
-}
-
-.landing-premise-name a {
-  color: var(--ink-1);
-}
-
-.landing-premise-text {
-  font: var(--text-body);
-  color: var(--ink-1);
-}
-
-.landing-use {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.landing-use-content {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(12rem, 1fr);
-  gap: var(--space-6);
-}
-
-.landing-use-links {
-  display: grid;
-  align-content: start;
-  gap: var(--space-2);
-  font: var(--text-body);
-}
-
-.landing-use-links a {
-  color: var(--ink-2);
-}
-
 .landing-foot {
   display: flex;
   justify-content: flex-start;
@@ -170,12 +51,7 @@
 
 @media (max-width: 40em) {
   .landing {
-    gap: var(--space-8);
+    gap: var(--space-7);
     padding: var(--space-8) var(--space-4);
-  }
-
-  .landing-use-content {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-5);
   }
 }

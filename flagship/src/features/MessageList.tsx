@@ -9,8 +9,9 @@ import './message-list.css';
 const preview = (body: string) => body.replace(/\s+/g, ' ').trim();
 
 /**
- * Rule: prefer undo to confirmation. Archive at once; the archived row keeps its place with Undo until the
- * pointer and focus leave the list. Ghosts live in the store, so archiving from the open letter leaves one too.
+ * Rule: prefer undo to confirmation. Archive at once, from the open letter; the archived row keeps its place
+ * with Undo until the pointer and focus leave the list. Ghosts live in the store, so archiving from the open
+ * letter leaves one too.
  */
 export function MessageList({ onRead }: { onRead?: () => void }) {
   const { state, dispatch } = useMail();
@@ -24,7 +25,6 @@ export function MessageList({ onRead }: { onRead?: () => void }) {
 
   const mailbox = state.mailbox;
   const isDrafts = mailbox === 'drafts';
-  const canArchive = mailbox === 'inbox' || mailbox === 'starred' || mailbox === 'sent';
   const rows = rowsIn(state);
 
   useLayoutEffect(() => {
@@ -112,14 +112,6 @@ export function MessageList({ onRead }: { onRead?: () => void }) {
     );
   };
 
-  const archiveOrRestore = (letter: Letter) => {
-    dispatch({ type: mailbox === 'archive' ? 'unarchive' : 'archive', id: letter.id });
-    if (mailbox === 'archive') requestAnimationFrame(() => {
-      (bodyRef.current?.querySelector<HTMLElement>('.message-row:not(:disabled)')
-        ?? document.querySelector<HTMLElement>('.mailbox-title'))?.focus();
-    });
-  };
-
   const clearSearch = () => {
     dispatch({ type: 'setQuery', query: '' });
     // The pressed button leaves with the empty state, so focus returns to the search the user was refining.
@@ -168,23 +160,13 @@ export function MessageList({ onRead }: { onRead?: () => void }) {
                     <span className="message-row-subject">{letter.subject || '(No subject)'}</span>
                     {letter.body.trim() && <span className="message-row-preview">{preview(letter.body)}</span>}
                   </button>
-                {/* The same Button in both states, so focus stays on it when Archive becomes Undo. */}
-                {(canArchive || mailbox === 'archive') &&
-                  (ghost ? (
-                    <Button className="message-list-action" onClick={() => dispatch({ type: 'unarchive', id: letter.id })}>
-                      Undo
-                      <span className="message-list-sr"> archive of {letter.subject}</span>
-                    </Button>
-                  ) : (
-                    <Button
-                      className="message-list-action"
-                      variant="quiet"
-                      onClick={() => archiveOrRestore(letter)}
-                    >
-                      {mailbox === 'archive' ? 'Restore' : 'Archive'}
-                      <span className="message-list-sr"> {letter.subject}</span>
-                    </Button>
-                  ))}
+                {/* A ghost row's one control: always visible, so the way back is never hidden. */}
+                {ghost && (
+                  <Button className="message-list-action" onClick={() => dispatch({ type: 'unarchive', id: letter.id })}>
+                    Undo
+                    <span className="message-list-sr"> archive of {letter.subject}</span>
+                  </Button>
+                )}
               </div>
             </div>
           </div>

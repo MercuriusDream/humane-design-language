@@ -16,7 +16,7 @@
   border-spacing: var(--gap-tight);
   font: var(--text-small);
   color: var(--ink-1);
-  transition: filter var(--dur-fade) linear;
+  transition: filter var(--dur-fade) var(--ease-morph);
 }
 
 .ex-a-step-is-a-lightness-contract-table[data-grayscale] {

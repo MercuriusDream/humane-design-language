@@ -79,7 +79,7 @@
   background: var(--plane-raised);
   transition:
     width calc(var(--dur) * var(--travel)) var(--ease-morph),
-    background-color var(--dur-fade) linear;
+    background-color var(--dur-fade) var(--ease-morph);
 }
 
 .ex-duration-grows-with-scale-and-the-difference-shows-box[data-grown='true'] {
@@ -89,5 +89,5 @@
 
 /* Reduced motion: the size changes in place, and the plane carries the change as a crossfade. */
 .ex-duration-grows-with-scale-and-the-difference-shows-track[data-reduced] .ex-duration-grows-with-scale-and-the-difference-shows-box {
-  transition: background-color var(--dur-fade) linear;
+  transition: background-color var(--dur-fade) var(--ease-morph);
 }

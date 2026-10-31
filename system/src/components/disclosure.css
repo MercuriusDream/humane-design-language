@@ -11,7 +11,7 @@
   --h-disclosure-chevron: 1.25rem;
   background: var(--plane-base);
   border-radius: var(--radius-1);
-  transition: background-color var(--dur-feedback) linear;
+  transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
 .h-disclosure[data-size='compact'] {
@@ -99,7 +99,7 @@
   min-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: opacity var(--dur-fade) linear;
+  transition: opacity var(--dur-fade) var(--ease-morph);
 }
 
 .h-disclosure[data-open='true'] .h-disclosure-clip {

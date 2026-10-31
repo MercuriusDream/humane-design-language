@@ -33,7 +33,7 @@
   font: var(--h-field-font);
   border-radius: min(var(--radius-1), var(--radius-control-max));
   background: var(--plane-control);
-  transition: background-color var(--dur-feedback) linear;
+  transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
 .h-text-field-control:hover {
@@ -127,9 +127,9 @@
   background: transparent;
   color: var(--ink-2);
   transition:
-    background-color var(--dur-feedback) linear,
-    color var(--dur-feedback) linear;
-  animation: h-text-field-clear-in var(--dur-fade) linear;
+    background-color var(--dur-feedback) var(--ease-morph),
+    color var(--dur-feedback) var(--ease-morph);
+  animation: h-text-field-clear-in var(--dur-fade) var(--ease-morph);
 }
 
 /* It sits on the field, which is on its hover plane while the pointer is over it, so it steps one further. */

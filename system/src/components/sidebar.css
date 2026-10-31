@@ -30,7 +30,7 @@
     top calc(var(--dur) * var(--travel)) var(--ease-morph),
     left calc(var(--dur) * var(--travel)) var(--ease-morph),
     right calc(var(--dur) * var(--travel)) var(--ease-morph),
-    box-shadow var(--dur-fade) linear;
+    box-shadow var(--dur-fade) var(--ease-morph);
 }
 
 /* The first paint already uses the measured closed width. Do not animate from the pre-measure fallback. */
@@ -94,7 +94,7 @@
     margin calc(var(--dur) * var(--travel)) var(--ease-morph),
     padding calc(var(--dur) * var(--travel)) var(--ease-morph),
     border-radius calc(var(--dur) * var(--travel)) var(--ease-morph),
-    background-color var(--dur-feedback) linear;
+    background-color var(--dur-feedback) var(--ease-morph);
 }
 
 /* The toggle has no plane of its own, so it steps as a nav item does: the control plane under the pointer,
@@ -152,7 +152,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: opacity var(--dur-fade) linear;
+  transition: opacity var(--dur-fade) var(--ease-morph);
 }
 
 /* Open, the text takes its final width at once, like the body, so the title wraps once
@@ -215,7 +215,7 @@
   margin-top: var(--gap-within);
   overflow-y: auto;
   padding: 0 var(--pad-0) var(--pad-0);
-  transition: opacity var(--dur-fade) linear;
+  transition: opacity var(--dur-fade) var(--ease-morph);
 }
 
 .h-sidebar[data-side='right'] .h-sidebar-body {
@@ -260,7 +260,7 @@
   font: var(--text-small);
   color: var(--ink-2);
   text-decoration: none;
-  transition: color var(--dur-feedback) linear;
+  transition: color var(--dur-feedback) var(--ease-morph);
 }
 
 /* Hover changes the plane only; the current item takes essential ink, as a selected option does. */
@@ -273,8 +273,8 @@
    so hovering never reads as being there. */
 .h-nav-link:not([aria-current]) {
   transition:
-    color var(--dur-feedback) linear,
-    background-color var(--dur-feedback) linear;
+    color var(--dur-feedback) var(--ease-morph),
+    background-color var(--dur-feedback) var(--ease-morph);
 }
 
 .h-nav-link:not([aria-current]):hover {

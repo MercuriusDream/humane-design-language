@@ -2,18 +2,20 @@ import type { ComponentType } from 'react';
 import { Button, usePreferences } from 'humane-system';
 import { Lead, RuleList } from './components/Section';
 import './components/prop-list.css';
-import { CONFORMANCE, INTENT, LANGUAGE } from './language';
+import { CONFORMANCE, INTENT, LANGUAGE, slugify, type Rule } from './language';
 import { SYSTEM_DOCS } from './system-docs';
 
 function Intent() {
   return (
     <>
       <Lead>{INTENT.lead}</Lead>
-      <ul className="intent-points">
-        {INTENT.points.map((point) => (
-          <li key={point}>{point}</li>
-        ))}
-      </ul>
+      {INTENT.points.length > 0 && (
+        <ul className="intent-points">
+          {INTENT.points.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
+      )}
     </>
   );
 }
@@ -79,9 +81,34 @@ function Components() {
   );
 }
 
+/* Each rule is filed under the first premise it names, so the sections are the premises themselves. */
+const PREMISES = LANGUAGE.find((group) => group.id === 'premises')!.rules;
+const rulesByPremise = new Map<string, Rule[]>(PREMISES.map((premise) => [premise.slug, []]));
+for (const group of LANGUAGE) {
+  if (group.id === 'premises' || group.id === 'signature') continue;
+  for (const rule of group.rules) {
+    const bucket = rulesByPremise.get(slugify(rule.from[0] ?? ''));
+    if (!bucket) throw new Error(`"${rule.name}" names no premise`);
+    bucket.push(rule);
+  }
+}
+
+function premiseContent(premise: Rule): ComponentType {
+  const rules = rulesByPremise.get(premise.slug)!;
+  return function PremiseContent() {
+    return (
+      <>
+        <Lead>{premise.text}</Lead>
+        <RuleList rules={rules} />
+      </>
+    );
+  };
+}
+
 export const SECTIONS: { id: string; title: string; Content: ComponentType }[] = [
   { id: 'intent', title: 'Intent', Content: Intent },
-  ...LANGUAGE.map((group) => ({ id: group.id, title: group.title, Content: groupContent(group.id) })),
+  ...PREMISES.map((premise) => ({ id: premise.slug, title: premise.name, Content: premiseContent(premise) })),
+  { id: 'signature', title: 'Signature', Content: groupContent('signature') },
   { id: 'conformance', title: 'Conformance', Content: Conformance },
   { id: 'components', title: 'Components', Content: Components },
 ];

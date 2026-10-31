@@ -41,8 +41,8 @@
   text-align: start;
   overflow-wrap: anywhere;
   transition:
-    background-color var(--dur-feedback) linear,
-    color var(--dur-feedback) linear;
+    background-color var(--dur-feedback) var(--ease-morph),
+    color var(--dur-feedback) var(--ease-morph);
 }
 
 .h-menu[data-size='compact'] .h-menu-item {

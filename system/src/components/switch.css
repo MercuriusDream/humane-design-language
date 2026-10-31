@@ -8,7 +8,7 @@
 
 .h-switch {
   --h-switch-track: var(--control-height);
-  --h-switch-dur: 70ms; /* morphDuration(29), the standard travel */
+  --h-switch-dur: 85ms; /* morphDuration(29), the standard travel */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -20,7 +20,7 @@
 
 .h-switch[data-size='compact'] {
   --h-switch-track: var(--control-height-compact);
-  --h-switch-dur: 66ms; /* morphDuration(24), the compact travel */
+  --h-switch-dur: 81ms; /* morphDuration(24), the compact travel */
   min-height: var(--control-height-compact);
 }
 
@@ -51,7 +51,7 @@
   padding: 3px;
   border-radius: calc(var(--h-switch-track) / 2); /* the one pill: see the header */
   background: var(--plane-control);
-  transition: background-color var(--dur-feedback) linear;
+  transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
 /* The thumb is a mark, so it is a circle. Off, it is the boundary ink at the start; on, the track takes full ink
@@ -64,7 +64,7 @@
   background: var(--ink-boundary);
   transition:
     transform calc(var(--h-switch-dur) * var(--travel)) var(--ease-morph),
-    background-color var(--dur-feedback) linear;
+    background-color var(--dur-feedback) var(--ease-morph);
 }
 
 /* Hover and press step the track as they step a button: off, the hover then the active plane;

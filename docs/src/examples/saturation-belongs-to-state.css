@@ -15,7 +15,7 @@
 
 /* The one signal in the form. The boundary changes color, the field does not change plane or size. */
 .ex-saturation-belongs-to-state-field .h-text-field-control {
-  transition: box-shadow var(--dur-feedback) linear;
+  transition: box-shadow var(--dur-feedback) var(--ease-morph);
 }
 
 .ex-saturation-belongs-to-state-field[data-invalid] .h-text-field-control {

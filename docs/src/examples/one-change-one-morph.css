@@ -68,7 +68,7 @@
   color: var(--ink-2);
   font: var(--text-small);
   text-align: start;
-  transition: color var(--dur-fade) linear;
+  transition: color var(--dur-fade) var(--ease-morph);
 }
 
 .ex-one-change-one-morph-row:focus-visible {

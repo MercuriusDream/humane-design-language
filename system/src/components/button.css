@@ -16,8 +16,8 @@
   font-weight: 600; /* body role, action weight */
   text-align: center;
   transition:
-    background-color var(--dur-feedback) linear,
-    color var(--dur-feedback) linear;
+    background-color var(--dur-feedback) var(--ease-morph),
+    color var(--dur-feedback) var(--ease-morph);
 }
 
 .h-button[data-size='compact'] {

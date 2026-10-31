@@ -30,7 +30,7 @@
     font-weight calc(var(--dur) * var(--travel)) var(--ease-morph),
     line-height calc(var(--dur) * var(--travel)) var(--ease-morph),
     letter-spacing calc(var(--dur) * var(--travel)) var(--ease-morph),
-    color var(--dur-feedback) linear;
+    color var(--dur-feedback) var(--ease-morph);
 }
 
 /* Color only: every line is body size and regular weight. Hierarchy rests on lightness alone. */

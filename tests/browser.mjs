@@ -421,23 +421,20 @@ try {
     await open('docs');
     await evaluate(`document.querySelector('.h-sidebar-toggle').focus({preventScroll:true})`);
     const before = await rect('.h-sidebar');
-    await evaluate(`document.querySelector('#communication').scrollIntoView({behavior:'instant'})`);
-    await waitFor(`document.querySelector('.h-sidebar-current').textContent === 'Communication'`);
+    await evaluate(`document.querySelector('#attention-is-finite').scrollIntoView({behavior:'instant'})`);
+    await waitFor(`document.querySelector('.h-sidebar-current').textContent === 'Attention is finite'`);
     await frames();
     const after = await rect('.h-sidebar');
-    assert.equal(await evaluate(`document.querySelector('.h-sidebar-current').textContent`), 'Communication');
+    assert.equal(await evaluate(`document.querySelector('.h-sidebar-current').textContent`), 'Attention is finite');
     assert.deepEqual(after, before);
     assert.equal(await evaluate(`document.querySelector('.h-sidebar').getAnimations().length`), 0);
     assert.ok(await evaluate(`document.activeElement === document.querySelector('.h-sidebar-toggle')`));
   });
-  await check('landing undo works and analytics dismissal persists with a way to reopen', async () => {
+  await check('landing analytics dismissal persists with a way to reopen', async () => {
     await viewport(390, 16);
     await evaluate(`localStorage.removeItem('humane-analytics-notice-dismissed')`);
     await open('landing');
     await waitFor(`document.querySelector('.landing-analytics')`);
-    await click('.landing-example .h-undoable-list-action');
-    await frames();
-    assert.equal(await evaluate(`document.querySelector('.landing-example .h-undoable-list-item').dataset.status`), 'removed');
     await evaluate(`document.querySelector('.landing-analytics .h-button').focus({preventScroll:true})`);
     await click('.landing-analytics .h-button');
     await waitFor(`!document.querySelector('.landing-analytics')`);
@@ -550,10 +547,12 @@ try {
     await click(`[data-letter-id="${id}"] .message-row`); await frames();
     await click('.reader-actions button'); await waitFor('document.querySelector("dialog[open] input")');
     assert.ok(await evaluate(`document.querySelector('dialog[open] input').value.includes(${JSON.stringify(recipient)})`));
-    await click('dialog[open] .h-dialog-close'); await settle(); await click('.reader-back'); await frames();
-    await click(`[data-letter-id="${id}"] .message-list-action`); await frames();
+    await click('dialog[open] .h-dialog-close'); await settle();
+    await evaluate('[...document.querySelectorAll(".reader button")].find(b => b.textContent === "Archive").click()'); await frames();
+    assert.equal((await mailData()).letters.find(l => l.id === id).mailbox, 'archive');
     await mailbox('inbox'); await mailbox('archive');
-    await click(`[data-letter-id="${id}"] .message-list-action`); await frames();
+    await click(`[data-letter-id="${id}"] .message-row`); await frames();
+    await evaluate('[...document.querySelectorAll(".reader button")].find(b => b.textContent === "Restore").click()'); await frames();
     assert.equal((await mailData()).letters.find(l => l.id === id).mailbox, 'sent');
   });
   await check('send clock survives typing; failures stay visible in Settings and recover to Drafts', async () => {

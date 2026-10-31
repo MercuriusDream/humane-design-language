@@ -6,7 +6,7 @@
   min-width: 0;
   /* A plane or padding change morphs the same level in place. Travel scales with --travel. */
   transition:
-    background-color var(--dur-feedback) linear,
+    background-color var(--dur-feedback) var(--ease-morph),
     padding calc(var(--dur-fade) * var(--travel)) var(--ease-morph);
 }
 

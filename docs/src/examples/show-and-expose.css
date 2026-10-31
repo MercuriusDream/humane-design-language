@@ -15,7 +15,7 @@
   opacity: 0;
   transition:
     grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph),
-    opacity var(--dur-fade) linear;
+    opacity var(--dur-fade) var(--ease-morph);
 }
 
 .ex-show-and-expose-collapse[data-open='true'] {

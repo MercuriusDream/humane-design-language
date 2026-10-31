@@ -28,10 +28,7 @@ function Docs() {
       <div className="page-column">
         <header className="page-header">
           <h1 className="page-title">Humane Design Language</h1>
-          <p className="lead">
-            Design principles for layout, color, typography, motion, and interaction. This documentation uses the
-            reference components and includes interactive examples.
-          </p>
+          <p className="lead">Principles, guidelines and examples</p>
         </header>
         {SECTIONS.map(({ id, title, Content }) => (
           <Section key={id} id={id} title={title}>

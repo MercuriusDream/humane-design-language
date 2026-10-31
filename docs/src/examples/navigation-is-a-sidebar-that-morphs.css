@@ -59,7 +59,7 @@
   border-radius: var(--radius-1);
   color: var(--ink-1);
   font: var(--text-label);
-  transition: background-color var(--dur-feedback) linear;
+  transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
 .ex-navigation-is-a-sidebar-that-morphs-toggle:hover {
@@ -85,7 +85,7 @@
   display: grid;
   gap: var(--gap-tight);
   width: 100%;
-  transition: opacity var(--dur-fade) linear;
+  transition: opacity var(--dur-fade) var(--ease-morph);
 }
 
 .ex-navigation-is-a-sidebar-that-morphs-sidebar[data-open='false'] .ex-navigation-is-a-sidebar-that-morphs-nav {
@@ -101,7 +101,7 @@
   color: var(--ink-2);
   font: var(--text-small);
   text-align: start;
-  transition: background-color var(--dur-feedback) linear;
+  transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
 .ex-navigation-is-a-sidebar-that-morphs-nav-item:hover {

@@ -8,8 +8,8 @@
   opacity: 0;
   visibility: hidden;
   transition:
-    opacity var(--dur-fade) linear,
-    visibility var(--dur-fade) linear;
+    opacity var(--dur-fade) var(--ease-morph),
+    visibility var(--dur-fade) var(--ease-morph);
 }
 
 .h-placeholder-content[data-ready='true'] {
@@ -29,7 +29,7 @@
   overflow: hidden;
   pointer-events: none;
   opacity: 1;
-  transition: opacity var(--dur-fade) linear;
+  transition: opacity var(--dur-fade) var(--ease-morph);
   font: var(--text-body);
 }
 

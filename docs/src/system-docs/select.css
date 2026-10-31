@@ -11,8 +11,8 @@
   background: transparent;
   transition:
     padding calc(var(--dur-feedback) * var(--travel)) var(--ease-morph),
-    border-radius var(--dur-fade) linear,
-    background-color var(--dur-fade) linear;
+    border-radius var(--dur-fade) var(--ease-morph),
+    background-color var(--dur-fade) var(--ease-morph);
 }
 
 .doc-select-plane[data-depth='2'] {

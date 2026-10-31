@@ -269,21 +269,21 @@ Every component uses a step of the scale, one role per kind of control text. Sta
 
 Duration grows with the size of the change. The function is in `src/lib/motion.ts`:
 
-    duration (ms) = min(300, round(40 + 2.4 × size^0.75))
+    duration (ms) = min(360, round(48 + 3 × size^0.75))
 
 where size is the change in pixels, measured as the component defines it.
 
 | Parameter | Value | Meaning |
 | --- | --- | --- |
-| Floor | 40 ms | The shortest duration. Any change, however small, takes at least this long. |
-| Ceiling | 300 ms | The longest duration. Changes from about 518 px upward reach the 300 ms ceiling. |
-| Scale | 2.4 | Multiplies the power term. |
+| Floor | 48 ms | The shortest duration. Any change, however small, takes at least this long. |
+| Ceiling | 360 ms | The longest duration. Changes from about 490 px upward reach the 360 ms ceiling. |
+| Scale | 3 | Multiplies the power term. |
 | Exponent | 0.75 | Between one half and one, as Duration grows with scale requires. |
 
 Worked examples:
 
-- A change of 8 px. 8^0.75 is 4.76. Multiplied by 2.4, it is 11.4. Adding the floor gives 51.4, which rounds to **51 ms**.
-- A change of 300 px. 300^0.75 is 72.1. Multiplied by 2.4, it is 173.0. Adding the floor gives 213.0, which rounds to **213 ms**.
+- A change of 8 px. 8^0.75 is 4.76. Multiplied by 3, it is 14.3. Adding the floor gives 62.3, which rounds to **62 ms**.
+- A change of 300 px. 300^0.75 is 72.1. Multiplied by 3, it is 216.2. Adding the floor gives 264.2, which rounds to **264 ms**.
 
 A change of 300 px takes about four times as long as a change of 8 px. The gap is wide enough to notice, and the timing can be predicted from the size of the change.
 
@@ -302,10 +302,10 @@ Fixed durations that do not come from size:
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `--dur-feedback` | 50ms | Hover and press color. |
-| `--dur-fade` | 90ms | Opacity. Fades are never removed under reduced motion. |
+| `--dur-feedback` | 140ms | Hover and press color. |
+| `--dur-fade` | 180ms | Opacity. Fades are never removed under reduced motion. |
 
-The switch thumb is a fixed 63 ms, which is `morphDuration(20)` for its 20 px travel. Its CSS value is written as a constant.
+State transitions (color and opacity) use the morph curve so a change settles smoothly instead of snapping. The switch thumb is a fixed 85 ms standard and 81 ms compact, `morphDuration(29)` and `morphDuration(24)` for its 29 px and 24 px travel. Its CSS value is written as a constant.
 
 ### Curve and interruption
 

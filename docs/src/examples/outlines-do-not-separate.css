@@ -13,7 +13,7 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: var(--gap-within);
-  transition: box-shadow var(--dur-fade) linear;
+  transition: box-shadow var(--dur-fade) var(--ease-morph);
 }
 
 .ex-outlines-do-not-separate-title {
@@ -38,7 +38,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: var(--gap-within);
-  transition: box-shadow var(--dur-fade) linear;
+  transition: box-shadow var(--dur-fade) var(--ease-morph);
 }
 
 /* A fact is a row, so both of its items trim both lines. This overrides the surface's first and last child

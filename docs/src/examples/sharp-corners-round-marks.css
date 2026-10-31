@@ -69,7 +69,7 @@
   border-radius: 50%;
   background: var(--ink-1);
   font: var(--text-label);
-  transition: background-color var(--dur-fade) linear;
+  transition: background-color var(--dur-fade) var(--ease-morph);
 }
 
 .ex-sharp-corners-round-marks-letter[data-held] .ex-sharp-corners-round-marks-mark {

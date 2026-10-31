@@ -107,7 +107,7 @@
   gap: var(--gap-between);
   padding: calc(var(--gap-between) - var(--pad-1)) 0 var(--pad-1);
   opacity: 0;
-  transition: opacity var(--dur-fade) linear;
+  transition: opacity var(--dur-fade) var(--ease-morph);
 }
 
 .ex-motion-is-a-morph-card[data-open='true'] .ex-motion-is-a-morph-inner {

@@ -29,7 +29,7 @@
   transition:
     grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph),
     padding-bottom calc(var(--dur) * var(--travel)) var(--ease-morph),
-    opacity var(--dur-fade) linear;
+    opacity var(--dur-fade) var(--ease-morph);
 }
 
 .message-list-item:last-child {
@@ -56,7 +56,7 @@
 }
 
 .message-list-item[data-status='present'] .message-list-row {
-  transition: background-color var(--dur-feedback) linear;
+  transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
 .message-list-item[data-status='present'] .message-list-row:hover {
@@ -67,15 +67,6 @@
    sidebar's current item: the same plane as the letter beside it in light, a step above hover in dark. */
 .message-list-item[data-selected] .message-list-row {
   background: var(--plane-selected);
-}
-
-/* On a hovered or open row, the action's own plane is the hover step, so it still shows under the pointer. */
-.message-list-row .message-list-action:hover:not(:disabled) {
-  background: var(--plane-control-hover);
-}
-
-.message-list-item[data-selected] .message-list-row .message-list-action:hover:not(:disabled) {
-  background: var(--plane-control);
 }
 
 /* The letter: who and when, then the subject, then one line of the letter itself. A list row: the control
@@ -127,17 +118,14 @@
   font-weight: 600; /* body role, unread weight */
 }
 
-/* The time reserves the width of the action that replaces it, less the inset they share at the row's end, so the
-   name never runs under that action. */
 .message-row-time {
   flex: none;
-  min-inline-size: calc(var(--message-list-action-width) - var(--inset-control));
   font: var(--text-small);
   color: var(--ink-3);
   font-variant-numeric: tabular-nums;
   text-align: end;
   white-space: nowrap;
-  transition: opacity var(--dur-fade) linear;
+  transition: opacity var(--dur-fade) var(--ease-morph);
 }
 
 /* One line, like the preview, so a long subject never makes its row taller than its neighbours. The whole subject
@@ -156,7 +144,7 @@
 }
 
 /* Unread is also a mark: a dot before the time, so it does not rest on weight alone. A mark holds no content,
-   so it is a circle, centered on the time's cap height. It leaves with the time when Archive takes its place. */
+   so it is a circle, centered on the time's cap height. */
 .message-row[data-unread] .message-row-time::before {
   --message-row-dot: 8px;
   content: '';
@@ -180,60 +168,28 @@
   white-space: nowrap;
 }
 
-/* Archive waits out of sight. It appears where the time was, on the open letter's row and on a row keyboard focus
-   is in. Hover never reveals it: the pointer changes a row's plane and nothing else. Out of sight, it takes no press,
-   so a click on that corner of a row opens the letter.
-   It is a standard button, the list's tier, set in the row's top end corner: its label is then the control inset
-   from the row's top and end, on the same lines as the name's cap height and the time's end. Its plane, on hover
-   and as Undo, takes the row's own corner and has the same inset on every side of its label. Archive, Restore, and
-   Undo all end on that corner, so the label's end never moves as the row changes state. */
-.message-list-item {
-  --message-list-action-width: calc(4rem + 2 * var(--inset-control)); /* the longest label, Restore, is under 4rem */
-}
-
+/* A row carries no hidden action. Archiving and restoring happen in the open letter; the row's only control is
+   the Undo of a ghost, always visible in its top end corner, a standard button of the list's tier: its label is
+   the control inset from the row's top and end, on the same lines as the name's cap height and the time's end. */
 .message-list-item .message-list-action {
   position: absolute;
   top: 0;
   inset-inline-end: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity var(--dur-fade) linear,
-    background-color var(--dur-feedback) linear;
+  animation: message-list-action-in var(--dur-fade) var(--ease-morph);
 }
 
-.message-list-item[data-status='present'] .message-list-row:focus-within .message-list-action,
-.message-list-item[data-selected] .message-list-action {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.message-list-item[data-status='present'] .message-list-row:focus-within .message-row-time,
-.message-list-item[data-selected] .message-row-time {
-  opacity: 0;
-}
-
-/* Without hover, a hidden action could be pressed unseen. Archive from the open letter instead. */
-@media (hover: none) {
-  .message-list-item[data-status='present'] .message-list-action {
-    display: none;
-  }
-
-  .message-list-item[data-status='present'] .message-list-row:focus-within .message-row-time,
-  .message-list-item[data-selected] .message-row-time {
-    opacity: 1;
-  }
+@keyframes message-list-action-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Ghost: no plane of its own, so the place reads as the list's plane, not a gap. Undo is the one solid object in it.
-   The row keeps its words, dimmed, on the letter's text edges, and Undo takes Archive's box in the row's corner,
-   so the press lands on Undo and its label stays where Archive's was. */
+   The row keeps its words, dimmed, on the letter's text edges, and the time gives way to Undo in the row's corner. */
 .message-list-item[data-status='removed'] .message-list-row,
 .message-list-item[data-status='leaving'] .message-list-row {
   background: transparent;
 }
 
-.message-list-item:not([data-status='present']) .message-list-action { opacity: 1; pointer-events: auto; }
 .message-list-item:not([data-status='present']) .message-row-time { opacity: 0; }
 .message-row:disabled { color: var(--ink-3); cursor: default; }
 .message-row:disabled :is(.message-row-name, .message-row-subject, .message-row-preview) { color: var(--ink-3); }
@@ -247,14 +203,9 @@
 .message-list-item[data-reduced][data-status='leaving'] {
   grid-template-rows: 1fr;
   padding-bottom: var(--message-list-gap);
-  transition: opacity 120ms linear;
+  transition: opacity 120ms var(--ease-morph);
 }
 .message-list-item[data-reduced][data-status='leaving']:last-child { padding-bottom: 0; }
-
-.message-list-item[data-status='removed'] .message-list-action,
-.message-list-item[data-status='leaving'] .message-list-action {
-  flex: none;
-}
 
 /* No results: words in supporting ink, and the way back. The list's own padding is the inset, so the words
    trim at its edges. */

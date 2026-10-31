@@ -56,15 +56,15 @@ test('heading tracking matches normal letter spacing', () => {
 });
 
 test('duration grows with distance and stays within its declared bounds', () => {
-  assert.equal(morphDuration(0), 40);
-  assert.equal(morphDuration(8), 51);
-  assert.equal(morphDuration(300), 213);
-  assert.equal(morphDuration(-300), 213);
-  assert.equal(morphDuration(10000), 300);
+  assert.equal(morphDuration(0), 48);
+  assert.equal(morphDuration(8), 62);
+  assert.equal(morphDuration(300), 264);
+  assert.equal(morphDuration(-300), 264);
+  assert.equal(morphDuration(10000), 360);
   let previous = 0;
   for (let i = 0; i <= 1000; i++) {
     const duration = morphDuration(i);
-    assert.ok(duration >= previous && duration >= 40 && duration <= 300);
+    assert.ok(duration >= previous && duration >= 48 && duration <= 360);
     previous = duration;
   }
 });

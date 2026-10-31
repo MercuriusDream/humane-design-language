@@ -124,8 +124,8 @@
   /* Motion. Morph durations come from morphDuration() in src/lib/motion.ts.
      --travel scales every spatial transition; reduced motion sets it to 0. */
   --ease-morph: cubic-bezier(0.2, 0, 0, 1);
-  --dur-feedback: 50ms;
-  --dur-fade: 90ms;
+  --dur-feedback: 140ms;
+  --dur-fade: 180ms;
   --travel: 1;
 }
 

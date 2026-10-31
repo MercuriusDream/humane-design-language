@@ -22,7 +22,7 @@
 .h-arrivals-button {
   width: 100%;
   overflow-wrap: anywhere;
-  animation: h-arrivals-in var(--dur-fade) linear;
+  animation: h-arrivals-in var(--dur-fade) var(--ease-morph);
 }
 
 @keyframes h-arrivals-in {

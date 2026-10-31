@@ -1,6 +1,6 @@
-const FLOOR_MS = 40;
-const CEILING_MS = 300;
-const SCALE = 2.4;
+const FLOOR_MS = 48;
+const CEILING_MS = 360;
+const SCALE = 3;
 const EXPONENT = 0.75;
 
 /**

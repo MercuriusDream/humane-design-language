@@ -25,7 +25,7 @@
 }
 
 .h-dialog[open]::backdrop {
-  animation: h-dialog-scrim var(--dur-fade) linear;
+  animation: h-dialog-scrim var(--dur-fade) var(--ease-morph);
 }
 
 @keyframes h-dialog-scrim {

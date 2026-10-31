@@ -69,12 +69,12 @@
   background: var(--plane-fill);
   font: var(--text-body);
   color: var(--ink-1);
-  transition: background-color var(--dur-feedback) linear;
+  transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
 .ex-hierarchy-comes-from-lightness-then-hue-then-saturation-warning-lead {
   font-weight: 600; /* body role, lead weight */
-  transition: color var(--dur-feedback) linear;
+  transition: color var(--dur-feedback) var(--ease-morph);
 }
 
 /* Plus hue: the warning's lead takes the danger hue. The lightness hierarchy already holds without it, so hue only adds to it. */

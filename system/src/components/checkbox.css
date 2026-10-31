@@ -51,7 +51,7 @@
   border-radius: min(var(--radius-1), var(--radius-control-max));
   background: var(--plane-raised);
   box-shadow: inset 0 0 0 var(--stroke) var(--ink-boundary);
-  transition: background-color var(--dur-feedback) linear;
+  transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
 .h-checkbox[data-depth='2'] .h-checkbox-box {

@@ -36,7 +36,7 @@
   gap: var(--gap-within);
   padding-bottom: var(--gap-within);
   opacity: 0;
-  transition: opacity var(--dur-fade) linear;
+  transition: opacity var(--dur-fade) var(--ease-morph);
 }
 
 .ex-attention-is-finite-decor[data-on] .ex-attention-is-finite-decor-inner {

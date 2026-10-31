@@ -64,8 +64,8 @@
   white-space: normal;
   overflow-wrap: anywhere;
   transition:
-    color var(--dur-feedback) linear,
-    background-color var(--dur-feedback) linear;
+    color var(--dur-feedback) var(--ease-morph),
+    background-color var(--dur-feedback) var(--ease-morph);
 }
 
 /* The ring sits inside the tab, so it never overlaps a neighbouring tab or a second line. */

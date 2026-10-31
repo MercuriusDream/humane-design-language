@@ -33,7 +33,7 @@ export function AnalyticsNotice() {
     setClosing(true);
     const fade = notice.animate(
       [{ opacity: getComputedStyle(notice).opacity }, { opacity: 0 }],
-      { duration: 90, easing: 'linear' },
+      { duration: 180, easing: 'cubic-bezier(0.2, 0, 0, 1)' },
     );
     fade.onfinish = () => {
       if (returnFocus) triggerRef.current?.focus({ preventScroll: true });
@@ -63,11 +63,10 @@ export function AnalyticsNotice() {
       {visible && (
         <Surface ref={noticeRef} className="landing-analytics" depth={0} plane="raised" aria-label="Analytics">
           <h2 className="landing-analytics-title">Analytics</h2>
-          <p className="landing-analytics-text">This site uses Cloudflare Web Analytics to measure visits.</p>
-          <div className="landing-analytics-actions">
-            <a href="https://developers.cloudflare.com/web-analytics/">About Cloudflare Web Analytics</a>
-            <Button size="compact" onClick={dismiss} disabled={closing}>Dismiss</Button>
-          </div>
+          <p className="landing-analytics-text">
+            We use <a href="https://developers.cloudflare.com/web-analytics/">Cloudflare Web Analytics</a>.
+          </p>
+          <Button size="compact" onClick={dismiss} disabled={closing}>Dismiss</Button>
         </Surface>
       )}
     </>

@@ -5,7 +5,7 @@
 .ex-luminance-carries-structure-stage {
   display: grid;
   gap: var(--gap-between);
-  transition: filter var(--dur-fade) linear;
+  transition: filter var(--dur-fade) var(--ease-morph);
 }
 
 .ex-luminance-carries-structure-stage[data-gray='true'] {

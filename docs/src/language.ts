@@ -91,10 +91,10 @@ export const LANGUAGE: Group[] = GROUPS.map(([id, title, heading]) => ({ id, tit
 export const INTENT: { lead: string; points: string[] } = (() => {
   const block = section(readme, /^## Intent\n/m);
   const chunks = block.split(/\n\s*\n/).map((c) => c.trim()).filter(Boolean);
-  const list = chunks.find((c) => c.startsWith('- ')) ?? '';
+  const list = chunks.find((c) => c.startsWith('- '));
   return {
     lead: plain(chunks[0] ?? ''),
-    points: list.split('\n').map((l) => plain(l.replace(/^-\s*/, ''))),
+    points: list ? list.split('\n').map((l) => plain(l.replace(/^-\s*/, ''))) : [],
   };
 })();
 

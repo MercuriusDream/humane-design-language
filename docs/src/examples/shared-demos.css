@@ -46,7 +46,7 @@
 .morph-row {
   border-radius: var(--radius-1);
   background: var(--plane-base);
-  transition: background-color var(--dur-fade) linear;
+  transition: background-color var(--dur-fade) var(--ease-morph);
 }
 
 .morph-row:hover,
@@ -103,7 +103,7 @@
   gap: var(--gap-within);
   padding: 0 var(--inset-control) var(--inset-control);
   opacity: 0;
-  transition: opacity var(--dur-fade) linear;
+  transition: opacity var(--dur-fade) var(--ease-morph);
 }
 
 .morph-row[data-open='true'] .morph-content {
@@ -140,7 +140,7 @@
   transition:
     grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph),
     padding-bottom calc(var(--dur) * var(--travel)) var(--ease-morph),
-    opacity var(--dur-fade) linear;
+    opacity var(--dur-fade) var(--ease-morph);
 }
 
 .undo-item[data-status='leaving'] {
@@ -162,7 +162,7 @@
   padding: var(--pad-1);
   border-radius: var(--radius-1);
   background: var(--plane-raised);
-  transition: background-color var(--dur-fade) linear;
+  transition: background-color var(--dur-fade) var(--ease-morph);
 }
 
 .undo-item:not([data-status='present']) .undo-row {
@@ -178,7 +178,7 @@
 .undo-name {
   min-width: 0;
   text-box: trim-both cap alphabetic;
-  transition: color var(--dur-fade) linear;
+  transition: color var(--dur-fade) var(--ease-morph);
 }
 
 .undo-item:not([data-status='present']) .undo-name {
@@ -215,7 +215,7 @@
   inset: 0;
   background: var(--plane-fill);
   transform-origin: left;
-  transition: transform calc(var(--dur-fade) * var(--travel)) linear;
+  transition: transform calc(var(--dur-fade) * var(--travel)) var(--ease-morph);
 }
 
 .task[data-phase='idle'] .task-fill {
@@ -252,7 +252,7 @@
     width calc(93ms * var(--travel)) var(--ease-morph),
     margin-right calc(93ms * var(--travel)) var(--ease-morph),
     transform calc(93ms * var(--travel)) var(--ease-morph),
-    opacity var(--dur-fade) linear;
+    opacity var(--dur-fade) var(--ease-morph);
 }
 
 .task[data-phase='done'] .task-check {

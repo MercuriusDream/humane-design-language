@@ -29,7 +29,7 @@
   transition:
     grid-template-rows calc(var(--dur) * var(--travel)) var(--ease-morph),
     padding-bottom calc(var(--dur) * var(--travel)) var(--ease-morph),
-    opacity var(--dur-fade) linear;
+    opacity var(--dur-fade) var(--ease-morph);
 }
 
 .ex-removed-things-go-somewhere-item[data-status='leaving'] {

@@ -45,8 +45,8 @@
   color: var(--ink-1);
   font: var(--h-select-font);
   transition:
-    background-color var(--dur-feedback) linear,
-    box-shadow var(--dur-feedback) linear;
+    background-color var(--dur-feedback) var(--ease-morph),
+    box-shadow var(--dur-feedback) var(--ease-morph);
 }
 
 .h-select:hover:not(:disabled) {

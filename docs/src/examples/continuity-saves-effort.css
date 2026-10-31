@@ -126,7 +126,7 @@
 .ex-continuity-saves-effort-body {
   padding-top: var(--gap-within);
   opacity: 0;
-  transition: opacity var(--dur-fade) linear;
+  transition: opacity var(--dur-fade) var(--ease-morph);
 }
 
 .ex-continuity-saves-effort-card[data-expanded='true'] .ex-continuity-saves-effort-body {
