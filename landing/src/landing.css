@@ -1,7 +1,10 @@
 /* Landing. One line and three destinations. */
 .landing {
+  box-sizing: border-box;
   display: grid;
+  align-content: center;
   gap: var(--space-8);
+  min-height: 100dvh;
   max-width: 68rem;
   margin-inline: auto;
   padding: var(--space-9) var(--space-5);
