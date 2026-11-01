@@ -85,7 +85,7 @@
   display: grid;
   gap: var(--gap-tight);
   width: 100%;
-  transition: opacity var(--dur-fade) var(--ease-morph);
+  transition: opacity calc(var(--dur, var(--dur-fade)) * var(--travel)) var(--ease-morph);
 }
 
 .ex-navigation-is-a-sidebar-that-morphs-sidebar[data-open='false'] .ex-navigation-is-a-sidebar-that-morphs-nav {

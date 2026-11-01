@@ -30,12 +30,12 @@ The site uses Cloudflare Web Analytics.
 ## Develop
 
 ```sh
-npm ci
-npm run dev
-npm run build:site
-npm run typecheck
-npm test
-npm run test:browser
+bun install
+bun run dev
+bun run build:site
+bun run typecheck
+bun test
+bun run test:browser
 ```
 
 Deploy steps live in [DEPLOY.md](DEPLOY.md). The release audit is [AUDIT.md](AUDIT.md). Upstream sources are credited in [REFERENCES.md](REFERENCES.md).

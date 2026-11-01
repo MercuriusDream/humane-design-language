@@ -22,12 +22,12 @@ const PROPS: PropRow[] = [
   {
     prop: 'onChange',
     type: '(checked: boolean) => void',
-    meaning: 'Called with the next value when the user activates the switch. The caller stores the value, so the switch always shows what the caller passes in.',
+    meaning: 'Called with the next value when the user activates the switch.',
   },
   {
     prop: 'size',
     type: "'standard' | 'compact'",
-    meaning: 'Standard is a 44 px row with body text. Compact is a 36 px row with small text. The track is a 32 px pill in standard, 24 px in compact, five thirds as wide as it is tall. Defaults to standard.',
+    meaning: 'Control tier: standard (44 px row, 32 px track) or compact (36 px row, 24 px track). Defaults to standard.',
   },
 ];
 

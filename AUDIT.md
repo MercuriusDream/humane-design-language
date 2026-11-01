@@ -63,15 +63,27 @@ A follow-up shape pass replaced the derived intermediate radii with the language
 
 Shape review left these as deliberate limits: a 2px corner is still a visible corner, so it is not a hard square; the switch is the only pill; and high contrast strengthens the remaining boundaries, lines, and focus rings rather than adding an outline to every control. The slider track follows `--stroke` (4px standard, 5px high).
 
+## Motion and prose pass
+
+A follow-up pass unified motion timing and interruption velocity continuity, replaced the sidebar's layout-property transitions with a compositor/clip-path morph, added cross-document view transitions, and removed documentation duplication:
+
+| Area | Finding and change | Primary evidence |
+| --- | --- | --- |
+| Velocity continuity | Added `morphBezier` and `morphChannel` in `system/src/lib/motion.ts`. `growFrom`, `moveFrom`, `morphIndicator`, and `Sidebar` preserve both position and instantaneous velocity via cubic Hermite splines when interrupted mid-flight. | `motion.ts`, `morph.ts`, `Sidebar.tsx`, `foundations.test.mjs`, `browser.mjs` |
+| Layout-free morphs | Replaced CSS `width`/`height`/`top`/`left`/`right` transitions on `.h-sidebar` and `.h-sidebar-toggle`, and `width`/`height` indicator transitions in `Segmented`, `Tabs`, and `Sidebar`, with WAAPI `transform` and `clip-path`. | `Sidebar.tsx`, `sidebar.css`, `Segmented.tsx`, `Tabs.tsx`, `morph.ts` |
+| Fade duration sync | Synchronized companion opacity fades in `Sidebar`, `Disclosure`, and the morph/sidebar examples to `--dur` (`var(--dur, var(--dur-fade))`) instead of fixed `--dur-fade`. | `sidebar.css`, `disclosure.css`, `motion-is-a-morph.css`, `navigation-is-a-sidebar-that-morphs.css` |
+| Landing and navigation | Clarified the landing heading, lead sentence, and destination labels (`Language`, `Components`, `Example: a mail app`), and enabled cross-document `@view-transition { navigation: auto; }`. | `landing/src/App.tsx`, `landing/src/landing.css`, `system/src/styles/base.css` |
+| Documentation deduplication | Reworded the `LANGUAGE.md` Intent line, deduplicated the two corner signature rules, and consolidated repeated explanations across `system/README.md`, `system/CONVENTIONS.md`, and `docs/src/system-docs/`. | `LANGUAGE.md`, `system/README.md`, `system/CONVENTIONS.md`, `docs/src/system-docs/` |
+
 ## Verification
 
 The final audited implementation passed:
 
-- `npm run typecheck`: all four workspaces and the browser fixture.
-- `npm test`: **19 tests**.
-- `npm run build`: documentation and flagship production builds.
-- `npm run build:site`: the combined landing, docs, and flagship MPA in `dist/`.
-- `npm run test:browser`: **31 checks**, Chrome **156.0.8078.48**, Node **26.8.2**.
+- `bun run typecheck`: all four workspaces and the browser fixture.
+- `bun test`: **23 tests**.
+- `bun run build`: documentation and flagship production builds.
+- `bun run build:site`: the combined landing, docs, and flagship MPA in `dist/`.
+- `bun run test:browser`: **36 checks**.
 
 Browser coverage includes 390px and 1440px viewports at a 32px browser-default font (200% of 16px), actual sRGB canvas-rendered palette pairs in all four scheme/contrast modes, ordinary/reduced-motion component paths, semantic docs definition lists, forced-colors emulation, focus destinations, persistence/recovery, and an absence of uncaught JavaScript/React errors during those scenarios. Reflow assertions establish no horizontal page overflow in those scenarios, not a universal absence of clipping in every possible composition.
 
@@ -79,7 +91,7 @@ See [`tests/README.md`](tests/README.md) for reproduction, browser requirements,
 
 ## Release status
 
-- **Site:** ready to stage from `npm run build:site` and `dist/`. See [`DEPLOY.md`](DEPLOY.md) for routes, redirects, smoke checks, and the browser baseline.
+- **Site:** ready to stage from `bun run build:site` and `dist/`. See [`DEPLOY.md`](DEPLOY.md) for routes, redirects, smoke checks, and the browser baseline.
 - **npm:** `humane-system` is `private`, exports source TypeScript, and is MIT-licensed. It is not an npm-publishable package as configured. Compiled distribution or tested source-consumer contract and a versioned release record remain a packaging decision, not a site blocker.
 - **Provenance:** the working copy is initialized on `main` and the initial tree is staged. A commit, owner remote, annotated tag, and release notes are still required for a canonical public release.
 
@@ -98,7 +110,7 @@ See [`tests/README.md`](tests/README.md) for reproduction, browser requirements,
 
 These are intentionally disclosed rather than hidden behind a passing build:
 
-1. **Velocity continuity remains an implementation gap.** Retargeting/reversal preserves position and accepts input, but CSS/Web Animations do not guarantee continuous velocity under arbitrary redirection. The language still requires that stronger property.
+1. **CSS-driven height disclosures use browser retargeting.** JavaScript-driven spatial morphs (`growFrom`, `moveFrom`, `morphIndicator`, `Sidebar`) preserve continuous velocity via `morphChannel`; CSS `grid-template-rows: 0fr -> 1fr` transitions (`Disclosure`) rely on the browser's CSS transition retargeting rules.
 2. **Manual accessibility/visual work remains.** Actual VoiceOver/NVDA speech, forced-colors behavior, perceived grayscale hierarchy, exact ink insets/font fallbacks, and per-region signal budgets require dedicated review. DOM assertions and one Chromium engine do not certify these.
 3. **Unknown loading geometry cannot be inferred.** Callers must supply final geometry or a stable reserved viewport; changing hidden content dimensions asynchronously can still change natural layout.
 4. **Persistence is not collaborative editing.** Snapshot guards stop detected stale writes; there is no cross-tab merge, server synchronization, or transactional guarantee for simultaneous writers. Preserve unsaved edits when a conflict is reported.

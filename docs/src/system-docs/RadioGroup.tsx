@@ -42,7 +42,7 @@ const PROPS: PropRow[] = [
   {
     prop: 'value',
     type: 'T',
-    meaning: 'The selected option’s value. The group is controlled: the dot shows this value, so the caller passes each new value back in.',
+    meaning: 'Currently selected option value.',
   },
   {
     prop: 'onChange',
@@ -52,7 +52,7 @@ const PROPS: PropRow[] = [
   {
     prop: 'size',
     type: "'standard' | 'compact'",
-    meaning: 'Standard is a 44 px row with body text and a 20 px mark. Compact is a 36 px row with small text and a 16 px mark. Defaults to standard.',
+    meaning: 'Control tier: standard (44 px row, 20 px mark) or compact (36 px row, 16 px mark). Defaults to standard.',
   },
 ];
 

@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
 import { colorContrast, neutralContrast, oklchLightness, relativeLuminance } from '../system/src/lib/color.ts';
-import { morphDuration } from '../system/src/lib/motion.ts';
+import { morphBezier, morphChannel, morphDuration } from '../system/src/lib/motion.ts';
 import { parsePreferences } from '../system/src/lib/preferenceStorage.ts';
 import { rootRadius } from '../system/src/lib/rootRadius.ts';
 
@@ -67,6 +67,24 @@ test('duration grows with distance and stays within its declared bounds', () => 
     assert.ok(duration >= previous && duration >= 48 && duration <= 360);
     previous = duration;
   }
+});
+
+test('morphChannel follows cubic-bezier(0.2, 0, 0, 1) from rest and preserves velocity when redirected', () => {
+  assert.equal(morphBezier(0).value, 0);
+  assert.equal(morphBezier(1).value, 1);
+  assert.ok(morphBezier(0.2).value > 0.4);
+  const first = morphChannel(-200, 0, 240);
+  near(first.at(0), -200);
+  near(first.at(1), 0);
+  const u = 0.35;
+  const posAtInterrupt = 200 + first.at(u);
+  const velAtInterrupt = first.velocity(u);
+  assert.ok(velAtInterrupt > 0);
+  const redirected = morphChannel(posAtInterrupt - 50, velAtInterrupt, 200);
+  near(redirected.at(0), posAtInterrupt - 50);
+  near(redirected.velocity(0), velAtInterrupt);
+  near(redirected.at(1), 0);
+  near(redirected.velocity(1), 0);
 });
 
 test('root radius is capped at 2px and does not depend on orientation', () => {

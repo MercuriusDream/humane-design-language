@@ -18,14 +18,14 @@ const OPTIONS: { value: Frequency; label: string }[] = [
 type PropRow = { prop: string; type: string; meaning: string };
 
 const PROPS: PropRow[] = [
-  { prop: 'label', type: 'string', meaning: 'The visible label. It is also the accessible name of the control.' },
-  { prop: 'value', type: 'T, a string union', meaning: 'The chosen option. The parent owns it, so the control is controlled.' },
-  { prop: 'onChange', type: '(value: T) => void', meaning: 'Called with the typed value of the option the user picked.' },
-  { prop: 'options', type: '{ value: T; label: string }[]', meaning: 'The choices. The value is stored; the label is what the user reads.' },
-  { prop: 'hint', type: 'string (optional)', meaning: 'Short help under the label, above the control. It stays while an error is set, so pass none when the error says enough.' },
-  { prop: 'error', type: 'string (optional)', meaning: 'What went wrong and what to do next, under the control. It marks the control invalid and is announced politely.' },
-  { prop: 'depth', type: '1 | 2 (optional, default 1)', meaning: 'The depth of the surface the select sits on. The control takes the 2 px corner of that depth.' },
-  { prop: 'size', type: "'standard' | 'compact'", meaning: 'Standard is a 44 px control with body text. Compact is a 36 px control with small text, for a dense region such as a toolbar. Defaults to standard.' },
+  { prop: 'label', type: 'string', meaning: 'Visible label and accessible name of the control.' },
+  { prop: 'value', type: 'T, a string union', meaning: 'Currently selected option value.' },
+  { prop: 'onChange', type: '(value: T) => void', meaning: 'Called with the value of the option the user picked.' },
+  { prop: 'options', type: '{ value: T; label: string }[]', meaning: 'Available choices in display order.' },
+  { prop: 'hint', type: 'string (optional)', meaning: 'Short help under the label, above the control.' },
+  { prop: 'error', type: 'string (optional)', meaning: 'Error message under the control. Marks the control invalid and announces politely.' },
+  { prop: 'depth', type: '1 | 2 (optional, default 1)', meaning: 'Nesting depth of the surface the select sits on.' },
+  { prop: 'size', type: "'standard' | 'compact'", meaning: 'Control tier: standard (44 px) or compact (36 px). Defaults to standard.' },
 ];
 
 const PROP_COLUMNS: TableColumn<PropRow>[] = [
@@ -55,9 +55,8 @@ export default function SelectDoc() {
   return (
     <>
       <p className="rule-text">
-        Picks one value from a list of options. Its label and value identify it, so no edge is drawn; the control plane
-        carries the field.
-        visible even on a calm surface.
+        Picks one value from a list of options. Its label, current value, and chevron identify it on the control plane
+        without an outline.
       </p>
       <Serves
         rules={[

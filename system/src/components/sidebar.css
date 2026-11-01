@@ -23,18 +23,13 @@
   height: calc(100dvh - 2 * var(--sidebar-inset));
   overflow: hidden;
   background: var(--plane-sunken);
-  /* No radius transition: the corner is the constant 2px cap. */
-  transition:
-    width calc(var(--dur) * var(--travel)) var(--ease-morph),
-    height calc(var(--dur) * var(--travel)) var(--ease-morph),
-    top calc(var(--dur) * var(--travel)) var(--ease-morph),
-    left calc(var(--dur) * var(--travel)) var(--ease-morph),
-    right calc(var(--dur) * var(--travel)) var(--ease-morph),
-    box-shadow var(--dur-fade) var(--ease-morph);
+  /* Geometry morphs via transform and clip-path in Sidebar.tsx; no layout property is transitioned. */
+  transition: box-shadow calc(var(--dur, var(--dur-fade)) * var(--travel)) var(--ease-morph);
 }
 
 /* The first paint already uses the measured closed width. Do not animate from the pre-measure fallback. */
-.h-sidebar:not([data-ready]) {
+.h-sidebar:not([data-ready]),
+.h-sidebar:not([data-ready]) * {
   transition: none;
 }
 
@@ -56,10 +51,15 @@
   right: 0;
 }
 
-.h-sidebar[data-open='false'] {
+.h-sidebar[data-open='false']:not([data-closing]) {
   width: var(--closed-width);
   max-width: calc(100vw - 2 * var(--sidebar-inset));
   height: var(--sidebar-closed-height);
+}
+
+.h-sidebar[data-closing='true'] {
+  width: var(--sidebar-width);
+  height: 100dvh;
 }
 
 /* Over the content, elevation separates it from the page it covers. */
@@ -82,19 +82,15 @@
   display: flex;
   align-items: center;
   gap: var(--h-sidebar-icon-gap);
-  width: 100%;
+  width: var(--closed-width);
+  max-width: 100%;
   min-height: var(--sidebar-closed-height);
   padding: 0 var(--h-sidebar-closed-end) 0 var(--h-sidebar-closed-start);
   overflow: hidden;
   border-radius: inherit;
   color: var(--ink-1);
   text-align: start;
-  transition:
-    width calc(var(--dur) * var(--travel)) var(--ease-morph),
-    margin calc(var(--dur) * var(--travel)) var(--ease-morph),
-    padding calc(var(--dur) * var(--travel)) var(--ease-morph),
-    border-radius calc(var(--dur) * var(--travel)) var(--ease-morph),
-    background-color var(--dur-feedback) var(--ease-morph);
+  transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
 /* The toggle has no plane of its own, so it steps as a nav item does: the control plane under the pointer,
@@ -119,6 +115,7 @@
 }
 
 .h-sidebar[data-side='right'][data-open='false'] .h-sidebar-toggle {
+  align-self: flex-end;
   padding: 0 var(--h-sidebar-closed-start) 0 var(--h-sidebar-closed-end);
 }
 
@@ -152,7 +149,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: opacity var(--dur-fade) var(--ease-morph);
+  transition: opacity calc(var(--dur, var(--dur-fade)) * var(--travel)) var(--ease-morph);
 }
 
 /* Open, the text takes its final width at once, like the body, so the title wraps once
@@ -215,7 +212,7 @@
   margin-top: var(--gap-within);
   overflow-y: auto;
   padding: 0 var(--pad-0) var(--pad-0);
-  transition: opacity var(--dur-fade) var(--ease-morph);
+  transition: opacity calc(var(--dur, var(--dur-fade)) * var(--travel)) var(--ease-morph);
 }
 
 .h-sidebar[data-side='right'] .h-sidebar-body {
@@ -223,6 +220,7 @@
 }
 
 .h-sidebar[data-open='false'] .h-sidebar-body {
+  margin-top: calc(var(--gap-within) + var(--pad-0));
   opacity: 0;
 }
 
@@ -238,12 +236,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
   border-radius: min(var(--radius-1), var(--radius-control-max));
   background: var(--plane-selected);
-  transition:
-    transform calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph),
-    height calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph);
 }
 
 .h-nav-link {

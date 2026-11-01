@@ -1,6 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from 'react';
-import { moveFrom } from '../lib/morph';
-import { morphDuration } from '../lib/motion';
+import { EASE_MORPH, morphIndicator } from '../lib/morph';
+import { morphChannel, morphDuration } from '../lib/motion';
 import { usePreferences } from '../preferences';
 import './sidebar.css';
 
@@ -55,8 +55,9 @@ export function Sidebar({ title, items, activeId, onSelect, open, onOpenChange, 
     if (bodyRef.current) bodyRef.current.inert = !open;
   }, [overlay, open]);
   const measureRef = useRef<HTMLSpanElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
   const iconRef = useRef<SVGSVGElement>(null);
-  const indicator = useIndicator(activeId);
+  const indicator = useIndicator(activeId, open);
   const [closedWidth, setClosedWidth] = useState(160);
   const [transitionsReady, setTransitionsReady] = useState(false);
   useEffect(() => {
@@ -84,8 +85,7 @@ export function Sidebar({ title, items, activeId, onSelect, open, onOpenChange, 
     return () => observer.disconnect();
   }, [closedLabelKey]);
 
-  useSideMorph(surfaceRef, side, reducedMotion);
-  useReducedCrossfade(surfaceRef, open, reducedMotion);
+  useSidebarMorph(surfaceRef, textRef, iconRef, open, side, overlay, reducedMotion);
 
   // Over the content, the open panel closes on Escape or on a press outside it.
   useEffect(() => {
@@ -140,7 +140,7 @@ export function Sidebar({ title, items, activeId, onSelect, open, onOpenChange, 
       >
         {/* Words first, the icon at the row's end: open, the title starts on the nav text's edge;
             closed, the current label starts where the title did, and the icon stays at the end as the surface morphs. */}
-        <span className="h-sidebar-toggle-text" aria-hidden="true">
+        <span className="h-sidebar-toggle-text" ref={textRef} aria-hidden="true">
           <span className="h-sidebar-title">{title}</span>
           <span className="h-sidebar-current">{activeLabel}</span>
         </span>
@@ -154,7 +154,7 @@ export function Sidebar({ title, items, activeId, onSelect, open, onOpenChange, 
       <div className="h-sidebar-body" ref={bodyRef} id={bodyId}>
         <nav aria-label={navLabel}>
           <div className="h-nav" ref={indicator.navRef}>
-            <span className="h-nav-indicator" style={indicator.style} aria-hidden="true" />
+            <span className="h-nav-indicator" ref={indicator.indicatorRef} aria-hidden="true" />
             <ul className="h-nav-list">
               {items.map((item) => {
                 const current = item.id === activeId;
@@ -209,62 +209,264 @@ function SidebarIcon({ ref }: { ref: RefObject<SVGSVGElement | null> }) {
 }
 
 /** One plane travels between items. Its duration follows the distance it covers. */
-function useIndicator(activeId: string) {
+function useIndicator(activeId: string, open: boolean) {
   const navRef = useRef<HTMLDivElement>(null);
-  const previousTop = useRef<number | null>(null);
-  const [style, setStyle] = useState<CSSProperties>({ opacity: 0 });
+  const indicatorRef = useRef<HTMLSpanElement>(null);
+  const openRef = useRef(open);
+  openRef.current = open;
 
   useLayoutEffect(() => {
-    const measure = () => {
-      const link = navRef.current?.querySelector<HTMLElement>(`[data-id="${CSS.escape(activeId)}"]`);
-      if (!link) return setStyle({ opacity: 0 });
-      const top = link.offsetTop;
-      const distance = previousTop.current === null ? 0 : top - previousTop.current;
-      previousTop.current = top;
-      setStyle({
-        transform: `translateY(${top}px)`,
-        height: link.offsetHeight,
-        '--dur': `${distance === 0 ? 0 : morphDuration(distance)}ms`,
-      } as CSSProperties);
+    const update = (instant: boolean) => {
+      const nav = navRef.current;
+      const indicator = indicatorRef.current;
+      if (!indicator) return;
+      const link = nav?.querySelector<HTMLElement>(`[data-id="${CSS.escape(activeId)}"]`);
+      if (!link) {
+        indicator.style.opacity = '0';
+        return;
+      }
+      indicator.style.opacity = '1';
+      morphIndicator(
+        indicator,
+        { x: 0, y: link.offsetTop, w: link.offsetWidth, h: link.offsetHeight },
+        instant || !openRef.current,
+      );
     };
-    measure();
+    update(false);
     // The nav changes size whenever its rows do, as when the user enlarges text, so the plane follows its row.
-    const observer = new ResizeObserver(measure);
+    const observer = new ResizeObserver(() => update(true));
     if (navRef.current) observer.observe(navRef.current);
     return () => observer.disconnect();
   }, [activeId]);
 
-  return { navRef, style };
+  return { navRef, indicatorRef };
+}
+
+const HERMITE_STEPS = 16;
+
+type BoxRect = { left: number; top: number; width: number; height: number };
+type Point = { left: number; top: number };
+
+function toBox(r: DOMRect): BoxRect {
+  return { left: r.left, top: r.top, width: r.width, height: r.height };
+}
+
+function toPoint(r: DOMRect): Point {
+  return { left: r.left, top: r.top };
+}
+
+function isActive(anim: Animation | null): anim is Animation {
+  return anim !== null && (anim.playState === 'running' || anim.playState === 'paused');
 }
 
 /**
- * Under reduced motion the panel does not travel between its two forms, so the change is shown as a
- * short crossfade on the same surface instead of an instant jump.
+ * Morphs the sidebar between its open and closed forms and across screen sides using transform and clip-path.
+ * Layout properties never animate; interrupting a transition mid-flight preserves both position and velocity.
  */
-function useReducedCrossfade(surfaceRef: RefObject<HTMLElement | null>, open: boolean, reducedMotion: boolean) {
-  const first = useRef(true);
-  useLayoutEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
-    if (reducedMotion) surfaceRef.current?.animate([{ opacity: 0.3 }, { opacity: 1 }], { duration: 120, easing: 'linear' });
-  }, [open, reducedMotion, surfaceRef]);
-}
-
-/** When the preferred side changes, the surface travels across the screen instead of jumping. */
-function useSideMorph(surfaceRef: RefObject<HTMLElement | null>, side: string, reducedMotion: boolean) {
-  const lastRect = useRef<DOMRect | null>(null);
-  const lastSide = useRef(side);
+function useSidebarMorph(
+  surfaceRef: RefObject<HTMLElement | null>,
+  textRef: RefObject<HTMLElement | null>,
+  iconRef: RefObject<SVGSVGElement | null>,
+  open: boolean,
+  side: string,
+  overlay: boolean,
+  reducedMotion: boolean,
+) {
+  const stateRef = useRef<{
+    rect: BoxRect | null;
+    textPos: Point | null;
+    iconPos: Point | null;
+    radius: number;
+    open: boolean;
+    side: string;
+    overlay: boolean;
+    anim: Animation | null;
+    textAnim: Animation | null;
+    iconAnim: Animation | null;
+    duration: number;
+    atRect?: (u: number) => BoxRect;
+    velRect?: (u: number) => { vL: number; vT: number; vW: number; vH: number };
+  }>({
+    rect: null,
+    textPos: null,
+    iconPos: null,
+    radius: 2,
+    open,
+    side,
+    overlay,
+    anim: null,
+    textAnim: null,
+    iconAnim: null,
+    duration: 0,
+  });
 
   useLayoutEffect(() => {
     const el = surfaceRef.current;
     if (!el) return;
-    if (lastSide.current !== side && lastRect.current) {
-      el.getAnimations().forEach((animation) => animation instanceof CSSTransition || animation.cancel());
-      moveFrom(el, lastRect.current, reducedMotion);
+    const state = stateRef.current;
+    const snapshot = () => {
+      if (isActive(state.anim)) return;
+      state.rect = toBox(el.getBoundingClientRect());
+      state.textPos = textRef.current ? toPoint(textRef.current.getBoundingClientRect()) : null;
+      state.iconPos = iconRef.current ? toPoint(iconRef.current.getBoundingClientRect()) : null;
+      state.radius = Number.parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+    };
+    const observer = new ResizeObserver(snapshot);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [surfaceRef, textRef, iconRef]);
+
+  useLayoutEffect(() => {
+    const el = surfaceRef.current;
+    const text = textRef.current;
+    const icon = iconRef.current;
+    if (!el) return;
+    const state = stateRef.current;
+
+    if (state.rect === null) {
+      state.rect = toBox(el.getBoundingClientRect());
+      state.textPos = text ? toPoint(text.getBoundingClientRect()) : null;
+      state.iconPos = icon ? toPoint(icon.getBoundingClientRect()) : null;
+      state.radius = Number.parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+      state.open = open;
+      state.side = side;
+      state.overlay = overlay;
+      return;
     }
-    lastSide.current = side;
-    lastRect.current = el.getBoundingClientRect();
+
+    if (state.open === open && state.side === side && state.overlay === overlay) {
+      if (!isActive(state.anim)) {
+        state.rect = toBox(el.getBoundingClientRect());
+        state.textPos = text ? toPoint(text.getBoundingClientRect()) : null;
+        state.iconPos = icon ? toPoint(icon.getBoundingClientRect()) : null;
+        state.radius = Number.parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+      }
+      return;
+    }
+
+    const active = isActive(state.anim) && state.duration > 0 && state.atRect && state.velRect;
+    const time = active ? Number(state.anim!.currentTime ?? 0) : 0;
+    const u = active ? Math.min(1, Math.max(0, time / state.duration)) : 0;
+    const from = active ? state.atRect!(u) : state.rect;
+    const vel = active && time > 0 && time < state.duration ? state.velRect!(u) : { vL: 0, vT: 0, vW: 0, vH: 0 };
+    const fromText = active && text ? toPoint(text.getBoundingClientRect()) : state.textPos;
+    const fromIcon = active && icon ? toPoint(icon.getBoundingClientRect()) : state.iconPos;
+    const fromRadius = state.radius;
+
+    state.anim?.cancel();
+    state.textAnim?.cancel();
+    state.iconAnim?.cancel();
+    state.anim = null;
+    state.textAnim = null;
+    state.iconAnim = null;
+    delete el.dataset.closing;
+
+    const to = toBox(el.getBoundingClientRect());
+    const toText = text ? toPoint(text.getBoundingClientRect()) : null;
+    const toIcon = icon ? toPoint(icon.getBoundingClientRect()) : null;
+    const toRadius = Number.parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+
+    state.rect = to;
+    state.textPos = toText;
+    state.iconPos = toIcon;
+    state.radius = toRadius;
+    state.open = open;
+    state.side = side;
+    state.overlay = overlay;
+
+    const change = Math.max(
+      Math.hypot(from.left - to.left, from.top - to.top),
+      Math.abs(to.width - from.width),
+      Math.abs(to.height - from.height),
+    );
+    const duration = morphDuration(change);
+    el.style.setProperty('--dur', `${duration}ms`);
+
+    if (reducedMotion) {
+      const anim = el.animate([{ opacity: 0.3 }, { opacity: 1 }], { duration: 120, easing: 'linear' });
+      state.anim = anim;
+      state.duration = 120;
+      state.atRect = undefined;
+      state.velRect = undefined;
+      return;
+    }
+
+    const hasVelocity = vel.vL !== 0 || vel.vT !== 0 || vel.vW !== 0 || vel.vH !== 0;
+    if (change < 0.5 && !hasVelocity) return;
+
+    const needsOpenBox = !open && (from.width > to.width + 0.5 || from.height > to.height + 0.5);
+    if (needsOpenBox) el.dataset.closing = 'true';
+
+    const box = toBox(el.getBoundingClientRect());
+    const domText = text ? toPoint(text.getBoundingClientRect()) : null;
+    const domIcon = icon ? toPoint(icon.getBoundingClientRect()) : null;
+
+    const lCh = morphChannel(from.left - to.left, vel.vL, duration);
+    const tCh = morphChannel(from.top - to.top, vel.vT, duration);
+    const wCh = morphChannel(from.width - to.width, vel.vW, duration);
+    const hCh = morphChannel(from.height - to.height, vel.vH, duration);
+
+    const atRect = (progress: number): BoxRect => ({
+      left: to.left + lCh.at(progress),
+      top: to.top + tCh.at(progress),
+      width: to.width + wCh.at(progress),
+      height: to.height + hCh.at(progress),
+    });
+    const velRect = (progress: number) => ({
+      vL: lCh.velocity(progress),
+      vT: tCh.velocity(progress),
+      vW: wCh.velocity(progress),
+      vH: hCh.velocity(progress),
+    });
+
+    const frameAt = (progress: number): Keyframe => {
+      const r = atRect(progress);
+      const tx = side === 'right' ? r.left + r.width - (box.left + box.width) : r.left - box.left;
+      const ty = r.top - box.top;
+      const hClip = Math.max(0, box.width - r.width);
+      const bClip = Math.max(0, box.height - r.height);
+      const radius = fromRadius + (toRadius - fromRadius) * progress;
+      const clipPath =
+        side === 'right'
+          ? `inset(0px 0px ${bClip}px ${hClip}px round ${radius}px)`
+          : `inset(0px ${hClip}px ${bClip}px 0px round ${radius}px)`;
+      return { transform: `translate(${tx}px, ${ty}px)`, clipPath };
+    };
+
+    const steps = hasVelocity ? HERMITE_STEPS : 1;
+    const keyframes = Array.from({ length: steps + 1 }, (_, i) => frameAt(i / steps));
+    const easing = hasVelocity ? 'linear' : EASE_MORPH;
+    const anim = el.animate(keyframes, { duration, easing });
+
+    const tx0 = side === 'right' ? from.left + from.width - (box.left + box.width) : from.left - box.left;
+    const ty0 = from.top - box.top;
+    const animateChild = (child: Element | null, beforePos: Point | null, domPos: Point | null) => {
+      if (!child || !beforePos || !domPos) return null;
+      const dx0 = beforePos.left - (domPos.left + tx0);
+      const dy0 = beforePos.top - (domPos.top + ty0);
+      if (Math.hypot(dx0, dy0) < 0.5) return null;
+      return child.animate([{ translate: `${dx0}px ${dy0}px` }, { translate: '0px 0px' }], {
+        duration,
+        easing: EASE_MORPH,
+      });
+    };
+
+    state.anim = anim;
+    state.textAnim = animateChild(text, fromText, domText);
+    state.iconAnim = animateChild(icon, fromIcon, domIcon);
+    state.duration = duration;
+    state.atRect = atRect;
+    state.velRect = velRect;
+
+    anim.finished
+      .then(() => {
+        if (state.anim === anim) {
+          delete el.dataset.closing;
+          state.anim = null;
+          state.textAnim = null;
+          state.iconAnim = null;
+        }
+      })
+      .catch(() => {});
   });
 }

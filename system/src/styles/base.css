@@ -12,6 +12,18 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: calc(var(--dur-fade) * var(--travel));
+  animation-timing-function: var(--ease-morph);
+}
+
 /* On the root, not body: a filtered body would become the containing block of the fixed sidebar. */
 :root[data-grayscale] {
   filter: grayscale(1);

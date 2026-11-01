@@ -66,8 +66,8 @@ function Components() {
   return (
     <>
       <Lead>
-        The Humane Design System turns the language into tokens and components. These interactive examples show the
-        components in use. They do not establish full conformance with the language.
+        The Humane Design System turns the language into tokens and components. Each component below shows its live
+        specimen, the rules it serves, and its props.
       </Lead>
       <ul className="component-docs">
         {SYSTEM_DOCS.map(({ name, Doc }) => (

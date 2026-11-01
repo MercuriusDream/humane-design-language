@@ -1,5 +1,5 @@
 import { useId, useLayoutEffect, useRef } from 'react';
-import { morphDuration } from '../lib/motion';
+import { morphIndicator } from '../lib/morph';
 import type { ControlSize } from './Button';
 import './segmented.css';
 
@@ -20,26 +20,20 @@ type Props<T extends string> = {
 export function Segmented<T extends string>({ label, options, value, onChange, size = 'standard' }: Props<T>) {
   const labelId = useId();
   const trackRef = useRef<HTMLDivElement>(null);
+  const indicatorRef = useRef<HTMLSpanElement>(null);
   const optionRefs = useRef(new Map<string, HTMLButtonElement>());
-  const measured = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
   const placeRef = useRef<(instant: boolean) => void>(() => {});
 
   /** Moves the indicator over the active option. Instant placement is for layout changes the user did not cause. */
   function place(instant: boolean) {
-    const track = trackRef.current;
+    const indicator = indicatorRef.current;
     const option = optionRefs.current.get(value);
-    if (!track || !option) return;
-    const next = { x: option.offsetLeft, y: option.offsetTop, w: option.offsetWidth, h: option.offsetHeight };
-    const prev = measured.current;
-    const distance = prev
-      ? Math.max(Math.hypot(next.x - prev.x, next.y - prev.y), Math.abs(next.w - prev.w), Math.abs(next.h - prev.h))
-      : 0;
-    track.style.setProperty('--dur', instant || !prev ? '0ms' : `${morphDuration(distance)}ms`);
-    track.style.setProperty('--indicator-x', `${next.x}px`);
-    track.style.setProperty('--indicator-y', `${next.y}px`);
-    track.style.setProperty('--indicator-w', `${next.w}px`);
-    track.style.setProperty('--indicator-h', `${next.h}px`);
-    measured.current = next;
+    if (!indicator || !option) return;
+    morphIndicator(
+      indicator,
+      { x: option.offsetLeft, y: option.offsetTop, w: option.offsetWidth, h: option.offsetHeight },
+      instant,
+    );
   }
 
   useLayoutEffect(() => {
@@ -65,7 +59,7 @@ export function Segmented<T extends string>({ label, options, value, onChange, s
         {label}
       </span>
       <div ref={trackRef} className="h-segmented" data-size={size} role="group" aria-labelledby={labelId}>
-        <span className="h-segmented-indicator" aria-hidden="true" />
+        <span ref={indicatorRef} className="h-segmented-indicator" aria-hidden="true" />
         {options.map((option) => (
           <button
             key={option.value}

@@ -99,7 +99,7 @@
   min-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: opacity var(--dur-fade) var(--ease-morph);
+  transition: opacity var(--dur, var(--dur-fade)) var(--ease-morph);
 }
 
 .h-disclosure[data-open='true'] .h-disclosure-clip {

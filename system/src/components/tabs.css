@@ -33,20 +33,16 @@
   background: var(--plane-control);
 }
 
-/* Width and position are set on the track by Tabs.tsx. The duration comes from morphDuration(distance). */
+/* Position and size are driven by morphIndicator in Tabs.tsx. */
 .h-tabs-indicator {
   position: absolute;
   top: 0;
   left: 0;
-  width: var(--indicator-w, 0px);
-  height: var(--indicator-h, 0px);
+  width: 0;
+  height: 0;
   border-radius: max(0px, calc(var(--h-tabs-radius) - 3px));
   background: var(--plane-selected);
-  transform: translate(var(--indicator-x, 3px), var(--indicator-y, 3px));
-  transition:
-    transform calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph),
-    width calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph),
-    height calc(var(--dur, 0ms) * var(--travel)) var(--ease-morph);
+  transform-origin: top left;
 }
 
 .h-tabs-tab {

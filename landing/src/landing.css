@@ -10,12 +10,23 @@
   padding: var(--space-9) var(--space-5);
 }
 
+.landing-header {
+  display: grid;
+  gap: var(--gap-within);
+}
+
 .landing-title {
   font: var(--text-display);
   letter-spacing: var(--tracking-display);
 }
 
-/* About, System, Example. Small pills in a row on a wide screen, a stack on a narrow one. */
+.landing-lead {
+  max-width: 54ch;
+  font: var(--text-lead);
+  color: var(--ink-2);
+}
+
+/* Language, Components, Example. Small surfaces in a row on a wide screen, a stack on a narrow one. */
 .landing-parts {
   display: grid;
   justify-content: start;

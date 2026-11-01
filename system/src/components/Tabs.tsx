@@ -6,7 +6,7 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from 'react';
-import { morphDuration } from '../lib/motion';
+import { morphIndicator } from '../lib/morph';
 import type { ControlSize } from './Button';
 import './tabs.css';
 
@@ -40,26 +40,20 @@ export function Tabs({ label, tabs, value, onChange, defaultValue, size = 'stand
   const activeId = active?.id;
 
   const trackRef = useRef<HTMLDivElement>(null);
+  const indicatorRef = useRef<HTMLSpanElement>(null);
   const tabRefs = useRef(new Map<string, HTMLButtonElement>());
-  const measured = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
   const placeRef = useRef<(instant: boolean) => void>(() => {});
 
   /** Moves the indicator over the active tab. Instant placement is used for layout changes the user did not cause. */
   function place(instant: boolean) {
-    const track = trackRef.current;
+    const indicator = indicatorRef.current;
     const tab = activeId === undefined ? undefined : tabRefs.current.get(activeId);
-    if (!track || !tab) return;
-    const next = { x: tab.offsetLeft, y: tab.offsetTop, w: tab.offsetWidth, h: tab.offsetHeight };
-    const prev = measured.current;
-    const distance = prev
-      ? Math.max(Math.hypot(next.x - prev.x, next.y - prev.y), Math.abs(next.w - prev.w), Math.abs(next.h - prev.h))
-      : 0;
-    track.style.setProperty('--dur', instant || !prev ? '0ms' : `${morphDuration(distance)}ms`);
-    track.style.setProperty('--indicator-x', `${next.x}px`);
-    track.style.setProperty('--indicator-y', `${next.y}px`);
-    track.style.setProperty('--indicator-w', `${next.w}px`);
-    track.style.setProperty('--indicator-h', `${next.h}px`);
-    measured.current = next;
+    if (!indicator || !tab) return;
+    morphIndicator(
+      indicator,
+      { x: tab.offsetLeft, y: tab.offsetTop, w: tab.offsetWidth, h: tab.offsetHeight },
+      instant,
+    );
   }
 
   useLayoutEffect(() => {
@@ -115,7 +109,7 @@ export function Tabs({ label, tabs, value, onChange, defaultValue, size = 'stand
   return (
     <div className="h-tabs" data-size={size}>
       <div ref={trackRef} className="h-tabs-track" role="tablist" aria-label={label}>
-        <span className="h-tabs-indicator" aria-hidden="true" />
+        <span ref={indicatorRef} className="h-tabs-indicator" aria-hidden="true" />
         {tabs.map((tab, index) => {
           const selected = tab.id === activeId;
           return (

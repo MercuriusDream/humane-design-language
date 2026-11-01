@@ -250,7 +250,7 @@ try {
     await evaluate('document.querySelector("#loading-anchor").focus()');
     await waitFor('document.querySelectorAll(".h-undoable-list-item").length === 1');
   });
-  await check('interrupted FLIP starts at its current position, reduced motion uses opacity', async () => {
+  await check('interrupted FLIP starts at its current position and velocity, reduced motion uses opacity', async () => {
     const result = await evaluate(`(async () => {
       const { moveFrom } = await import('/system/src/lib/morph.ts');
       const el = document.createElement('div');
@@ -261,13 +261,15 @@ try {
       const before = el.getBoundingClientRect(); el.style.left = '300px';
       const b = moveFrom(el, before, false); b.pause(); b.currentTime = 0;
       const difference = Math.abs(el.getBoundingClientRect().left - before.left);
+      const redirectedFrames = b.effect.getKeyframes().length;
       const second = el.getBoundingClientRect(); el.style.left = '400px';
       const reduced = moveFrom(el, second, true);
       const opacityOnly = reduced.effect.getKeyframes().every(frame => !('transform' in frame));
       reduced.cancel(); el.remove();
-      return { difference, opacityOnly, cancelled: a.playState === 'idle' };
+      return { difference, redirectedFrames, opacityOnly, cancelled: a.playState === 'idle' };
     })()`);
     assert.ok(result.difference < 1, JSON.stringify(result));
+    assert.ok(result.redirectedFrames > 2, JSON.stringify(result));
     assert.ok(result.opacityOnly && result.cancelled);
   });
   await check('rendered token pairs and stronger strokes pass all four modes', async () => {

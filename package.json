@@ -16,12 +16,12 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "npm run build --workspaces --if-present",
+    "build": "bun --filter './*' build",
     "build:site": "vite build",
     "preview": "vite preview",
-    "typecheck": "npm run typecheck --workspaces --if-present && tsc --noEmit -p tests/tsconfig.json",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs",
-    "test:browser": "node tests/browser.mjs",
-    "test:safari": "node tests/safari.mjs"
+    "typecheck": "bun --filter './*' typecheck && tsc --noEmit -p tests/tsconfig.json",
+    "test": "bun test tests/*.test.mjs",
+    "test:browser": "bun tests/browser.mjs",
+    "test:safari": "bun tests/safari.mjs"
   }
 }

@@ -28,12 +28,12 @@ const PROPS: PropRow[] = [
   {
     prop: 'checked',
     type: 'boolean',
-    meaning: 'Whether the box is on. The component is controlled, so the box shows exactly what the caller passes in.',
+    meaning: 'Whether the box is checked.',
   },
   {
     prop: 'onChange',
     type: '(checked: boolean) => void',
-    meaning: 'Called with the next value when the user checks or unchecks the box. The caller stores the value.',
+    meaning: 'Called with the next checked state when the user toggles the box.',
   },
   {
     prop: 'hint',

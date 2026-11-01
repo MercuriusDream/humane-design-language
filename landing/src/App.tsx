@@ -4,16 +4,21 @@ import './landing.css';
 
 /** The three parts, each a place to go. Paths are those of the root dev server and build. */
 const PARTS = [
-  { href: '/docs/', name: 'About' },
-  { href: '/docs/#components', name: 'System' },
-  { href: '/flagship/', name: 'Example' },
+  { href: '/docs/', name: 'Language' },
+  { href: '/docs/#components', name: 'Components' },
+  { href: '/flagship/', name: 'Example: a mail app' },
 ];
 
 export function App() {
   return (
     <PreferencesProvider>
       <main className="landing">
-        <h1 className="landing-title">A humane perception.</h1>
+        <header className="landing-header">
+          <h1 className="landing-title">Humane Design Language</h1>
+          <p className="landing-lead">
+            A design language built from human perception, a React component system, and a reference mail app.
+          </p>
+        </header>
         <ul className="landing-parts">
           {PARTS.map(({ href, name }) => (
             <li key={href}>

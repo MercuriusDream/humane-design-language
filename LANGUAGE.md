@@ -12,7 +12,7 @@ When a situation is not covered by a rule, decide from the premises.
 
 ## Intent
 
-A humane design to set your eyeball free in a world full of eyecatchers.
+Interfaces should serve the person using them, not compete for their eye in a world full of eyecatchers.
 
 ## Premises
 
@@ -132,9 +132,9 @@ A humane design to set your eyeball free in a world full of eyecatchers.
 
 These choices are aesthetic. They do not follow from the premises, and they are what make the language look like itself.
 
-**Sharp corners, round marks.** Every surface and control takes a 2px corner or less. The same small corner runs from the window to the smallest control, so nothing reads as a rounded card or a pill. An independent control is never square: a button, field, or row keeps a visible 2px corner. A piece inside a track may be square, because the track's corner holds the shape. Marks are round: a small solid shape that shows a state or a position inside a control or a row, such as a status dot, a radio mark, or the thumb of a switch or slider, is a circle. The switch is the one pill, because its shape is its function.
+**Sharp corners, round marks.** Surfaces and independent controls take a 2px corner, so nothing reads as a rounded card or a pill. Marks that hold no content, such as a status dot, a radio mark, or the thumb of a switch or slider, are circles. The switch track is the one pill, because its shape follows a circular thumb sliding between two ends. Content that takes no press, such as an image, may be square.
 
-**Corners are small, never chosen.** A root's corner is capped at 2px, and every surface and control inside it takes the same cap. No element renders a corner larger than 2px, and no component chooses one. The floor is 2px, so the corner stays visible at every depth. A track takes the 2px corner; the indicator and options inside it take 0, so the inside is sharper than its holder. The switch's track is the one pill, because its shape is its function, a circle that slides between two ends. Marks take no corner from a surface; they are circles. Content that takes no press, such as an image, may be square.
+**Corners are small, never chosen.** A root surface's corner is capped at 2px, and nested depths clamp to a 2px floor (`R_d = max(2px, R_{d-1} - P_{d-1})`). No component chooses its own corner radius. A segmented or tab track takes the 2px corner; the indicator and options inside it take 0, so the inside is sharper than its holder.
 
 **Padding follows depth, not size.** Surface padding comes from a step scale indexed by nesting depth, and it decreases as depth increases. It never scales with the container's size, so sibling surfaces of different sizes keep their content aligned. Controls are an explicit exception: their insets may derive from control height and text metrics to preserve a usable target and balanced space around the label.
 

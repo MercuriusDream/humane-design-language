@@ -11,13 +11,13 @@ The public site is three static entry points built by the root Vite config:
 From the repository root:
 
 ```sh
-npm ci
-npm run build:site
+bun install
+bun run build:site
 ```
 
 Upload the contents of `dist/` to the host. Keep the `docs/` and `flagship/` directories as directories; assets are versioned under `assets/`.
 
-Do not deploy `system/`, `docs/src/`, `flagship/src/`, `krds/`, or `example/`. `npm run build` builds the workspace outputs separately; `build:site` is the combined deploy artifact.
+Do not deploy `system/`, `docs/src/`, `flagship/src/`, `krds/`, or `example/`. `bun run build` builds the workspace outputs separately; `build:site` is the combined deploy artifact.
 
 ## Production routes
 

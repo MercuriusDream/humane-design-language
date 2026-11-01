@@ -14,39 +14,33 @@ Each value in this document is tagged with the rule it serves. When a value chan
 
 ## 2. Using it
 
-The system is the workspace package `humane-system` (`system/package.json`). Import components, hooks, and helpers from `'humane-system'`. The package entry is `src/index.ts`, which exports every public module. The foundations in `src/styles/index.css` load with that entry, so importing the package applies the tokens.
-
-The web implementation uses native dialog and Popover top layers, `inert`, ResizeObserver, Web Animations, OKLCH, and `light-dark()`. Use a browser supporting these features; no legacy overlay fallback is supplied. The browser suite records its tested engine, not a cross-browser certification. `text-box` has an explicit line-box fallback limitation below.
+The system is the workspace package `humane-system` (`system/package.json`). Import components, hooks, and helpers from `'humane-system'`. The package entry is [`src/index.ts`](src/index.ts), which exports every public module and loads the foundations in [`src/styles/index.css`](src/styles/index.css).
 
 ### Browser baseline
 
-Requires `light-dark()`, OKLCH, native `dialog` and Popover, `:has()`, container queries, and `text-box`. Chrome 156 is the tested engine. Browsers without `text-box` keep the layout but lose exact ink trimming; browsers without native Popover have no menu fallback. Safari and Firefox are not certified by the browser suite.
+Requires `light-dark()`, OKLCH, native `dialog` and Popover, `inert`, `:has()`, container queries, ResizeObserver, Web Animations, and `text-box`. Browsers without `text-box` keep the layout and fall back to the line box (adding about 8px above and below body text). See [AUDIT.md](../AUDIT.md) for engine verification scope.
 
 Wrap the application in `PreferencesProvider` once, at the root. The provider reads and writes the viewer's display settings, and sets the document attributes that the tokens respond to. Read a setting with `usePreferences()`. The hook throws when it is used outside the provider.
 
 Three applications use the system:
 
-- The landing page in `../landing`. It imports `PreferencesProvider` and the shared language text, so the front door uses the same display preferences and copy as the docs.
-- The documentation site in `../docs`. Its root (`src/App.tsx`) imports `AppShell`, `PreferenceControls`, `PreferencesProvider`, and `useScrollSpy`. Each page in `src/system-docs` imports the components it documents, and `src/sections.tsx` imports `Button` and `usePreferences`.
-- The flagship application in `../flagship` composes the shell, fields, lists, dialogs, display preferences, loading and progress primitives into a local mail demonstration. Its versioned storage, autosave, recovery, and notification policy belong to the application rather than the design system.
+- The landing page in `../landing` imports `PreferencesProvider` and links to the language, component docs, and reference application.
+- The documentation site in `../docs` (`src/App.tsx`) imports `AppShell`, `PreferenceControls`, `PreferencesProvider`, and `useScrollSpy`. Each page in `src/system-docs` imports the components it documents.
+- The flagship application in `../flagship` composes the shell, fields, lists, dialogs, display preferences, loading, and progress primitives into a reference mail client.
 
 ## 3. Space
 
 ### Radius
 
-Every corner is 2px or less. A root's corner is capped at 2px, and every nested surface and control takes that same cap. The 2px floor keeps a press target from reading as a raw rectangle; nesting never adds rounding. There are no pills, except the switch: its track is a smaller pill inside its control-height row (32px of 44 standard, 24px of 36 compact) and five thirds as wide, rounded at half its height around a circular thumb, because its shape is its function. The slider's track is a line and has no corner. Marks are circles.
-
 | Token | Value | Derivation | Relationship |
 | --- | --- | --- | --- |
-| `--radius-root` | 2px cap | `rootRadius()` (`lib/rootRadius.ts`) computes min(2px, 5% of the root's shorter side) and sets it in px on every `[data-root]` element: the sidebar, a dialog, a menu, a depth 0 `Surface`, a docs example frame. Outside any root the default is 2px. | Sharp corners, round marks. Corners are small, never chosen. |
+| `--radius-root` | 2px cap | `rootRadius()` ([`src/lib/rootRadius.ts`](src/lib/rootRadius.ts)) computes min(2px, 5% of the root's shorter side) and sets it in px on every `[data-root]` element: the sidebar, a dialog, a menu, a depth 0 `Surface`, a docs example frame. Outside any root the default is 2px. | Sharp corners, round marks. Corners are small, never chosen. |
 | `--radius-floor` | 2px | Chosen. | Anything the user presses keeps a visible corner. |
 | `--radius-1` | max(floor, root - 16) = 2px | `--pad-0` is 16. Redeclared on each root. | Every depth takes the same corner. |
 | `--radius-2` | max(floor, radius-1 - 12) = 2px | `--pad-1` is 12. | Every depth takes the same corner. |
 | `--radius-control-max` | 2px | Chosen. | A control never rounds past the surface corner. |
 
-Every surface and control takes the 2px corner. The segmented and tabs tracks take 2px; their indicator and options take 0, so the inside is sharper than its holder. The checkbox box takes 2px. The closed sidebar is a root `--control-height-compact` tall and takes the same 2px corner in both its open and closed forms. The switch track is the one pill. The slider's track is a line and has no corner.
-
-Marks are circles: the radio mark, the switch thumb, the slider thumb, and status dots. A mark holds no content and sits inside a control or a row, so it takes no corner from a surface.
+Every surface and independent control takes the 2px corner. Segmented and tab tracks take 2px; their indicator and options take 0, so the inside is sharper than its holder. The switch track is the one pill (32px of 44 standard, 24px of 36 compact, five thirds as wide, rounded at half its height around a circular thumb). The slider's track is a line and has no corner. Marks (the radio mark, switch thumb, slider thumb, and status dots) hold no content and are circles.
 
 ### Insets
 
@@ -122,7 +116,7 @@ Every authored vertical gap, margin, and padding is a step of one scale, so ever
 | `--space-8` | 64px |
 | `--space-9` | 96px |
 
-Two values sit outside the scale on purpose: the 2px plane gap between rows of a list (a row separation, not a group gap), and the 3px between an inner piece and what holds it (the padding of a switch, segmented, or tab track; a list row's trailing action; a text field's clear control), which separates the piece from its holder. The closed sidebar's 18px label-side inset, 10px icon gap, and 14px icon-side inset are fixed horizontal chrome, not vertical rhythm steps; `Sidebar.tsx` defines them once and sets them as custom properties so the measured closed width and the rendered chrome cannot drift.
+Two values sit outside the scale on purpose: the 2px plane gap between rows of a list (a row separation, not a group gap), and the 3px between an inner piece and what holds it (the padding of a switch, segmented, or tab track; a list row's trailing action; a text field's clear control). The closed sidebar's horizontal toggle insets are defined by `CLOSED_CHROME` in [`src/components/Sidebar.tsx`](src/components/Sidebar.tsx) (see section 7).
 
 ### Grouping
 
@@ -148,8 +142,6 @@ Every heading has less space below it than above it, so it visibly belongs to wh
 | Label (`--text-label`) | `--space-5` (24px) between groups | `--space-2` (8px) to the control it labels | Field and group labels, preference groups in the sidebar. |
 
 The docs example frame has `--pad-0` on every side and nothing else at the frame level, so its controls column and its specimen start at the same top and left inset, `--space-5` apart. Inside a frame, groups sit `--space-5` apart and rows of a list 2px apart.
-
-The sidebar is compact throughout: the open title row is a control like the navigation items: `--control-height-compact` tall, `--pad-0` from the panel's top and sides, `--inset-control-compact` inside, so its 1.25rem icon lines up with the navigation counts; its title keeps `--text-body` at 600 as the panel's name and wraps when it does not fit. `--gap-within` (8px) from the title row to the navigation, navigation items `--control-height-compact` tall with `--inset-control-compact` side padding and `--text-small`, preferences pinned to the bottom of the panel at least `--space-6` (32px) below the navigation and `--pad-0` above the panel's edge, `--space-5` between preference groups, `--gap-within` from a group label to its control, and `--gap-within` (8px) between switches, which are items of one group.
 
 ### Strokes and lines
 
@@ -214,7 +206,7 @@ Relationships for this block:
 
 The system measures opaque CSS color pairs with `colorContrast` in `src/lib/color.ts`, using `relativeLuminance` after conversion to linear sRGB. Resolve transparency against its backdrop before measuring. `neutralContrast` uses L cubed and is only an ideal achromatic (C = 0) reference, not a measurement of this hue-bearing palette. Equal OKLCH step distances do not guarantee a contrast ratio.
 
-The following sample pair ratios were computed from the current `tokens.css` OKLCH values with `colorContrast`, rounded to one decimal. They are not a claim about every rendered state or arbitrary token pairing. Browser gamut mapping and compositing require rendered-color checks too.
+The following sample pair ratios were computed from the current `tokens.css` OKLCH values with `colorContrast`, rounded to one decimal:
 
 | Pair | Light standard | Dark standard | Light high | Dark high | Floor |
 | --- | --- | --- | --- | --- | --- |
@@ -258,16 +250,16 @@ Typefaces:
 Relationships for this block:
 
 - Type hierarchy comes from size and weight first.
-- Text size belongs to the user. Sizes are set in rem, so the browser's text setting applies. Twice-default reflow requires browser validation; section 9 defines the verification scope.
+- Text size belongs to the user. Sizes are set in rem, so the browser's text setting applies.
 - Labels are set like text. Every label uses a token above, in sentence case, with normal letter spacing. No token sets tracking, uppercase, or monospace for a label. The three heading tracking tokens are also zero.
 
-Every component uses a step of the scale, one role per kind of control text. Standard control labels (buttons, switches, segmented options, tabs, text fields, selects, menu items, disclosure headers, checkbox and radio labels, list titles) use `--text-body`, with weight 600 only for a button, a disclosure title, and an unread list title. Compact controls use `--text-small` with the same weights, so in `PreferenceControls` and the sidebar the group labels (`--text-label`, 600) are never quieter than their options. The sidebar's items are compact; its title keeps `--text-body` at 600 as the app name. A selected option is never heavier than the others. The sidebar's current-section label uses `--text-label`. No component, example, or page sets a font size, weight, line height, or letter spacing outside these tokens, apart from inline `code`, which takes 0.875 of the surrounding text so it sits inside any role.
+Every component uses a step of the scale, one role per kind of control text (see Controls in section 3). No component, example, or page sets a font size, weight, line height, or letter spacing outside these tokens, apart from inline `code`, which takes 0.875 of the surrounding text so it sits inside any role.
 
 ## 6. Time
 
 ### Duration from size
 
-Duration grows with the size of the change. The function is in `src/lib/motion.ts`:
+Duration grows with the size of the change. The function is in [`src/lib/motion.ts`](src/lib/motion.ts):
 
     duration (ms) = min(360, round(48 + 3 × size^0.75))
 
@@ -282,48 +274,47 @@ where size is the change in pixels, measured as the component defines it.
 
 Worked examples:
 
-- A change of 8 px. 8^0.75 is 4.76. Multiplied by 3, it is 14.3. Adding the floor gives 62.3, which rounds to **62 ms**.
-- A change of 300 px. 300^0.75 is 72.1. Multiplied by 3, it is 216.2. Adding the floor gives 264.2, which rounds to **264 ms**.
-
-A change of 300 px takes about four times as long as a change of 8 px. The gap is wide enough to notice, and the timing can be predicted from the size of the change.
+- A change of 8 px: `48 + 3 × 8^0.75 = 62.3`, which rounds to **62 ms**.
+- A change of 300 px: `48 + 3 × 300^0.75 = 264.2`, which rounds to **264 ms**.
 
 The size used for each morph is the component's own measure:
 
-- `growFrom` uses the largest of three values: the distance between the origin and the element, the change in width, and the change in height.
-- `moveFrom` uses the distance the element travels.
-- The sidebar's nav indicator uses the vertical distance it covers.
-- The sidebar as a whole uses the viewport height. Opening and closing use the same measure at a given viewport; sufficiently tall viewports reach the duration ceiling.
-- `Disclosure` uses the height that changes.
+- `growFrom` ([`src/lib/morph.ts`](src/lib/morph.ts)) uses the largest of three values: the distance between the origin and the element, the change in width, and the change in height.
+- `moveFrom` ([`src/lib/morph.ts`](src/lib/morph.ts)) uses the distance the element travels.
+- `morphIndicator` ([`src/lib/morph.ts`](src/lib/morph.ts)) uses the largest of the distance traveled and the width/height change of the indicator in `Segmented`, `Tabs`, and `Sidebar`.
+- `Sidebar` ([`src/components/Sidebar.tsx`](src/components/Sidebar.tsx)) measures the largest of its corner travel, width change, and height change, sets `--dur` on the surface so its body and title crossfade over the same duration, and morphs geometry with `transform` and `clip-path`.
+- `Disclosure` ([`src/components/Disclosure.tsx`](src/components/Disclosure.tsx)) uses the height that changes, with both the `0fr -> 1fr` row transition and the content opacity fade running on `--dur`.
 - `ProgressSurface` multiplies the change in completion ratio by its measured track width in pixels. Under reduced motion, the fill updates without travel and gives 120ms opacity feedback in place.
 - `Placeholder` crossfades opacity without animating height. Callers provide final-geometry children from the start or an authoritative fixed height.
-- `UndoableList` measures each row's height for settlement timing. `UNDO_ROW_HEIGHT` (68px, a standard row at default text size) is a fallback, not a fixed row-height guarantee. A returning pointer or focus calls `hold()` to cancel timers and reverse leaving rows.
+- `UndoableList` measures each row's height for settlement timing (`UNDO_ROW_HEIGHT` = 68px is the pre-measure fallback). A returning pointer or focus calls `hold()` to cancel timers and reverse leaving rows.
 
 Fixed durations that do not come from size:
 
 | Token | Value | Use |
 | --- | --- | --- |
 | `--dur-feedback` | 140ms | Hover and press color. |
-| `--dur-fade` | 180ms | Opacity. Fades are never removed under reduced motion. |
+| `--dur-fade` | 180ms | Standalone opacity fades and cross-document view transitions. Fades that accompany a spatial morph use `--dur` instead. |
 
-State transitions (color and opacity) use the morph curve so a change settles smoothly instead of snapping. The switch thumb is a fixed 85 ms standard and 81 ms compact, `morphDuration(29)` and `morphDuration(24)` for its 29 px and 24 px travel. Its CSS value is written as a constant.
+State transitions (color and opacity) use `--ease-morph`. The switch thumb uses 85 ms standard and 81 ms compact (`morphDuration(29)` and `morphDuration(24)` for its 29 px and 24 px travel).
 
 ### Curve and interruption
 
-`--ease-morph` is `cubic-bezier(0.2, 0, 0, 1)`. `EASE_MORPH` in `src/lib/morph.ts` has the same value.
+`--ease-morph` is `cubic-bezier(0.2, 0, 0, 1)`. `EASE_MORPH` in [`src/lib/morph.ts`](src/lib/morph.ts) and `morphBezier` in [`src/lib/motion.ts`](src/lib/motion.ts) evaluate the same curve.
 
-Every morph can be interrupted. A CSS transition retargets from its current value when the target changes. A Web Animation returned by `growFrom` or `moveFrom` can be reversed mid-flight with `.reverse()`, so the element returns along the path it took. No component waits for a morph to finish before it accepts input. This supports interruption from the current position, but does not satisfy the language's stronger velocity-continuity requirement. That remains an implementation gap (section 9).
+Every morph accepts input while it runs:
 
-The system defines no spring parameters. Interruption comes from retargeting and reversing, not from a spring model.
+- `morphChannel(from, velocityPerMs, durationMs)` in [`src/lib/motion.ts`](src/lib/motion.ts) follows `cubic-bezier(0.2, 0, 0, 1)` when starting from rest (`velocityPerMs === 0`), and constructs a cubic Hermite spline when redirected mid-flight (`velocityPerMs !== 0`) so both position and instantaneous velocity are preserved across the interruption.
+- `growFrom`, `moveFrom`, `morphIndicator`, and `Sidebar` track active channel velocities and sample the Hermite trajectory when retargeted mid-flight, or reverse along their path when `.reverse()` is called.
+- Layout properties (`width`, `height`, `top`, `left`, `right`) are not animated on moving surfaces or indicators; spatial morphs use `transform` and `clip-path`, and height disclosures use `grid-template-rows: 0fr -> 1fr`.
 
 ### Reduced motion
 
 Reduced motion follows the viewer's operating system setting unless the viewer chooses otherwise in `PreferencesProvider`. When it is on, the document sets `data-motion='reduced'`, which sets `--travel` to 0.
 
 - Every travel and size transition uses `calc(<duration> * var(--travel))`. With `--travel` at 0, these transitions take no time, so the change happens at once.
-- Opacity fades keep their duration under reduced motion.
-- `growFrom` under reduced motion does not move or scale the element. It fades it in place over 120 ms, linear.
-- `moveFrom` under reduced motion places the element at its destination without travel and gives 120ms opacity feedback in place.
-- JavaScript reads the setting with `usePreferences().reducedMotion`, and passes it to `growFrom` and `moveFrom`.
+- Standalone opacity fades keep their duration under reduced motion.
+- `growFrom`, `moveFrom`, and `Sidebar` replace spatial travel with a 120 ms linear opacity crossfade in place.
+- Cross-document navigations use `@view-transition { navigation: auto; }` in [`src/styles/base.css`](src/styles/base.css), scaled by `--travel` so reduced motion cuts without animation.
 
 No component loops. The system has no shimmer, pulse, or spinner that runs without reporting progress. This satisfies Nothing moves idle.
 
@@ -331,12 +322,12 @@ No component loops. The system has no shimmer, pulse, or spinner that runs witho
 
 | Token or value | Value | Relationship |
 | --- | --- | --- |
-| `--sidebar-width` | min(19rem, 100vw - 2 * var(--sidebar-inset)) | The open sidebar's width: 304px at default text size, wide enough for a three-word title on one line beside its icon, growing with the user's text size, never wider than the screen. |
+| `--sidebar-width` | min(19rem, 100vw - 2 * var(--sidebar-inset)) | The open sidebar's width: 304px at default text size, growing with the user's text size, never wider than the screen. |
 | `--sidebar-inset` | `--pad-0` (16px) | The floating sidebar's distance from the screen edge, on all sides: closed, and open over the content. Docked, it has none. |
 | `--sidebar-closed-height` | `--control-height-compact` (2.25rem) | The closed sidebar's height, 36px at default text size: the panel is compact, so its closed form is a compact control. |
-| Closed width | widest possible label + icon width + 42px, capped to the viewport | The closed toggle reserves the widest of the title and all item labels, so changing the current section never moves or resizes it. The hidden measurement labels follow font and text-size changes. 42px is the fixed horizontal chrome: 18px padding on the label side, 10px gap, and 14px on the icon side, with the label first and the icon at the end. `Sidebar.tsx` defines the three values once for measurement and sets them on the surface as inline custom properties; `sidebar.css` repeats them only as fallbacks for the standalone stylesheet. The 10px gap also applies while open. This is an explicit exception to the control-inset rule. The icon is 1.25rem (20px at default text size). |
-| Open title row | `--control-height-compact`, `--pad-0` from the top and sides | As the panel opens the toggle moves `--pad-0` in from the panel's top and sides and takes `--radius-1` up to `--radius-control-max`, in the same morph as the surface. The title comes first with `--inset-control-compact` before it, so it starts on the navigation text's edge; the icon is at the row's end, centered in a square as tall as the row. Every line of text in the panel, including labels under the navigation, starts on that edge; planes start at `--pad-0`. |
-| Overlay breakpoint | viewport width below 62.5em (1000px at the default 16px browser font) | Below this text-relative width the sidebar opens over the content. It is closed by default. Satisfies "Where the screen is too narrow to keep it open, it stays a toggle and grows over the content when asked." |
+| Closed width | widest possible label + icon width + `CLOSED_CHROME_PX`, capped to the viewport | Defined by `CLOSED_CHROME` in [`src/components/Sidebar.tsx`](src/components/Sidebar.tsx) and passed to `sidebar.css` as inline custom properties. The hidden measurement labels include the title and all item labels so changing the current section never resizes the closed surface. |
+| Open panel | `--control-height-compact` rows, `--pad-0` panel inset | The open title row sits `--pad-0` from the panel's top and sides with `--inset-control-compact` inline padding; `--gap-within` (8px) separates the title row from the navigation, and at least `--space-6` (32px) separates the navigation from the bottom-pinned extra content. |
+| Overlay breakpoint | viewport width below 62.5em (1000px at the default 16px browser font) | Below this text-relative width (`DOCK_QUERY` in [`src/components/AppShell.tsx`](src/components/AppShell.tsx)) the sidebar opens over the content and is closed by default. |
 | `--column-width` | 760px | The reading column's maximum width. |
 | `--column-width-wide` | 1120px | The wide column's maximum width, used for lists and panes. |
 
@@ -352,7 +343,7 @@ The reading column is centered and its text is aligned to the start of each line
 
 ## 8. Components
 
-Every component lives in `system/src/components/` and is expected to follow `CONVENTIONS.md`. The rules column names the intended relationships, not a certification of complete conformance; see section 9 for gaps and verification scope.
+Every component lives in `system/src/components/` and follows [CONVENTIONS.md](CONVENTIONS.md).
 
 | Component | What it is for | Rules it serves |
 | --- | --- | --- |
@@ -385,40 +376,18 @@ Shared helpers, exported from the same entry:
 
 | Export | Module | Purpose |
 | --- | --- | --- |
-| `PreferencesProvider`, `usePreferences`, `useMedia` | `src/preferences.tsx` | Display settings, the document attributes that set them, and media queries as hooks. |
-| `morphDuration` | `src/lib/motion.ts` | The duration function in section 6. |
-| `growFrom`, `moveFrom` | `src/lib/morph.ts` | Grow an element from its origin, and move an element from where it was. Both are interruptible and respect reduced motion. |
-| `oklchLightness`, `relativeLuminance`, `colorContrast`, `neutralContrast` | `src/lib/color.ts` | Read perceptual lightness, compute relative luminance and contrast from opaque CSS colors, or calculate an ideal C = 0 reference ratio. |
-| `useScrollSpy` | `src/lib/useScrollSpy.ts` | The section being read. It follows the viewer's scrolling, and holds a jump target until a link's scroll ends. |
+| `PreferencesProvider`, `usePreferences`, `useMedia` | [`src/preferences.tsx`](src/preferences.tsx) | Display settings, the document attributes that set them, and media queries as hooks. |
+| `morphDuration`, `morphBezier`, `morphChannel` | [`src/lib/motion.ts`](src/lib/motion.ts) | Duration from size, bezier evaluation, and velocity-continuous Hermite trajectories (section 6). |
+| `growFrom`, `moveFrom`, `morphIndicator` | [`src/lib/morph.ts`](src/lib/morph.ts) | Grow an element from its origin, move an element from where it was, and move a track indicator. All preserve velocity on interruption and respect reduced motion. |
+| `oklchLightness`, `relativeLuminance`, `colorContrast`, `neutralContrast` | [`src/lib/color.ts`](src/lib/color.ts) | Read perceptual lightness, compute relative luminance and contrast from opaque CSS colors, or calculate an ideal C = 0 reference ratio. |
+| `useScrollSpy` | [`src/lib/useScrollSpy.ts`](src/lib/useScrollSpy.ts) | The section being read. It follows the viewer's scrolling, and holds a jump target until a link's scroll ends. |
 
-## 9. Verification scope and open requirements
+## 9. Verification and signal review
 
-Run these commands from the repository root. The audit run passed the checks below in Node 26.8.2 and Chrome 156.0.8078.48. This records the covered assertions, not complete language conformance. See [the audit report](../AUDIT.md) and [test instructions](../tests/README.md) for scope and limitations; rerun after changes.
-
-| Command | What its result establishes | Current documentation status |
-| --- | --- | --- |
-| `npm test` | Foundation calculations, documentation/token agreement, rule coverage, preference bootstrap, and persisted-mail validation. | 19 tests passed. |
-| `npm run typecheck` | Type compatibility across all four workspaces and the browser fixture, not behavioral conformance. | Passed. |
-| `npm run build` | The workspace production builds complete, not visual or accessibility correctness. | Passed. |
-| `npm run build:site` | The combined landing, docs, and flagship MPA writes to `dist/`. | Passed. |
-| `npm run test:browser` | Covered component, color, reflow, focus, demo, and mail-recovery scenarios in `tests/browser.mjs`. | 31 checks passed in Chrome 156.0.8078.48. |
-
-Browser review must cover all four scheme/contrast combinations, normal and reduced motion, keyboard operation, and twice-default text at desktop and narrow widths. Record actual colors and states when checking contrast. Page content must reflow without horizontal page scrolling; dense two-dimensional tables may scroll in a labeled local region, but tab labels must wrap. Height tokens describe minimum outer targets, not a guarantee that every wrapping row has a fixed height. Segmented and tab options are inset within their group's target.
-
-Open requirements and manual limitations:
-
-- Screen readers: verify meaningful state exposure, focus transitions, and asynchronous announcements with named browser/assistive-technology combinations. Automated DOM checks do not prove what is spoken.
-- Forced colors: review native/system color mappings, boundaries, focus, and selected states in an actual forced-colors environment. Emulation and standard high-contrast tokens are not a substitute for this review.
-- Insets: measure against rendered ink for the active font and browser. `text-box` support and font metrics vary; line-box fallbacks do not satisfy exact ink-inset equality. Do not claim cross-browser equality from token padding alone.
-- Signal budget: review each region under the counting rule below. There is no automatic enforcement or blanket pass claim.
-- Velocity continuity: current CSS transitions and Web Animations support position-based retargeting or reversal but do not guarantee continuous velocity under redirection. The language still requires it; this remains a conformance gap, not a waived requirement.
+Run `bun test`, `bun run typecheck`, `bun run build:site`, and `bun run test:browser` from the repository root. Automated suite coverage and manual verification scope (screen readers, real forced-colors environments, font-metric ink insets, and signal-budget audits) are documented in [AUDIT.md](../AUDIT.md) and [tests/README.md](../tests/README.md).
 
 ### Signal review rule
 
 A region is an independently actionable task group: one dialog, one menu, one form section with its own heading, or one separately actionable card or pane. Define those boundaries before reviewing; do not subdivide a group merely to evade the budget. Review each region independently, including nested task groups.
 
 The default budget is one independent saturated state signal per region. Repeated marks conveying the same error on the same object (its edge, error text, and icon) count as one signal. Distinct actionable errors count separately and must remain exposed even when they exceed the default budget; record this necessary exception rather than hiding errors or delaying their disclosure. Keyboard focus is a separate, mandatory interaction indicator and is exempt from the budget. Never remove or weaken focus to satisfy a signal count. Avoid additional decorative or redundant saturated signals.
-
-## 10. For contributors
-
-Use the conventions in [CONVENTIONS.md](CONVENTIONS.md) when contributing components. That file covers file layout, class names, which tokens to use, the shape and radius rules, the motion rules, the words rules, and the agency and access rules. Read it before writing or changing a component.

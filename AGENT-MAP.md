@@ -43,4 +43,4 @@ A heading or rule-name change is a coupled change to parsing, examples, citation
 
 ## Verify
 
-Run `npm run typecheck && npm test`. Run `npm run test:browser` for interaction or visual changes and `npm run build:site` before deployment. Compilation alone does not establish conformance.
+Run `bun run typecheck && bun test`. Run `bun run test:browser` for interaction or visual changes and `bun run build:site` before deployment. Compilation alone does not establish conformance.

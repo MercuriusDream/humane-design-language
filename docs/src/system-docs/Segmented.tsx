@@ -43,17 +43,17 @@ const PROPS: PropRow[] = [
   {
     prop: 'value',
     type: 'T',
-    meaning: 'The chosen option. Its button is pressed, the indicator moves under it, and its label takes the strongest ink. Selection never changes the weight.',
+    meaning: 'Selected option value. The indicator rests under it and its label takes primary ink.',
   },
   {
     prop: 'onChange',
     type: '(value: T) => void',
-    meaning: 'Called with the value of the option the user picked. The component is controlled and never changes value on its own.',
+    meaning: 'Called with the value of the option the user picked.',
   },
   {
     prop: 'size',
     type: "'standard' | 'compact'",
-    meaning: 'Standard is a 44 px track with body text. Compact is a 36 px track with small text, for a narrow controls column. Defaults to standard.',
+    meaning: 'Control tier: standard (44 px) or compact (36 px). Defaults to standard.',
   },
 ];
 
