@@ -1,53 +1,54 @@
-/* Landing. One line and three destinations. */
+/* Landing. Three flush sections that fill the screen, divided by plane lightness:
+   columns on a wide screen, top, middle, and bottom on a narrow one.
+   The name of the whole shares the first cell instead of floating over the page. */
 .landing {
-  box-sizing: border-box;
+  --landing-pad: var(--space-6);
   display: grid;
-  align-content: center;
-  gap: var(--space-8);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Open space, then one row of names and one of lines shared by all three columns,
+     so the names keep one baseline whatever wraps. */
+  grid-template-rows: 1fr auto auto;
   min-height: 100dvh;
-  max-width: 68rem;
-  margin-inline: auto;
-  padding: var(--space-9) var(--space-5);
 }
 
-.landing-header {
-  display: grid;
-  gap: var(--gap-within);
-}
-
+/* The name of the whole sits in the first section and never takes its clicks. */
 .landing-title {
-  font: var(--text-display);
-  letter-spacing: var(--tracking-display);
+  z-index: 1;
+  grid-area: 1 / 1;
+  align-self: start;
+  padding: var(--landing-pad);
+  font: var(--text-heading);
+  letter-spacing: var(--tracking-heading);
+  color: var(--ink-1);
+  pointer-events: none;
 }
 
-.landing-lead {
-  max-width: 54ch;
-  font: var(--text-lead);
-  color: var(--ink-2);
-}
-
-/* Language, Components, Example. Small surfaces in a row on a wide screen, a stack on a narrow one. */
-.landing-parts {
-  display: grid;
-  justify-content: start;
-  gap: var(--space-3);
-}
-
-@media (min-width: 40.01em) {
-  .landing-parts {
-    grid-auto-flow: column;
-  }
-}
-
-/* A root surface that is one link. The pointer changes its plane and nothing else. */
+/* One section, one link. The pointer changes its plane and nothing else. */
 .landing-part {
-  display: block;
-  padding: var(--space-2) var(--space-4);
-  font: var(--text-body);
-  font-weight: 600;
+  display: grid;
+  grid-row: 1 / 4;
+  grid-template-rows: subgrid;
+  row-gap: var(--gap-within);
+  padding: var(--landing-pad);
   color: var(--ink-1);
   text-decoration: none;
   transition: background-color var(--dur-feedback) var(--ease-morph);
+}
+
+/* Raised, base, sunken: lightest first, so the analytics notice, a raised plane, always floats over the darkest. */
+.landing-part:nth-of-type(1) {
+  grid-column: 1;
+  background: var(--plane-raised);
+}
+
+.landing-part:nth-of-type(2) {
+  grid-column: 2;
+  background: var(--plane-base);
+}
+
+.landing-part:nth-of-type(3) {
+  grid-column: 3;
+  background: var(--plane-sunken);
 }
 
 .landing-part:hover {
@@ -58,14 +59,59 @@
   background: var(--plane-control-hover);
 }
 
-.landing-foot {
-  display: flex;
-  justify-content: flex-start;
+/* The section runs to the viewport edge, so its ring is drawn inside. */
+.landing-part:focus-visible {
+  outline-offset: calc(-1 * var(--focus-width) - 2px);
 }
 
-@media (max-width: 40em) {
-  .landing {
-    gap: var(--space-7);
-    padding: var(--space-8) var(--space-4);
+.landing-part-name {
+  grid-row: 2;
+  font: var(--text-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.landing-part-line {
+  grid-row: 3;
+  font: var(--text-lead);
+  color: var(--ink-2);
+}
+
+/* While the notice is open, room below the sections lets the last one scroll clear of it.
+   Padding, not a grid row, so the sections still fill the screen. */
+.landing:has(.landing-analytics) {
+  box-sizing: content-box;
+  padding-block-end: 14rem;
+}
+
+/* Columns too narrow for the display size. Em, so larger default text moves the breakpoints with it. */
+@media (max-width: 72em) {
+  .landing-part-name {
+    font: var(--text-title);
+    letter-spacing: var(--tracking-title);
   }
+}
+
+/* Top, middle, bottom. Each section holds its own name and line at its bottom. */
+@media (max-width: 56em) {
+  .landing {
+    --landing-pad: var(--space-5);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(3, minmax(calc(100dvh / 3), auto));
+  }
+
+  .landing-part {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--gap-within);
+  }
+
+  .landing-part:nth-of-type(1) {
+    grid-area: 1 / 1;
+    /* Clears the name of the whole above it: its line box plus the gap below a heading. */
+    padding-block-start: calc(var(--landing-pad) * 2 + 1.95rem);
+  }
+
+  .landing-part:nth-of-type(2) { grid-area: 2 / 1; }
+  .landing-part:nth-of-type(3) { grid-area: 3 / 1; }
 }

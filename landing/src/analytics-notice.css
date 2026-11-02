@@ -22,11 +22,6 @@
   color: var(--ink-1);
 }
 
-/* Keeps the final footer reachable above the fixed notice, including at larger text sizes. */
-.landing-analytics-reserve {
-  block-size: 14rem;
-}
-
 @media (max-width: 40em) {
   .landing-analytics {
     inset-inline-end: var(--space-4);

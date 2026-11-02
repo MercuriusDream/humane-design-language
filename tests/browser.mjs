@@ -432,21 +432,24 @@ try {
     assert.equal(await evaluate(`document.querySelector('.h-sidebar').getAnimations().length`), 0);
     assert.ok(await evaluate(`document.activeElement === document.querySelector('.h-sidebar-toggle')`));
   });
-  await check('landing analytics dismissal persists with a way to reopen', async () => {
+  await check('landing analytics is one bottom notice whose dismissal persists', async () => {
     await viewport(390, 16);
     await evaluate(`localStorage.removeItem('humane-analytics-notice-dismissed')`);
     await open('landing');
     await waitFor(`document.querySelector('.landing-analytics')`);
-    await evaluate(`document.querySelector('.landing-analytics .h-button').focus({preventScroll:true})`);
+    assert.equal(await evaluate(`[...document.querySelectorAll('button')].filter(b => /analytics/i.test(b.textContent)).length`), 0);
+    assert.ok(await evaluate(`(() => { const r = document.querySelector('.landing-analytics').getBoundingClientRect(); return innerHeight - r.bottom < 32; })()`));
     await click('.landing-analytics .h-button');
     await waitFor(`!document.querySelector('.landing-analytics')`);
-    assert.ok(await evaluate(`document.activeElement === document.querySelector('.landing-foot button')`));
     await open('landing');
     assert.equal(await evaluate(`document.querySelector('.landing-analytics') === null`), true);
-    await click('.landing-foot button');
+    await evaluate(`localStorage.removeItem('humane-analytics-notice-dismissed')`);
+    await open('landing');
     await waitFor(`document.querySelector('.landing-analytics')`);
     await key('Escape');
     await waitFor(`!document.querySelector('.landing-analytics')`);
+    await open('landing');
+    assert.equal(await evaluate(`document.querySelector('.landing-analytics') === null`), true);
   });
   await evaluate(`(() => {
     const preferences = JSON.parse(localStorage.getItem('humane-preferences') ?? '{}');

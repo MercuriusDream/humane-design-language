@@ -4,7 +4,7 @@ import './analytics-notice.css';
 
 const DISMISSED_KEY = 'humane-analytics-notice-dismissed';
 
-/** Site analytics disclosure. It never takes focus or presents dismissal as a privacy choice. */
+/** Site analytics disclosure: one pop-up at the bottom, gone once dismissed. It never takes focus or presents dismissal as a privacy choice. */
 export function AnalyticsNotice() {
   const { reducedMotion } = usePreferences();
   const [visible, setVisible] = useState(() => {
@@ -12,14 +12,11 @@ export function AnalyticsNotice() {
   });
   const [closing, setClosing] = useState(false);
   const noticeRef = useRef<HTMLElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const reopen = useRef(false);
 
   useLayoutEffect(() => {
     const notice = noticeRef.current;
     if (!visible || closing || !notice) return;
-    const morph = growFrom(notice, reopen.current ? triggerRef.current : null, reducedMotion);
-    reopen.current = false;
+    const morph = growFrom(notice, null, reducedMotion);
     return () => morph?.cancel();
     // A preference change does not replay an already visible notice.
   }, [visible, closing]);
@@ -29,14 +26,12 @@ export function AnalyticsNotice() {
     try { localStorage.setItem(DISMISSED_KEY, 'true'); } catch { /* The notice still closes for this session. */ }
     const notice = noticeRef.current;
     if (!notice) return setVisible(false);
-    const returnFocus = notice.contains(document.activeElement);
     setClosing(true);
     const fade = notice.animate(
       [{ opacity: getComputedStyle(notice).opacity }, { opacity: 0 }],
       { duration: 180, easing: 'cubic-bezier(0.2, 0, 0, 1)' },
     );
     fade.onfinish = () => {
-      if (returnFocus) triggerRef.current?.focus({ preventScroll: true });
       setVisible(false);
       setClosing(false);
     };
@@ -51,15 +46,6 @@ export function AnalyticsNotice() {
 
   return (
     <>
-      <footer className="landing-foot">
-        <Button ref={triggerRef} variant="quiet" size="compact" onClick={() => {
-          reopen.current = true;
-          setVisible(true);
-        }}>
-          Analytics information
-        </Button>
-      </footer>
-      {visible && <div className="landing-analytics-reserve" aria-hidden="true" />}
       {visible && (
         <Surface ref={noticeRef} className="landing-analytics" depth={0} plane="raised" aria-label="Analytics">
           <h2 className="landing-analytics-title">Analytics</h2>

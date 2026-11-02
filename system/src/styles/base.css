@@ -4,8 +4,11 @@
   box-sizing: border-box;
 }
 
+/* No rubber band at the page's ends: the bounce would expose the canvas, a plane that is not
+   the one at the edge, as a band of the wrong color. Scroll containers keep their own behavior. */
 html {
   -webkit-text-size-adjust: 100%;
+  overscroll-behavior: none;
 }
 
 :root[data-motion='full'] {
