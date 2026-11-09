@@ -101,6 +101,7 @@
 
 .h-sidebar-toggle:active {
   background: var(--plane-control-hover);
+  transition-duration: 0ms;
 }
 
 .h-sidebar[data-open='true'] .h-sidebar-toggle {
@@ -170,7 +171,7 @@
 
 .h-sidebar-title {
   font: var(--text-body);
-  font-weight: 600; /* body role, app name weight */
+  font-weight: 600; /* body role, in-frame heading: the app name heads the navigation */
 }
 
 .h-sidebar-current {
@@ -277,6 +278,7 @@
 
 .h-nav-link:not([aria-current]):active {
   background: var(--plane-control-hover);
+  transition-duration: 0ms;
 }
 
 /* Items touch, so the ring sits inside the item and never covers a neighbour. */

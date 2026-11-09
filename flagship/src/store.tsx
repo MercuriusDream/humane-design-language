@@ -150,7 +150,7 @@ function reduceMail(state: MailState, action: MailAction): MailState {
     case 'storageResult': return { ...state, storageError: action.error, storageSaved: !action.error };
     case 'retryStorage': return { ...state, settings: { ...state.settings }, storageSaved: false };
     case 'replaceStorage': return { ...state, settings: { ...state.settings }, storageBlocked: false, storageSaved: false, storageSnapshot: action.snapshot, storageRevision: state.storageRevision + 1 };
-    case 'storageConflict': return { ...state, storageBlocked: true, storageSaved: false, storageError: 'Mail changed in another tab. This session has stopped saving to avoid overwriting those changes. Keep a copy of your unsaved edits, then reload, or export stored mail before explicitly replacing it with this session.' };
+    case 'storageConflict': return { ...state, storageBlocked: true, storageSaved: false, storageError: 'Mail changed in another tab. This session has stopped saving to avoid overwriting those changes. Keep a copy of your unsaved edits, then reload, or export stored mail before replacing it with this session.' };
     case 'resumeGhosts': return { ...state, ghosts: state.ghosts.map(g => ({ ...g, status: 'removed' })) };
     case 'sendTick': {
       let nextState = state;
@@ -273,7 +273,7 @@ function reduceMail(state: MailState, action: MailAction): MailState {
       return {
         ...state,
         outgoing: [outgoing, ...state.outgoing],
-        announcement: say(state.announcement, `Sending to ${outgoing.to.map(p => p.name).join(', ')}. Cancel send is available in Outgoing letters.`),
+        announcement: say(state.announcement, `Sending to ${outgoing.to.map(p => p.name).join(', ')}. Cancel in Outgoing letters.`),
         letters: draft.id ? state.letters.filter((l) => l.id !== draft.id) : state.letters,
       };
     }

@@ -73,7 +73,7 @@
 }
 
 .ex-hierarchy-comes-from-lightness-then-hue-then-saturation-warning-lead {
-  font-weight: 600; /* body role, lead weight */
+  font-weight: 400; /* a <strong> would carry a weight signal; lightness carries the lead */
   transition: color var(--dur-feedback) var(--ease-morph);
 }
 

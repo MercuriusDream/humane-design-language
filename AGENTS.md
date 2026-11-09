@@ -9,7 +9,7 @@ Guidance for agents working in this repository.
 - `tests/` holds the node tests (`*.test.mjs`) and `browser.mjs`, the headless Chrome suite.
 - `LANGUAGE.md` is the normative language text. The docs site parses it at build time via `docs/src/language.ts`; edit the markdown, never the rendered output.
 - `AGENT-MAP.md` routes tasks to authoritative sources and documents the language parser contract.
-- `public/llms.txt` indexes machine-readable documentation. `llms.manifest.mjs` lists canonical files that the root Vite config publishes under `dist/llms/`; never commit generated copies.
+- `public/llms.txt` indexes machine-readable documentation. `llms.manifest.mjs` lists canonical files that the root Vite config publishes under `dist/llms/` and concatenates into `dist/llms-full.txt`; emitted copies retarget repo-relative links for remote readers, and generated copies are never committed.
 
 ## Commands
 

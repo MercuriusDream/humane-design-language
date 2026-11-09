@@ -10,7 +10,7 @@
 /* Title: the same size as the body, set heavier. The danger tone sets only the title in the signal color. */
 .h-notice-title {
   font: var(--text-body);
-  font-weight: 600; /* body role, title weight */
+  font-weight: 600; /* body role, in-frame heading */
   color: var(--ink-1);
 }
 

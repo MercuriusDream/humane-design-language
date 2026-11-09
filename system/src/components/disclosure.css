@@ -36,6 +36,7 @@
 
 .h-disclosure:has(> .h-disclosure-header:active) {
   background: var(--plane-control-hover);
+  transition-duration: 0ms;
 }
 
 .h-disclosure-header {

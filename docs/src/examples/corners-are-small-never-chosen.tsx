@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
-import { Button, Slider, Surface } from 'humane-system';
+import { Button, morphDuration, Slider, Surface } from 'humane-system';
 import { Example } from '../components/Example';
 import './shared-demos.css';
 import './corners-are-small-never-chosen.css';
@@ -21,6 +21,7 @@ const round = (value: number) => Math.round(value * 10) / 10;
  */
 export default function CornersAreSmallNeverChosen() {
   const [width, setWidth] = useState(420);
+  const [dur, setDur] = useState(0);
   const [measured, setMeasured] = useState<Measured | null>(null);
   const stage = useRef<HTMLDivElement>(null);
 
@@ -59,7 +60,10 @@ export default function CornersAreSmallNeverChosen() {
           value={width}
           min={MIN_WIDTH}
           max={MAX_WIDTH}
-          onChange={setWidth}
+          onChange={(next) => {
+            setDur(morphDuration(Math.abs(next - width)));
+            setWidth(next);
+          }}
           unit="px"
         />
       }
@@ -69,7 +73,7 @@ export default function CornersAreSmallNeverChosen() {
           depth={0}
           plane="raised"
           className="ex-corners-are-small-never-chosen-root"
-          style={{ width, '--dur': '160ms' } as CSSProperties}
+          style={{ width, '--dur': `${dur}ms` } as CSSProperties}
         >
           <p className="ex-corners-are-small-never-chosen-label">Large root</p>
           <Surface depth={1} plane="base" className="ex-corners-are-small-never-chosen-panel">

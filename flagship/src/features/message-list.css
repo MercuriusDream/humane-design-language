@@ -59,12 +59,18 @@
   transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
-.message-list-item[data-status='present'] .message-list-row:hover {
+.message-list-item[data-status='present']:not([data-selected]) .message-list-row:hover {
   background: var(--plane-control);
 }
 
-/* Declared after hover, so the open letter keeps its plane under the pointer. It is the selected plane, as the
-   sidebar's current item: the same plane as the letter beside it in light, a step above hover in dark. */
+.message-list-item[data-status='present']:not([data-selected]) .message-list-row:has(> .message-row:active) {
+  background: var(--plane-control-hover);
+  transition-duration: 0ms;
+}
+
+/* The pointer steps skip the selected row, so the open letter keeps its plane under the pointer. It is the
+   selected plane, as the sidebar's current item: the same plane as the letter beside it in light, a step above
+   hover in dark. */
 .message-list-item[data-selected] .message-list-row {
   background: var(--plane-selected);
 }

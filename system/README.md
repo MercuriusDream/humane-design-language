@@ -292,10 +292,10 @@ Fixed durations that do not come from size:
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `--dur-feedback` | 140ms | Hover and press color. |
+| `--dur-feedback` | 140ms | Hover color and the release after a press; the press step itself lands at once (`:active` sets `transition-duration: 0ms`). |
 | `--dur-fade` | 180ms | Standalone opacity fades and cross-document view transitions. Fades that accompany a spatial morph use `--dur` instead. |
 
-State transitions (color and opacity) use `--ease-morph`. The switch thumb uses 85 ms standard and 81 ms compact (`morphDuration(29)` and `morphDuration(24)` for its 29 px and 24 px travel).
+State transitions (color and opacity) use `--ease-morph`. The switch thumb uses 78 ms standard and 72 ms compact (`morphDuration` on its travel, two thirds of the 32 px and 24 px tracks: 21.3 px and 16 px).
 
 ### Curve and interruption
 

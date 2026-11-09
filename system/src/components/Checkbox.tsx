@@ -23,7 +23,7 @@ export type CheckboxProps = {
 export function Checkbox({ label, checked, onChange, hint, disabled = false, depth = 1, size = 'standard' }: CheckboxProps) {
   const labelId = useId();
   const hintId = useId();
-  const style = { '--dur': `${morphDuration(20)}ms` } as CSSProperties;
+  const style = { '--dur': `${morphDuration(size === 'compact' ? 16 : 20)}ms` } as CSSProperties;
 
   return (
     <label className="h-checkbox" data-depth={depth} data-size={size} data-disabled={disabled || undefined} style={style}>

@@ -53,6 +53,11 @@
   background: var(--plane-control-hover);
 }
 
+.h-select:active:not(:disabled) {
+  background: var(--plane-control-active);
+  transition-duration: 0ms;
+}
+
 .h-select-control[data-depth='2'] .h-select {
   border-radius: min(var(--radius-2), var(--radius-control-max));
 }

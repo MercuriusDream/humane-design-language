@@ -8,7 +8,7 @@
 }
 
 .h-operator-name {
-  font-weight: 600; /* small role, name weight */
+  font-weight: 600; /* small role, in-frame heading: the name heads the statement */
 }
 
 /* The link is underlined so it reads as a link without a signal color. The box is --control-height tall to meet

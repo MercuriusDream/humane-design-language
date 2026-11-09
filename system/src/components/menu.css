@@ -65,6 +65,7 @@
 /* Declared after hover with the same specificity, so the press wins while the pointer is over the item. */
 .h-menu-item:active:not(:disabled) {
   background: var(--plane-control-hover);
+  transition-duration: 0ms;
 }
 
 /* Danger: a destructive action is a state that needs the user, so its text may be saturated. */

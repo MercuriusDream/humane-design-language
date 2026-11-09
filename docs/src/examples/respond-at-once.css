@@ -12,7 +12,7 @@
   background: var(--plane-control);
   color: var(--ink-1);
   font: var(--text-body);
-  font-weight: 600; /* in-frame heading: body role, one level below the rule name */
+  font-weight: 600; /* body role, action weight: the plane is a press target */
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   transition: background-color var(--dur-feedback) var(--ease-morph);

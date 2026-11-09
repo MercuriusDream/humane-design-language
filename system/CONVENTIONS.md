@@ -44,6 +44,7 @@ Use these custom properties (full tables and derivations in [README.md](README.m
 - Use [`growFrom`](src/lib/morph.ts) for elements emerging from a trigger, [`moveFrom`](src/lib/morph.ts) for FLIP layout moves, and [`morphIndicator`](src/lib/morph.ts) for selection indicators in tracks. All three use [`morphChannel`](src/lib/motion.ts) to preserve both position and instantaneous velocity when retargeted mid-flight.
 - Do not animate layout properties (`width`, `height`, `top`, `left`, `right`, `margin`, `padding`) on moving surfaces or indicators. Use `transform` and `clip-path` for spatial morphs, and `grid-template-rows: 0fr -> 1fr` for height disclosures.
 - Standalone opacity fades use `var(--dur-fade)` and state colors use `var(--dur-feedback)`, both with `--ease-morph`. Read reduced motion in JS with `usePreferences().reducedMotion` from [`src/preferences.tsx`](src/preferences.tsx).
+- Press lands at once: an `:active` rule sets `transition-duration: 0ms` so the press shows on the first frame, and release eases back on `--dur-feedback`.
 - No idle motion: no shimmer, pulse, or spinner that loops without reporting progress.
 
 ## Words

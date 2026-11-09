@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
-import { LLM_DOCS } from './llms.manifest.mjs';
+import { LLM_DOCS, rewriteLlmsLinks } from './llms.manifest.mjs';
 
 // The whole project on one server: the landing at /, the language and system at /docs/, Letters at /flagship/.
 // Each part still runs alone from its own folder.
@@ -12,22 +12,34 @@ const pages = {
   flagship: resolve(import.meta.dirname, 'flagship/index.html'),
 };
 
+/** A canonical doc as published: source Markdown with repo-relative links retargeted for /llms/. */
+const readLlmsDoc = (file) => rewriteLlmsLinks(readFileSync(resolve(import.meta.dirname, file), 'utf-8'), file);
+
+/** All canonical Markdown in one file, for agents that fetch once. */
+const fullLlmsText = () => LLM_DOCS.map(readLlmsDoc).join('\n\n---\n\n');
+
 /** Publish canonical Markdown under mirrored /llms/ paths, in development and in the deploy artifact. */
 const llms: Plugin = {
   name: 'llms',
   configureServer(server) {
     server.middlewares.use((req, res, next) => {
       const path = new URL(req.url ?? '/', 'http://localhost').pathname;
+      if (path === '/llms-full.txt') {
+        res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+        res.end(fullLlmsText());
+        return;
+      }
       const source = LLM_DOCS.find((file) => path === `/llms/${file}`);
       if (!source) return next();
       res.setHeader('Content-Type', source.endsWith('.md') ? 'text/markdown; charset=utf-8' : 'text/plain; charset=utf-8');
-      res.end(readFileSync(resolve(import.meta.dirname, source)));
+      res.end(readLlmsDoc(source));
     });
   },
   generateBundle() {
     for (const source of LLM_DOCS) {
-      this.emitFile({ type: 'asset', fileName: `llms/${source}`, source: readFileSync(resolve(import.meta.dirname, source)) });
+      this.emitFile({ type: 'asset', fileName: `llms/${source}`, source: readLlmsDoc(source) });
     }
+    this.emitFile({ type: 'asset', fileName: 'llms-full.txt', source: fullLlmsText() });
   },
 };
 

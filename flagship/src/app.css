@@ -158,7 +158,6 @@
   grid-area: write;
 }
 
-
 .mailbox-reader-pane {
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;

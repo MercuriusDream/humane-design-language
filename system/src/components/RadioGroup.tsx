@@ -19,7 +19,7 @@ export type RadioGroupProps<T extends string> = {
 
 /** Equal consequence, equal weight (Symmetry): every option shares one style, and the selected inner dot grows in place (Continuity). */
 export function RadioGroup<T extends string>({ label, name, options, value, onChange, size = 'standard' }: RadioGroupProps<T>) {
-  const style = { '--dur': `${morphDuration(10)}ms` } as CSSProperties;
+  const style = { '--dur': `${morphDuration(size === 'compact' ? 8 : 10)}ms` } as CSSProperties;
 
   return (
     <fieldset className="h-radio-group" data-size={size} style={style}>

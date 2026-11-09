@@ -57,6 +57,7 @@
 
 .landing-part:active {
   background: var(--plane-control-hover);
+  transition-duration: 0ms;
 }
 
 /* The section runs to the viewport edge, so its ring is drawn inside. */

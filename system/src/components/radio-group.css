@@ -81,6 +81,7 @@
 
 .h-radio-row:active .h-radio-dot {
   background: var(--plane-control-hover);
+  transition-duration: 0ms;
 }
 
 .h-radio-input:focus-visible + .h-radio-dot {

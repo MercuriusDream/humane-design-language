@@ -74,6 +74,7 @@
 
 .h-list-row:not([data-selected='true']):has(> button.h-list-primary:active) {
   background: var(--plane-control-hover);
+  transition-duration: 0ms;
 }
 
 .h-list-row[data-selected='true'] {

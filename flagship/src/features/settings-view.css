@@ -34,7 +34,6 @@
   align-items: center;
   min-height: var(--control-height);
   font: var(--text-body);
-  font-weight: 600; /* body role, action weight: a button's label */
 }
 
 .settings-view-title {

@@ -33,6 +33,7 @@
 
 .h-button:active:not(:disabled) {
   background: var(--plane-control-active);
+  transition-duration: 0ms; /* the press lands on the first frame; release fades back */
 }
 
 .h-button[data-depth='2'] {
@@ -52,6 +53,7 @@
 /* Pressed returns to full ink, so the press reads as a change from hover. */
 .h-button[data-variant='strong']:active:not(:disabled) {
   background: var(--ink-1);
+  transition-duration: 0ms;
 }
 
 /* Quiet: no plane until the pointer arrives. */
@@ -67,6 +69,7 @@
 
 .h-button[data-variant='quiet']:active:not(:disabled) {
   background: var(--plane-control-hover);
+  transition-duration: 0ms;
 }
 
 /* Danger: a destructive action is a state that needs the user, so it may be saturated. */

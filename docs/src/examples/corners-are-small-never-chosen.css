@@ -11,7 +11,8 @@
 
 .ex-corners-are-small-never-chosen-root {
   box-sizing: border-box;
-  flex: 1 1 15rem;
+  /* No grow and a content basis: the inline width the slider sets is the size, so the transition is real. */
+  flex: 0 1 auto;
   display: grid;
   align-content: start;
   gap: var(--gap-within);

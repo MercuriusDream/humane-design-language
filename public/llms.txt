@@ -9,6 +9,7 @@ The normative language is LANGUAGE.md. Component source and Props types are auth
 - [Documentation map for coding agents](https://humane.mercuriusdream.com/llms/AGENT-MAP.md): Source precedence, task routing, parser contracts, package facts, and verification commands.
 - [Humane Design Language](https://humane.mercuriusdream.com/llms/LANGUAGE.md): Normative intent, premises, rules, signature, and conformance tests.
 - [Rendered documentation](https://humane.mercuriusdream.com/docs/): The language with interactive examples and component references.
+- [Complete documentation in one file](https://humane.mercuriusdream.com/llms-full.txt): Every canonical page concatenated, for a single fetch.
 
 ## Reference system
 
@@ -18,6 +19,7 @@ The normative language is LANGUAGE.md. Component source and Props types are auth
 
 ## Repository and verification
 
+- [Source repository](https://github.com/MercuriusDream/humane-design-language): Component Props types and implementations on GitHub; authoritative for API behavior.
 - [Repository overview](https://humane.mercuriusdream.com/llms/README.md)
 - [Agent guidance](https://humane.mercuriusdream.com/llms/AGENTS.md)
 - [Test guide](https://humane.mercuriusdream.com/llms/tests/README.md)

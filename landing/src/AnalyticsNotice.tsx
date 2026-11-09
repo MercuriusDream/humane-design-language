@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Button, Surface, growFrom, usePreferences } from 'humane-system';
+import { Button, EASE_MORPH, Surface, growFrom, usePreferences } from 'humane-system';
 import './analytics-notice.css';
 
 const DISMISSED_KEY = 'humane-analytics-notice-dismissed';
@@ -27,9 +27,11 @@ export function AnalyticsNotice() {
     const notice = noticeRef.current;
     if (!notice) return setVisible(false);
     setClosing(true);
+    const styles = getComputedStyle(notice);
     const fade = notice.animate(
-      [{ opacity: getComputedStyle(notice).opacity }, { opacity: 0 }],
-      { duration: 180, easing: 'cubic-bezier(0.2, 0, 0, 1)' },
+      [{ opacity: styles.opacity }, { opacity: 0 }],
+      // A standalone fade: --dur-fade on the system's curve, read from the tokens.
+      { duration: parseFloat(styles.getPropertyValue('--dur-fade')) || 180, easing: EASE_MORPH },
     );
     fade.onfinish = () => {
       setVisible(false);

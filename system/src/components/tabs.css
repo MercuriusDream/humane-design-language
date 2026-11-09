@@ -76,6 +76,7 @@
 
 .h-tabs-tab:active:not([aria-selected='true']) {
   background: var(--plane-control-active);
+  transition-duration: 0ms;
 }
 
 /* Selection is shown by the plane under the tab and by ink, never by weight. */

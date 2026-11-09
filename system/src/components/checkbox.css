@@ -66,6 +66,7 @@
 
 .h-checkbox:active .h-checkbox-input:not(:disabled):not(:checked) + .h-checkbox-box {
   background: var(--plane-control-hover);
+  transition-duration: 0ms;
 }
 
 .h-checkbox-input:checked + .h-checkbox-box {
@@ -78,6 +79,7 @@
 
 .h-checkbox:active .h-checkbox-input:not(:disabled):checked + .h-checkbox-box {
   background: var(--ink-1);
+  transition-duration: 0ms;
 }
 
 /* Focus is a signal: an outline on the box, outside the edge, always visible. */

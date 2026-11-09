@@ -66,6 +66,11 @@
   background: var(--plane-control);
 }
 
+.ex-navigation-is-a-sidebar-that-morphs-toggle:active {
+  background: var(--plane-control-hover);
+  transition-duration: 0ms;
+}
+
 /* Sized in rem, as the system sidebar sizes its icon, so it grows with the label when text is enlarged.
    The label here is a step smaller than the system sidebar's title, so the icon is too. */
 .ex-navigation-is-a-sidebar-that-morphs-icon {
@@ -104,8 +109,13 @@
   transition: background-color var(--dur-feedback) var(--ease-morph);
 }
 
-.ex-navigation-is-a-sidebar-that-morphs-nav-item:hover {
+.ex-navigation-is-a-sidebar-that-morphs-nav-item:not([aria-current]):hover {
   background: var(--plane-control-hover);
+}
+
+.ex-navigation-is-a-sidebar-that-morphs-nav-item:not([aria-current]):active {
+  background: var(--plane-control-active);
+  transition-duration: 0ms;
 }
 
 .ex-navigation-is-a-sidebar-that-morphs-nav-item[aria-current='page'] {

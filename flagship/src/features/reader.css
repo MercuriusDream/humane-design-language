@@ -113,7 +113,7 @@
 
 .reader-name {
   font: var(--text-body);
-  font-weight: 600; /* body role, sender weight */
+  font-weight: 600; /* body role, in-frame heading: the sender heads the letter's meta */
   color: var(--ink-1);
 }
 

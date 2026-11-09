@@ -218,6 +218,7 @@
   transition: transform calc(var(--dur-fade) * var(--travel)) var(--ease-morph);
 }
 
+/* Resetting sweeps the fill back across the card (about 256 px): morphDuration(256). */
 .task[data-phase='idle'] .task-fill {
   transition-duration: calc(240ms * var(--travel));
   transition-timing-function: var(--ease-morph);
@@ -249,9 +250,9 @@
   opacity: 0;
   transform: scale(0.4);
   transition:
-    width calc(93ms * var(--travel)) var(--ease-morph),
-    margin-right calc(93ms * var(--travel)) var(--ease-morph),
-    transform calc(93ms * var(--travel)) var(--ease-morph),
+    width calc(81ms * var(--travel)) var(--ease-morph),
+    margin-right calc(81ms * var(--travel)) var(--ease-morph),
+    transform calc(81ms * var(--travel)) var(--ease-morph),
     opacity var(--dur-fade) var(--ease-morph);
 }
 
